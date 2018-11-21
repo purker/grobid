@@ -1,30 +1,53 @@
 package org.grobid.core.engines;
 
-import eugfc.imageio.plugins.PNMRegistry;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+import static org.apache.commons.lang3.StringUtils.trim;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
+import java.util.TreeMap;
+import java.util.regex.Matcher;
+
+import javax.imageio.ImageIO;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.grobid.core.GrobidModels;
 import org.grobid.core.document.BasicStructureBuilder;
 import org.grobid.core.document.Document;
 import org.grobid.core.document.DocumentSource;
 import org.grobid.core.engines.config.GrobidAnalysisConfig;
+import org.grobid.core.engines.tagging.GenericTaggerUtils;
 import org.grobid.core.exceptions.GrobidException;
 import org.grobid.core.exceptions.GrobidExceptionStatus;
 import org.grobid.core.features.FeatureFactory;
 import org.grobid.core.features.FeaturesVectorSegmentation;
-import org.grobid.core.layout.*;
+import org.grobid.core.layout.Block;
+import org.grobid.core.layout.BoundingBox;
+import org.grobid.core.layout.GraphicObject;
+import org.grobid.core.layout.GraphicObjectType;
+import org.grobid.core.layout.LayoutToken;
+import org.grobid.core.layout.Page;
 import org.grobid.core.utilities.GrobidProperties;
 import org.grobid.core.utilities.LanguageUtilities;
+import org.grobid.core.utilities.Pair;
 import org.grobid.core.utilities.TextUtilities;
+import org.grobid.trainer.SegmentationTrainer;
+import org.grobid.trainer.document.TrainingDocumentSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.*;
-import java.util.*;
-import java.util.regex.Matcher;
-
-import static org.apache.commons.lang3.StringUtils.*;
+import eugfc.imageio.plugins.PNMRegistry;
 
 // for image conversion we're using an ImageIO plugin for PPM format support
 // see https://github.com/eug/imageio-pnm
@@ -119,23 +142,49 @@ public class Segmentation extends AbstractParser {
         return prepareDocument(doc);
     }
 
-    public Document prepareDocument(Document doc) {
 
-        List<LayoutToken> tokenizations = doc.getTokenizations();
-        if (tokenizations.size() > GrobidProperties.getPdfTokensMax()) {
+	public Document prepareDocument(Document doc) {
+
+		List<LayoutToken> tokenizations = doc.getTokenizations();
+		if (tokenizations.size() > GrobidProperties.getPdfTokensMax()) {
             throw new GrobidException("The document has " + tokenizations.size() + " tokens, but the limit is " + GrobidProperties.getPdfTokensMax(),
                     GrobidExceptionStatus.TOO_MANY_TOKENS);
-        }
+		}
 
-        doc.produceStatistics();
-        String content = getAllLinesFeatured(doc);
-        if (isNotEmpty(trim(content))) {
-            String labelledResult = label(content);
-            // set the different sections of the Document object
-            doc = BasicStructureBuilder.generalResultSegmentation(doc, labelledResult, tokenizations);
-        }
-        return doc;
-    }
+		doc.produceStatistics();
+		List<Pair<String, String>> labels = new ArrayList<>();
+		if (doc.getDocumentSource() instanceof TrainingDocumentSource) {
+			File teiFile = ((TrainingDocumentSource) doc.getDocumentSource()).getTeiFileSegmentation();
+
+			if (teiFile != null && teiFile.exists()) {
+				try {
+					List<String> labelsFromTeiFile = SegmentationTrainer.getLabeledTokensFromTeiFile(SAXParserFactory.newInstance(), teiFile);
+					labels = GenericTaggerUtils.getTokensAndLabelsAsPair(labelsFromTeiFile);
+					System.out.println(doc.getDocumentSource().getPdfFile() + ": labels set from tei file " + teiFile.getName());
+				} catch (Exception e) {
+					throw new GrobidException("An exception occured while running Grobid.", e);
+				}
+			}
+		}
+		//extract from scratch, if labels not predetermined by trainingfiles
+		if (CollectionUtils.isEmpty(labels)) {
+			System.out.println(doc.getDocumentSource().getPdfFile() + ": labels determined by wapiti");
+			String content = getAllLinesFeatured(doc);
+			if (isNotEmpty(trim(content))) {
+				String labelledResult = label(content);
+				labels = GenericTaggerUtils.getTokensAndLabels(labelledResult);
+
+				// set the different sections of the Document object
+				doc = BasicStructureBuilder.generalResultSegmentation(doc, labels, tokenizations);
+			}
+		}
+
+		//TODO Angela GrobidUtil.writeLabelPairs(labels, new File("D:\\Java\\git\\MethodDemosGit\\MethodDemos\\output\\training\\output", doc.getDocumentSource().getPdfFile().getName().replace(".pdf", ".segmentation.labels.txt")));
+
+		doc = BasicStructureBuilder.generalResultSegmentation(doc, labels, tokenizations);
+
+		return doc;
+	}
 
     private void dealWithImages(DocumentSource documentSource, Document doc, File assetFile, GrobidAnalysisConfig config) {
         if (assetFile != null) {

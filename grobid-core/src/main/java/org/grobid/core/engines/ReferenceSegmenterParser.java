@@ -1,7 +1,17 @@
 package org.grobid.core.engines;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Sets;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.SortedSet;
+import java.util.regex.Matcher;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.apache.commons.collections4.CollectionUtils;
 import org.grobid.core.GrobidModels;
 import org.grobid.core.document.Document;
 import org.grobid.core.document.DocumentPiece;
@@ -21,15 +31,14 @@ import org.grobid.core.utilities.BoundingBoxCalculator;
 import org.grobid.core.utilities.Pair;
 import org.grobid.core.utilities.TextUtilities;
 import org.grobid.core.utilities.Triple;
+import org.grobid.trainer.ReferenceSegmenterTrainer;
+import org.grobid.trainer.document.TrainingDocumentSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.SortedSet;
-import java.util.regex.Matcher;
+import com.google.common.base.Function;
+import com.google.common.collect.Sets;
 
 /**
  * @author Slava, Patrice
@@ -97,6 +106,29 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 
         return getExtractionResult(tokenizationsReferences, labeled);
     }
+
+	public List<LabeledReferenceResult> extractWithGivenLabelsFromTeiFile(Document doc,
+			File referenceSegmenterFile) throws ParserConfigurationException, SAXException, IOException {
+		SortedSet<DocumentPiece> referencesParts = doc.getDocumentPart(SegmentationLabels.REFERENCES);
+		Pair<String, List<LayoutToken>> featSeg = getReferencesSectionFeatured(doc, referencesParts);
+		List<LayoutToken> tokenizationsReferences;
+		if (featSeg == null) {
+			return null;
+		}
+		// if featSeg is null, it usually means that no reference segment is found in the
+		// document segmentation
+		//not needed String featureVector = featSeg.getA();
+		tokenizationsReferences = featSeg.getB();
+
+		List<Pair<String, String>> labels = ReferenceSegmenterTrainer.getLabeledTokensFromTeiFile(null, referenceSegmenterFile);
+
+		List<Triple<String, String, String>> labeledTriples = new ArrayList<>();
+		for (Pair<String, String> pair : labels) {
+			labeledTriples.add(new Triple<String, String, String>(pair.getA(), pair.getB(), null));
+		}
+
+		return getExtractionResult(tokenizationsReferences, labeledTriples);
+	}
 
     private List<LabeledReferenceResult> getExtractionResult(List<LayoutToken> tokenizations, List<Triple<String, String, String>> labeled) {
         final List<LabeledReferenceResult> resultList = new ArrayList<>();
@@ -168,10 +200,10 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
         return resultList;
     }
 
-	public org.grobid.core.utilities.Pair<String,String> createTrainingData(Document doc, int id) {
+	public Pair<String, String> createTrainingData(Document doc, int id) {
 		SortedSet<DocumentPiece> referencesParts = doc.getDocumentPart(SegmentationLabels.REFERENCES);
-		Pair<String,List<LayoutToken>> featSeg = getReferencesSectionFeatured(doc, referencesParts);
-		String res;
+		Pair<String, List<LayoutToken>> featSeg = getReferencesSectionFeatured(doc, referencesParts);
+
 		List<LayoutToken> tokenizations;
 		if (featSeg == null) {
 			return null;
@@ -180,16 +212,35 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 		// document segmentation
 		String featureVector = featSeg.getA();
 		tokenizations = featSeg.getB();
-		try {
-			res = label(featureVector);
+
+		List<Pair<String, String>> labeled = null;
+
+		if (doc.getDocumentSource() instanceof TrainingDocumentSource) {
+			File teiFileReferenceSegmenter = ((TrainingDocumentSource) doc.getDocumentSource()).getTeiFileReferenceSegmenter();
+
+			if (teiFileReferenceSegmenter != null && teiFileReferenceSegmenter.exists()) {
+				try {
+					labeled = ReferenceSegmenterTrainer.getLabeledTokensFromTeiFile(null, teiFileReferenceSegmenter);
+					System.out.println(doc.getDocumentSource().getPdfFile() + ": labels set from tei file " + teiFileReferenceSegmenter.getAbsolutePath());
+				} catch (Exception e) {
+					throw new GrobidException("An exception occured while running Grobid.", e);
+				}
+			}
 		}
-		catch(Exception e) {
-			throw new GrobidException("CRF labeling in ReferenceSegmenter fails.", e);
+		//extract from scratch, if labels not predetermined by trainingfiles
+		if (CollectionUtils.isEmpty(labeled)) {
+			try {
+				String res = label(featureVector);
+
+				if (res == null) {
+					return null;
+				}
+
+				labeled = GenericTaggerUtils.getTokensAndLabels(res);
+			} catch (Exception e) {
+				throw new GrobidException("CRF labeling in ReferenceSegmenter fails.", e);
+			}
 		}
-		if (res == null) {
-			return null;
-		}
-        List<Pair<String, String>> labeled = GenericTaggerUtils.getTokensAndLabels(res);
         StringBuilder sb = new StringBuilder();
 
 		//noinspection StringConcatenationInsideStringBufferAppend

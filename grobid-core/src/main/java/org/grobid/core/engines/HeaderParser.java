@@ -1,6 +1,18 @@
 package org.grobid.core.engines;
 
-import com.google.common.base.Splitter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.SortedSet;
+import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.grobid.core.GrobidModels;
@@ -33,18 +45,7 @@ import org.grobid.core.utilities.counters.CntManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.SortedSet;
-import java.util.StringTokenizer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.google.common.base.Splitter;
 
 /**
  * @author Patrice Lopez
@@ -783,6 +784,9 @@ public class HeaderParser extends AbstractParser {
 					if (features.punctType == null)
 						features.punctType = "NOPUNCT";
 
+					if (!features.punctType.equals("NOPUNCT"))
+						features.containPunct = true;
+
 					header.append(features.printVector(withRotation));
 
 					n++;
@@ -855,10 +859,11 @@ public class HeaderParser extends AbstractParser {
 						doc.setLanguage(lang.getLang());
 					}
 
+					List<org.grobid.core.utilities.Pair<String, String>> labels = GenericTaggerUtils.getTokensAndLabels(rese);
 					// buffer for the affiliation+address block
                     StringBuilder bufferAffiliation =
-                            parsers.getAffiliationAddressParser().trainingExtraction(rese, tokenizations);
-					// buffer for the date block
+							parsers.getAffiliationAddressParser().trainingExtraction(labels, tokenizations);
+                    // buffer for the date block
 					StringBuilder bufferDate = null;
 					// we need to rebuild the found date string as it appears
 					String input = "";
@@ -937,7 +942,7 @@ public class HeaderParser extends AbstractParser {
 						q++;
 					}
 					if (input.length() > 1) {
-                        List<String> inputs = new ArrayList<String>();
+                        List<String> inputs = new ArrayList<>();
 						inputs.add(input.trim());
 						bufferReference = parsers.getCitationParser().trainingExtraction(inputs);
 					}
@@ -997,9 +1002,7 @@ public class HeaderParser extends AbstractParser {
 
 					if (bufferName != null) {
 						if (bufferName.length() > 0) {
-                            Writer writerName = new OutputStreamWriter(new FileOutputStream(new File(pathTEI +
-                                    File.separator
-                                    + pdfFileName.replace(".pdf", ".authors.tei.xml")), false), "UTF-8");
+							Writer writerName = new OutputStreamWriter(new FileOutputStream(new File(pathTEI + File.separator + pdfFileName.replace(".pdf", ".authors.tei.xml")), false), "UTF-8");
 							writerName.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
                             writerName.write("\n<tei xmlns=\"http://www.tei-c.org/ns/1.0\"" + " xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
                                     + "xmlns:mml=\"http://www.w3.org/1998/Math/MathML\">");
