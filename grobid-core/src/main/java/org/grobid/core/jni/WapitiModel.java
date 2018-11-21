@@ -15,61 +15,71 @@ import java.io.File;
  * Date: 3/17/14
  */
 public class WapitiModel {
-    public static final Logger LOGGER = LoggerFactory.getLogger(WapitiModel.class);
+	public static final Logger LOGGER = LoggerFactory.getLogger(WapitiModel.class);
 
-    private SWIGTYPE_p_mdl_t model;
-    private File modelFile;
+	private SWIGTYPE_p_mdl_t model;
+	private File modelFile;
 
-    public WapitiModel(File modelFile) {
-        this.modelFile = modelFile;
-        init();
-    }
+	public WapitiModel(File modelFile) {
+		this.modelFile = modelFile;
+		init();
+	}
 
-    public WapitiModel(GrobidModel grobidModel) {
-        modelFile = new File(grobidModel.getModelPath());
-        init();
-    }
+	public WapitiModel(GrobidModel grobidModel) {
+		modelFile = new File(grobidModel.getModelPath());
+		init();
+	}
 
-    private synchronized void init() {
-        if (model != null) {
-            return;
-        }
-        if (!modelFile.exists() || modelFile.isDirectory()) {
-            throw new GrobidException("Model file does not exists or a directory: " + modelFile.getAbsolutePath());
-        }
-        LOGGER.info("Loading model: " + modelFile + " (size: " + modelFile.length() + ")");
-        model = WapitiWrapper.getModel(modelFile);
-    }
+	private synchronized void init() {
+		if (model != null) {
+			return;
+		}
+		if (!modelFile.exists() || modelFile.isDirectory()) {
+			throw new GrobidException("Model file does not exists or a directory: " + modelFile.getAbsolutePath());
+		}
+		LOGGER.info("Loading model: " + modelFile + " (size: " + modelFile.length() + ")");
+		model = WapitiWrapper.getModel(modelFile);
+	}
 
-    public String label(String data) {
-        if (model == null) {
-            LOGGER.warn("Model has been already closed, reopening: " + modelFile.getAbsolutePath());
-            init();
-        }
-        String label = WapitiWrapper.label(model, data).trim();
-        //TODO: VZ: Grobid currently expects tabs as separators whereas wapiti uses spaces for separating features.
-        // for now it is safer to replace, although it does not look nice
-        label = label.replaceAll(" ", "\t");
-        return label;
-    }
+	public String label(String data) {
+		if (model == null) {
+			LOGGER.warn("Model has been already closed, reopening: " + modelFile.getAbsolutePath());
+			init();
+		}
+		String label = WapitiWrapper.label(model, data).trim();
+		//TODO: VZ: Grobid currently expects tabs as separators whereas wapiti uses spaces for separating features.
+		// for now it is safer to replace, although it does not look nice
+		label = label.replaceAll(" ", "\t");
+		return label;
+	}
 
-    public synchronized void close() {
-        if (model != null) {
-            Wapiti.freeModel(model);
-            model = null;
-        }
-    }
+	public synchronized void close() {
+		if (model != null) {
+			Wapiti.freeModel(model);
+			model = null;
+		}
+	}
 
-    public static void train(File template, File trainingData, File outputModel) {
-        train(template, trainingData, outputModel, "");
-    }
+	public static void train(File template, File trainingData, File outputModel) {
+		train(template, trainingData, outputModel, "");
+	}
 
-    public static void train(File template, File trainingData, File outputModel, String params) {
+	public static void train(File template, File trainingData, File outputModel, String params) {
 		String args = String.format("train " + params + " -p %s %s %s", template.getAbsolutePath(), trainingData.getAbsolutePath(), outputModel.getAbsolutePath());
 		//System.out.println("Training with equivalent command line: \n" + "wapiti " + args);
 		Wapiti.runWapiti(args);
-    }
+	}
 
+	/**
+	 * train with existing model
+	 */
+	public static void train(File template, File trainingData, File inputModel, File outputModel) {
+		String params = "-m " + inputModel.getAbsolutePath();
+		train(template, trainingData, outputModel, params);
+	}
 
-
+	public static void dump(File model, File outputFile) {
+		String args = String.format("dump %s %s", model.getAbsolutePath(), outputFile.getAbsolutePath());
+		Wapiti.runWapiti(args);
+	}
 }
