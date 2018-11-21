@@ -726,7 +726,7 @@ public class EngineTest {
 //        String input = "/Work/workspace/pdf-analysis/pdf-analysis-service/scripts/grobid/pdfs/grobid-input-2086711400313078388.pdf";
 //        String input = "/Work/workspace/pdf-analysis/pdf-analysis-service/scripts/grobid/AS_190528951947270_1422437050969.pdf";
         String input = "/Work/temp/1.pdf";
-        DocumentSource documentSource = DocumentSource.fromPdf(new File(input));
+        DocumentSource documentSource = new DocumentSource(new File(input));
         Document doc = engine.getParsers().getSegmentationParser().processing(documentSource, GrobidAnalysisConfig.defaultInstance());
         //Document doc = engine.getParsers().getSegmentationParser().processing(new File(input), GrobidAnalysisConfig.defaultInstance());
         System.out.println("Extracting citations");
@@ -744,7 +744,7 @@ public class EngineTest {
         Engine engine = GrobidFactory.getInstance().getEngine();
         //Document result = engine.getParsers().getSegmentationParser().processing(new File("/Work/workspace/data/pdf2xmlreflow/1.pdf"),
         //        GrobidAnalysisConfig.defaultInstance());
-        DocumentSource documentSource = DocumentSource.fromPdf(new File("/Work/workspace/data/pdf2xmlreflow/1.pdf"));
+        DocumentSource documentSource = new DocumentSource(new File("/Work/workspace/data/pdf2xmlreflow/1.pdf"));
         Document result = engine.getParsers().getSegmentationParser().processing(documentSource, GrobidAnalysisConfig.defaultInstance());
         System.out.println(result);
 
@@ -910,7 +910,7 @@ public class EngineTest {
 //        File pdf = new File("/Users/zholudev/Downloads/AS-454757820178434@1485434121902_content_1.pdf");
 //        File pdf = new File("/Users/zholudev/Downloads/AS-99907918630920@1400831312313_content_1.pdf");
         File pdf = new File("/Users/zholudev/Downloads/9908107.pdf");
-        Document doc = engine.getParsers().getFullTextParser().processing(DocumentSource.fromPdf(pdf, -1, -1, false, true), config);
+        Document doc = engine.getParsers().getFullTextParser().processing(new DocumentSource(pdf, -1, -1, false, true), config);
         System.out.println(doc.getTei());
 
 //        System.out.println(engine.fullTextToTEI(inputFile, config)); // numbered
@@ -975,7 +975,7 @@ public class EngineTest {
 //        File f = new File("/Work/temp/figureExtraction/5.pdf");
 
         GrobidAnalysisConfig config = new GrobidAnalysisConfig.GrobidAnalysisConfigBuilder().generateTeiCoordinates(Lists.newArrayList("ref", "biblStruct")).build();
-        Document doc = engine.getParsers().getFullTextParser().processing(DocumentSource.fromPdf(f, -1, -1, false, true), config);
+        Document doc = engine.getParsers().getFullTextParser().processing(new DocumentSource(f, -1, -1, false, true), config);
 
         PDDocument document = PDDocument.load(f);
 

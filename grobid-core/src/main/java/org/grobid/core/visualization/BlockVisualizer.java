@@ -69,7 +69,7 @@ public class BlockVisualizer {
                     .build();
 
 //            File tempFile = File.createTempFile("temp", ".xml", new File("/tmp"));
-            DocumentSource documentSource = DocumentSource.fromPdf(input);
+            DocumentSource documentSource = new DocumentSource(input);
 
 
             Document teiDoc = engine.fullTextToTEIDoc(input, config);

@@ -201,7 +201,7 @@ public class FigureTableVisualizer {
                 .build();
 
 
-        DocumentSource documentSource = DocumentSource.fromPdf(input);
+        DocumentSource documentSource = new DocumentSource(input);
 
         File pdf2xmlDirectory = new File(contentDir, "pdf2xml");
         pdf2xmlDirectory.mkdirs();

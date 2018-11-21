@@ -41,7 +41,7 @@ public class SegmentationTest {
     @Test
     public void testGetAllLinesFeatures_SimpleDocument_shouldWork() throws Exception {
         File input = new File(this.getClass().getResource("samplePdf.segmentation.pdf").toURI());
-        DocumentSource doc = DocumentSource.fromPdf(input);
+        DocumentSource doc = new DocumentSource(input);
 
         final Document document = new Document(doc);
         document.addTokenizedDocument(GrobidAnalysisConfig.defaultInstance());
@@ -59,7 +59,7 @@ public class SegmentationTest {
     @Test
     public void testPrepareDocument_SimpleDocument_shouldWork() throws Exception {
         File input = new File(this.getClass().getResource("samplePdf.segmentation.pdf").toURI());
-        DocumentSource doc = DocumentSource.fromPdf(input);
+        DocumentSource doc = new DocumentSource(input);
 
         final Document document = new Document(doc);
         document.addTokenizedDocument(GrobidAnalysisConfig.defaultInstance());

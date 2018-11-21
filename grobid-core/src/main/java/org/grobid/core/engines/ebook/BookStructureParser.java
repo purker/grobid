@@ -50,8 +50,8 @@ public class BookStructureParser extends AbstractParser {
         File file = new File(inputFile);
         DocumentSource source = null;
         try {
-            source = DocumentSource.fromPdf(file);
-            Document doc = new Document(DocumentSource.fromPdf(file));
+            source = new DocumentSource(file);
+            Document doc = new Document(new DocumentSource(file));
             String PDFFileName = file.getName();
             doc.addTokenizedDocument(GrobidAnalysisConfig.defaultInstance());
 

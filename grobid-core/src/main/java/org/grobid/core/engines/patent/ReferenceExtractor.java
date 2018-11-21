@@ -220,7 +220,7 @@ public class ReferenceExtractor implements Closeable {
                                            List<BibDataSet> articles) {
         DocumentSource documentSource = null;
         try {
-            documentSource = DocumentSource.fromPdf(new File(inputFile));
+            documentSource = new DocumentSource(new File(inputFile));
             PatentDocument doc = new PatentDocument(documentSource);
 			doc.addTokenizedDocument(GrobidAnalysisConfig.defaultInstance());
 			
@@ -255,7 +255,7 @@ public class ReferenceExtractor implements Closeable {
                                            List<BibDataSet> articles) {
         DocumentSource documentSource = null;
         try {
-            documentSource = DocumentSource.fromPdf(new File(inputFile));
+            documentSource = new DocumentSource(new File(inputFile));
             PatentDocument doc = new PatentDocument(documentSource);
 			
 			List<LayoutToken> tokenizations = doc.addTokenizedDocument(GrobidAnalysisConfig.defaultInstance());

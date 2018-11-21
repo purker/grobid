@@ -709,7 +709,7 @@ public class GrobidRestProcessFiles {
                 response = Response.status(Status.INTERNAL_SERVER_ERROR).build();
             } else {
                 engine = Engine.getEngine(isparallelExec);
-                DocumentSource documentSource = DocumentSource.fromPdf(originFile);
+                DocumentSource documentSource = new DocumentSource(originFile);
                 if (isparallelExec) {
                     Document teiDoc = engine.fullTextToTEIDoc(originFile, config);
                     json = CitationsVisualizer.getJsonAnnotations(teiDoc, null);
@@ -852,7 +852,7 @@ public class GrobidRestProcessFiles {
             PDDocument document = PDDocument.load(originFile);
             //If no pages, skip the document
             if (document.getNumberOfPages() > 0) {
-                //DocumentSource documentSource = DocumentSource.fromPdf(originFile);
+                //DocumentSource documentSource = new DocumentSource(originFile);
                 DocumentSource documentSource = teiDoc.getDocumentSource();
                 if (isparallelExec) {
                     outputDocument = dispatchProcessing(type, document, documentSource, teiDoc);

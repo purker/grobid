@@ -653,7 +653,7 @@ public class Segmentation extends AbstractParser {
         try {
             File file = new File(inputFile);
 
-            documentSource = DocumentSource.fromPdf(file);
+            documentSource = new DocumentSource(file);
             Document doc = new Document(documentSource);
 
             String PDFFileName = file.getName();
