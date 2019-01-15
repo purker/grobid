@@ -27,10 +27,11 @@ import static org.apache.commons.lang3.StringUtils.trim;
  */
 public class TextUtilities {
 
-    public static final String punctuations = " •*,:;?.!)-−–\"“”‘’'`$]*\u2666\u2665\u2663\u2660\u00A0";
+	public static final String punctuations = "( •*,:;?.!)-−–\"“”‘’'`$]*\u2666\u2665\u2663\u2660\u00A0";
     public static final String fullPunctuations = "([ •*,:;?.!/)-−–‐\"“”‘’'`$]*\u2666\u2665\u2663\u2660\u00A0";
     public static final String restrictedPunctuations = ",:;?.!/-–«»„\"“”‘’'`*\u2666\u2665\u2663\u2660";
-    public static String delimiters = "\n\r\t\f\u00A0" + fullPunctuations;
+	public static final String delimiters = "\n\r\t\f\u00A0" + fullPunctuations;
+	public static final String split_delimiters = " \t\n\r";
 
     public static final String OR = "|";
     public static final String NEW_LINE = "\n";
@@ -591,7 +592,7 @@ public class TextUtilities {
             return null;
         ArrayList<String> result = new ArrayList<String>();
         String token = null;
-        String seg = " \n\t";
+		String seg = split_delimiters;
         for (int i = 0; i < input.length(); i++) {
             char c = input.charAt(i);
             int ind = seg.indexOf(c);
