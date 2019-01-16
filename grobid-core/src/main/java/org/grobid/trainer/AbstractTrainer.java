@@ -1,19 +1,17 @@
 package org.grobid.trainer;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.grobid.core.GrobidModel;
-import org.grobid.core.GrobidModels;
 import org.grobid.core.engines.tagging.GenericTagger;
 import org.grobid.core.engines.tagging.TaggerFactory;
 import org.grobid.core.exceptions.GrobidException;
 import org.grobid.core.factory.GrobidFactory;
 import org.grobid.core.utilities.GrobidProperties;
 import org.grobid.trainer.evaluation.EvaluationUtilities;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.IOException;
 
 /**
  * @author Zholudev, Lopez
@@ -48,29 +46,38 @@ public abstract class AbstractTrainer implements Trainer {
 
     @Override
     public void train() {
-        final File dataPath = trainDataPath;
-        createCRFPPData(getCorpusPath(), dataPath);
-        GenericTrainer trainer = TrainerFactory.getTrainer();
-
-        if (epsilon != 0.0) 
-            trainer.setEpsilon(epsilon);
-        if (window != 0)
-            trainer.setWindow(window);
-        if (nbMaxIterations != 0)
-            trainer.setNbMaxIterations(nbMaxIterations);
-
-        File dirModelPath = new File(GrobidProperties.getModelPath(model).getAbsolutePath()).getParentFile();
-        if (!dirModelPath.exists()) {
-            LOGGER.warn("Cannot find the destination directory " + dirModelPath.getAbsolutePath() + " for the model " + model.toString() + ". Creating it.");
-            dirModelPath.mkdir();
-            //throw new GrobidException("Cannot find the destination directory " + dirModelPath.getAbsolutePath() + " for the model " + model.toString());
-        }
-        final File tempModelPath = new File(GrobidProperties.getModelPath(model).getAbsolutePath() + NEW_MODEL_EXT);
-        final File oldModelPath = GrobidProperties.getModelPath(model);
-        trainer.train(getTemplatePath(), dataPath, tempModelPath, GrobidProperties.getNBThreads(), model);
-        // if we are here, that means that training succeeded
-        renameModels(oldModelPath, tempModelPath);
+		train(false);
     }
+
+	@Override
+	public void train(boolean trainExistingModel) {
+		final File dataPath = trainDataPath;
+		createCRFPPData(getCorpusPath(), dataPath);
+		GenericTrainer trainer = TrainerFactory.getTrainer();
+
+		if (epsilon != 0.0)
+			trainer.setEpsilon(epsilon);
+		if (window != 0)
+			trainer.setWindow(window);
+		if (nbMaxIterations != 0)
+			trainer.setNbMaxIterations(nbMaxIterations);
+
+		File dirModelPath = new File(GrobidProperties.getModelPath(model).getAbsolutePath()).getParentFile();
+		if (!dirModelPath.exists()) {
+			LOGGER.warn("Cannot find the destination directory " + dirModelPath.getAbsolutePath() + " for the model " + model.toString() + ". Creating it.");
+			dirModelPath.mkdir();
+			//throw new GrobidException("Cannot find the destination directory " + dirModelPath.getAbsolutePath() + " for the model " + model.toString());
+		}
+		final File tempModelPath = new File(GrobidProperties.getModelPath(model).getAbsolutePath() + NEW_MODEL_EXT);
+		final File oldModelPath = GrobidProperties.getModelPath(model);
+		if (!trainExistingModel) {
+			trainer.train(getTemplatePath(), dataPath, tempModelPath, GrobidProperties.getNBThreads(), model);
+		} else {
+			trainer.trainExistingModel(getTemplatePath(), dataPath, oldModelPath, tempModelPath, GrobidProperties.getNBThreads(), model);
+		}
+		// if we are here, that means that training succeeded
+		renameModels(oldModelPath, tempModelPath);
+	}
 
     protected void renameModels(final File oldModelPath, final File tempModelPath) {
         if (oldModelPath.exists()) {
@@ -139,7 +146,7 @@ public abstract class AbstractTrainer implements Trainer {
         return tagger;
     }
 
-    protected static File getFilePath2Resources() {
+	public static File getFilePath2Resources() {
         File theFile = new File(GrobidProperties.get_GROBID_HOME_PATH().getAbsoluteFile() + File.separator + ".." + File.separator
                 + "grobid-trainer" + File.separator + "resources");
         if (!theFile.exists()) {
@@ -181,7 +188,14 @@ public abstract class AbstractTrainer implements Trainer {
         long end = System.currentTimeMillis();
 
         System.out.println("Model for " + trainer.getModel() + " created in " + (end - start) + " ms");
+	}
 
+	public static void runTrainingExistingModel(final Trainer trainer) {
+		long start = System.currentTimeMillis();
+		trainer.train(true);
+		long end = System.currentTimeMillis();
+
+		System.out.println("Model for " + trainer.getModel() + " created in " + (end - start) + " ms");
     }
 
     public File getEvalDataPath() {

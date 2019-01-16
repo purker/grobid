@@ -1,17 +1,26 @@
 package org.grobid.trainer;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FilenameFilter;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.util.List;
+import java.util.StringTokenizer;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.apache.commons.lang3.ArrayUtils;
 import org.grobid.core.GrobidModels;
 import org.grobid.core.exceptions.GrobidException;
 import org.grobid.core.mock.MockContext;
 import org.grobid.core.utilities.GrobidProperties;
 import org.grobid.trainer.sax.TEIFulltextSaxParser;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-import java.io.*;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
 
 
 /**
@@ -77,7 +86,7 @@ public class ShorttextTrainer extends AbstractTrainer{
                 }
             });
 
-            if (refFiles == null) {
+            if (ArrayUtils.isEmpty(refFiles)) {
                 return 0;
             }
 

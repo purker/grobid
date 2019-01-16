@@ -1,12 +1,10 @@
 package org.grobid.trainer;
 
-import org.grobid.core.GrobidModel;
-import org.grobid.core.jni.WapitiModel;
-import org.grobid.core.GrobidModels;
-import org.grobid.trainer.SegmentationTrainer;
+import java.io.File;
 import java.math.BigDecimal;
 
-import java.io.File;
+import org.grobid.core.GrobidModel;
+import org.grobid.core.jni.WapitiModel;
 
 /**
  * User: zholudev
@@ -27,11 +25,27 @@ public class WapitiTrainer implements GenericTrainer {
 		System.out.println("\twindow: " + window);
         System.out.println("\tnb max iterations: " + nbMaxIterations);
 		System.out.println("\tnb threads: " + numThreads);
-        WapitiModel.train(template, trainingData, outputModel, "--nthread " + numThreads +
+        WapitiModel.trainWithArguments(template, trainingData, outputModel, "--nthread " + numThreads +
 //       		" --algo sgd-l1" +
 			" -e " + BigDecimal.valueOf(epsilon).toPlainString() +
 			" -w " + window +
 			" -i " + nbMaxIterations
+        );
+    }
+    @Override
+    public void trainExistingModel(File template, File trainingData, File inputModel, File outputModel, int numThreads, GrobidModel model) {
+    	System.out.println("\tepsilon: " + epsilon);
+		System.out.println("\twindow: " + window);
+        System.out.println("\tnb max iterations: " + nbMaxIterations);
+		System.out.println("\tnb threads: " + numThreads);
+        WapitiModel.trainWithArguments(template, trainingData, outputModel,
+        	"--nthread " + numThreads +
+//       	" --algo sgd-l1" +
+			" -e " + BigDecimal.valueOf(epsilon).toPlainString() +
+			" -w " + window +
+			" -i " + nbMaxIterations +
+			" -m " + inputModel.getAbsolutePath() +
+			" -c"
         );
     }
 

@@ -1,12 +1,11 @@
 package org.grobid.trainer;
 
+import java.io.File;
+
 import org.chasen.crfpp.CRFPPTrainer;
 import org.grobid.core.GrobidModel;
-import org.grobid.core.GrobidModels;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
 
 /**
  * Usage of CRF++ in GROBID is deprecated.
@@ -73,4 +72,10 @@ public class CRFPPGenericTrainer implements GenericTrainer {
     public int getNbMaxIterations() {
         return nbMaxIterations;
     }
+
+	@Override
+	public void trainExistingModel(File template, File trainingData, File inputModel, File outputModel, int numThreads,
+			GrobidModel model) {
+		throw new RuntimeException("trainExistingModel not implemented in CRFPPGenericTrainer");
+	}
 }

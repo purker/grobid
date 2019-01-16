@@ -22,7 +22,7 @@ import org.grobid.core.GrobidModels;
 import org.grobid.core.exceptions.GrobidException;
 import org.grobid.core.mock.MockContext;
 import org.grobid.core.utilities.GrobidProperties;
-import org.grobid.core.utilities.Pair;
+import org.grobid.core.utilities.TokenLabelPair;
 import org.grobid.core.utilities.UnicodeUtil;
 import org.grobid.trainer.sax.TEIHeaderSaxParser;
 import org.xml.sax.SAXException;
@@ -305,7 +305,7 @@ public class HeaderTrainer extends AbstractTrainer {
 		return nbExamples;
 	}
 
-	public static List<Pair<String, String>> getLabeledTokensFromTeiFile(SAXParserFactory spf, File teiFile)
+	public static List<TokenLabelPair> getLabeledTokensFromTeiFile(SAXParserFactory spf, File teiFile)
 			throws ParserConfigurationException, SAXException, IOException {
 		TEIHeaderSaxParser parser2 = new TEIHeaderSaxParser();
 
@@ -317,7 +317,7 @@ public class HeaderTrainer extends AbstractTrainer {
 		SAXParser par = spf.newSAXParser();
 		par.parse(teiFile, parser2);
 
-		List<Pair<String, String>> labeled = parser2.getLabeledResultAsPairs();
+		List<TokenLabelPair> labeled = parser2.getLabeledResultAsPairs();
 
 		return labeled;
 	}

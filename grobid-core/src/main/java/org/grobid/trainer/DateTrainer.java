@@ -1,18 +1,23 @@
 package org.grobid.trainer;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FilenameFilter;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.util.List;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.apache.commons.lang3.ArrayUtils;
 import org.grobid.core.GrobidModels;
 import org.grobid.core.exceptions.GrobidException;
 import org.grobid.core.features.FeaturesVectorDate;
 import org.grobid.core.mock.MockContext;
 import org.grobid.core.utilities.GrobidProperties;
 import org.grobid.trainer.sax.TEIDateSaxParser;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
 
 /**
  * @author Patrice Lopez
@@ -52,10 +57,10 @@ public class DateTrainer extends AbstractTrainer {
 	 * @return the total number of used corpus items 
 	 */
 	@Override
-	public int createCRFPPData(final File corpusDir, 
-							final File trainingOutputPath, 
-							final File evalOutputPath, 
-							double splitRatio) {
+	public int createCRFPPData(final File corpusDir,
+			final File trainingOutputPath,
+			final File evalOutputPath,
+			double splitRatio) {
 		int totalExamples = 0;
 		try {
 			System.out.println("sourcePathLabel: " + corpusDir);
@@ -70,11 +75,10 @@ public class DateTrainer extends AbstractTrainer {
 				public boolean accept(File dir, String name) {
 					return name.endsWith(".xml");
 				}
-			}); 
+			});
 
-			if (refFiles == null) {
-				throw new IllegalStateException("Folder " + corpusDir.getAbsolutePath()
-						+ " does not seem to contain training data. Please check");
+			if (ArrayUtils.isEmpty(refFiles)) {
+				throw new IllegalStateException("Folder " + corpusDir.getAbsolutePath() + " does not seem to contain training data. Please check");
 			}
 
 			System.out.println(refFiles.length + " tei files");
@@ -86,7 +90,7 @@ public class DateTrainer extends AbstractTrainer {
 				os2 = new FileOutputStream(trainingOutputPath);
 				writer2 = new OutputStreamWriter(os2, "UTF8");
 			}
-		
+
 			// the file for writing the evaluation data
 			OutputStream os3 = null;
 			Writer writer3 = null;
@@ -94,7 +98,7 @@ public class DateTrainer extends AbstractTrainer {
 				os3 = new FileOutputStream(evalOutputPath);
 				writer3 = new OutputStreamWriter(os3, "UTF8");
 			}
-			
+
 			// get a factory for SAX parser
 			SAXParserFactory spf = SAXParserFactory.newInstance();
 
@@ -115,22 +119,22 @@ public class DateTrainer extends AbstractTrainer {
 
 				// we can now add the features
 				String headerDates = FeaturesVectorDate.addFeaturesDate(labeled);
-				
+
 				// format with features for sequence tagging...
 				// given the split ratio we write either in the training file or the evaluation file
 				String[] chunks = headerDates.split("\n \n");
-				
-				for(int i=0; i<chunks.length; i++) {
+
+				for (int i = 0; i < chunks.length; i++) {
 					String chunk = chunks[i];
-										
-					if ( (writer2 == null) && (writer3 != null) )
+
+					if ((writer2 == null) && (writer3 != null))
 						writer3.write(chunk + "\n \n");
-					else if ( (writer2 != null) && (writer3 == null) )
+					else if ((writer2 != null) && (writer3 == null))
 						writer2.write(chunk + "\n \n");
-					else {		
+					else {
 						if (Math.random() <= splitRatio)
 							writer2.write(chunk + "\n \n");
-						else 
+						else
 							writer3.write(chunk + "\n \n");
 					}
 				}
@@ -140,12 +144,12 @@ public class DateTrainer extends AbstractTrainer {
 				writer2.close();
 				os2.close();
 			}
-			
+
 			if (writer3 != null) {
 				writer3.close();
 				os3.close();
 			}
-			
+
 		} catch (Exception e) {
 			throw new GrobidException("An exception occurred while running Grobid.", e);
 		}

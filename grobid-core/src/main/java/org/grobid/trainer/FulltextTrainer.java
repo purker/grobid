@@ -17,11 +17,12 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.grobid.core.GrobidModels;
 import org.grobid.core.engines.tagging.GenericTaggerUtils;
 import org.grobid.core.mock.MockContext;
 import org.grobid.core.utilities.GrobidProperties;
-import org.grobid.core.utilities.Pair;
+import org.grobid.core.utilities.TokenLabelPair;
 import org.grobid.core.utilities.UnicodeUtil;
 import org.grobid.trainer.sax.TEIFulltextSaxParser;
 import org.xml.sax.SAXException;
@@ -87,7 +88,7 @@ public class FulltextTrainer extends AbstractTrainer {
 				}
 			});
 
-			if (refFiles == null) {
+			if (ArrayUtils.isEmpty(refFiles)) {
 				return 0;
 			}
 
@@ -271,7 +272,7 @@ public class FulltextTrainer extends AbstractTrainer {
 		return parser2.getLabeledResult();
 	}
 
-	public static List<Pair<String, String>> getLabeledTokensFromTeiFileAsPair(SAXParserFactory spf, File teiFile)
+	public static List<TokenLabelPair> getLabeledTokensFromTeiFileAsPair(SAXParserFactory spf, File teiFile)
 			throws SAXException, IOException, ParserConfigurationException {
 
 		return GenericTaggerUtils.getTokensAndLabelsAsPair(getLabeledTokensFromTeiFile(spf, teiFile));

@@ -1,25 +1,30 @@
 package org.grobid.trainer;
 
-import org.grobid.core.GrobidModels;
-import org.grobid.core.exceptions.GrobidException;
-import org.grobid.core.features.FeaturesVectorCitation;
-import org.grobid.core.mock.MockContext;
-import org.grobid.core.utilities.GrobidProperties;
-import org.grobid.core.utilities.OffsetPosition;
-import org.grobid.trainer.sax.TEICitationSaxParser;
-import org.grobid.core.engines.label.TaggingLabel;
-import org.grobid.core.layout.LayoutToken;
-import org.grobid.core.lexicon.Lexicon;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.apache.commons.lang3.ArrayUtils;
+import org.grobid.core.GrobidModels;
+import org.grobid.core.exceptions.GrobidException;
+import org.grobid.core.features.FeaturesVectorCitation;
+import org.grobid.core.layout.LayoutToken;
+import org.grobid.core.lexicon.Lexicon;
+import org.grobid.core.mock.MockContext;
+import org.grobid.core.utilities.GrobidProperties;
+import org.grobid.core.utilities.OffsetPosition;
+import org.grobid.core.utilities.TokenLabelPair;
+import org.grobid.trainer.sax.TEICitationSaxParser;
+import org.xml.sax.SAXException;
 
 
 /**
@@ -83,7 +88,7 @@ public class CitationTrainer extends AbstractTrainer {
 				}
 			}); 
 
-			if (refFiles == null) {
+			if (ArrayUtils.isEmpty(refFiles)) {
 				throw new IllegalStateException("Folder " + corpusDir.getAbsolutePath()
 						+ " does not seem to contain training data. Please check");
 			}
@@ -184,6 +189,23 @@ public class CitationTrainer extends AbstractTrainer {
 			throw new GrobidException("An exception occurred while running Grobid.", e);
 		}
 		return totalExamples;
+	}
+
+	public static List<List<TokenLabelPair>> getLabeledTokensFromTeiFile(SAXParserFactory spf, File teiFile)
+			throws ParserConfigurationException, SAXException, IOException {
+		TEICitationSaxParser parser2 = new TEICitationSaxParser();
+
+		if (spf == null) {
+			spf = SAXParserFactory.newInstance();
+		}
+
+		//get a new instance of parser
+		SAXParser par = spf.newSAXParser();
+		par.parse(teiFile, parser2);
+
+		List<List<TokenLabelPair>> labeled = parser2.getLabeledResultAsPairs();
+
+		return labeled;
 	}
 
     /**

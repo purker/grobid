@@ -13,6 +13,20 @@ import java.io.File;
 /**
  * User: zholudev
  * Date: 3/17/14
+ * 
+ * (https://wapiti.limsi.fr/manual.html)
+ * wapiti mode [options] [input] [output]
+ * 
+ * mode=["train", "label", or "dump"]
+ * 
+ * options:
+ * -m | --model <file>
+ *            Specify a model file to load and to train again.
+ * -p | --post
+              Use posterior decoding instead of the classical  Viterbi  decod-
+              ing. This generally produce better results at the cost of slower
+              decoding.  This  also  allow  to  output  normalized  score  for
+              sequences and labels.
  */
 public class WapitiModel {
 	public static final Logger LOGGER = LoggerFactory.getLogger(WapitiModel.class);
@@ -61,21 +75,13 @@ public class WapitiModel {
 	}
 
 	public static void train(File template, File trainingData, File outputModel) {
-		train(template, trainingData, outputModel, "");
+		trainWithArguments(template, trainingData, outputModel, "");
 	}
 
-	public static void train(File template, File trainingData, File outputModel, String params) {
+	public static void trainWithArguments(File template, File trainingData, File outputModel, String params) {
 		String args = String.format("train " + params + " -p %s %s %s", template.getAbsolutePath(), trainingData.getAbsolutePath(), outputModel.getAbsolutePath());
-		//System.out.println("Training with equivalent command line: \n" + "wapiti " + args);
+		System.out.println("Training with equivalent command line: \n" + "wapiti " + args);
 		Wapiti.runWapiti(args);
-	}
-
-	/**
-	 * train with existing model
-	 */
-	public static void train(File template, File trainingData, File inputModel, File outputModel) {
-		String params = "-m " + inputModel.getAbsolutePath();
-		train(template, trainingData, outputModel, params);
 	}
 
 	public static void dump(File model, File outputFile) {

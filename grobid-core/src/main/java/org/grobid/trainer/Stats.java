@@ -3,7 +3,7 @@ package org.grobid.trainer;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.grobid.core.exceptions.*;
+import org.grobid.core.exceptions.GrobidException;
 
 public final class Stats {
     private final TreeMap<String, LabelStat> labelStats;

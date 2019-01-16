@@ -17,11 +17,12 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.grobid.core.GrobidModels;
 import org.grobid.core.exceptions.GrobidException;
 import org.grobid.core.mock.MockContext;
 import org.grobid.core.utilities.GrobidProperties;
-import org.grobid.core.utilities.Pair;
+import org.grobid.core.utilities.TokenLabelPair;
 import org.grobid.core.utilities.UnicodeUtil;
 import org.grobid.trainer.sax.TEIReferenceSegmenterSaxParser;
 import org.slf4j.Logger;
@@ -70,7 +71,7 @@ public class ReferenceSegmenterTrainer extends AbstractTrainer {
 				}
 			});
 
-			if (refFiles == null) {
+			if (ArrayUtils.isEmpty(refFiles)) {
                 throw new IllegalStateException("Folder " + teiCorpusDir.getAbsolutePath() +
                         " does not seem to contain training data. Please check");
 			}
@@ -218,7 +219,7 @@ public class ReferenceSegmenterTrainer extends AbstractTrainer {
 		return totalExamples;
 	}
 
-	public static List<Pair<String, String>> getLabeledTokensFromTeiFile(SAXParserFactory spf, File teiFile)
+	public static List<TokenLabelPair> getLabeledTokensFromTeiFile(SAXParserFactory spf, File teiFile)
 			throws ParserConfigurationException, SAXException, IOException {
 
 		final TEIReferenceSegmenterSaxParser parser = new TEIReferenceSegmenterSaxParser();
@@ -230,7 +231,7 @@ public class ReferenceSegmenterTrainer extends AbstractTrainer {
 		final SAXParser p = spf.newSAXParser();
 		p.parse(teiFile, parser);
 
-		List<Pair<String, String>> pairList = parser.getLabeledResultAsPairs();
+		List<TokenLabelPair> pairList = parser.getLabeledResultAsPairs();
 
 		return pairList;
 	}

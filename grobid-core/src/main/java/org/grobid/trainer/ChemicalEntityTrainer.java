@@ -1,16 +1,27 @@
 package org.grobid.trainer;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FilenameFilter;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.apache.commons.lang3.ArrayUtils;
 import org.grobid.core.GrobidModels;
 import org.grobid.core.exceptions.GrobidException;
 import org.grobid.core.features.FeaturesVectorChemicalEntity;
 import org.grobid.core.utilities.OffsetPosition;
-import org.grobid.trainer.sax.*;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import org.grobid.trainer.sax.ChemicalClassNamesSaxParser;
+import org.grobid.trainer.sax.ChemicalFormulasSaxParser;
+import org.grobid.trainer.sax.ChemicalLigandSaxParser;
+import org.grobid.trainer.sax.ChemicalNameSaxParser;
+import org.grobid.trainer.sax.ChemicalSubstancesSaxParser;
+import org.grobid.trainer.sax.ChemicalWordsSaxParser;
 
 
 /**
@@ -81,7 +92,7 @@ public class ChemicalEntityTrainer extends AbstractTrainer {
                 }
             });
 
-            if (refFiles == null) {
+            if (ArrayUtils.isEmpty(refFiles)) {
                 return 0;
             }
 
