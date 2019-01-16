@@ -1,0 +1,22 @@
+<tei>
+    <teiHeader>
+        <fileDesc xml:id="_3"/>
+    </teiHeader>
+    <text xml:lang="en">
+        <listBibl>
+        References<lb/> 
+        <bibl><label>[Alder, 2002a]</label> Alder, G. (2002a). Design and Implementation of the JGraph Swing Component. Tech-<lb/>nical Report 1.0.6.<lb/> </bibl>
+        <bibl><label>[Alder, 2002b]</label> Alder, G. (2002b). The Home Page of JGraph. http://jgraph.sourceforge.net.<lb/> </bibl>
+        <bibl><label>[Hadorn, 1995]</label> Hadorn, D. C. (1995). Use of Algorithms in Clinical Practice Guideline Development:<lb/> Methodology Perspectives. AHCPR Pub., (No. 95-0009):93-104.<lb/> </bibl>
+        <bibl><label>[Miksch, 1999]</label> Miksch, S. (1999). Plan Management in the Medical Domain. AI Communications,<lb/> 12(4):209-235.<lb/> </bibl>
+        <bibl><label>[Miksch et al., 1997]</label> Miksch, S., Shahar, Y., Horn, W., Popow, C., Paky, F., and Johnson, P. (1997).<lb/> Time-Oriented Skeletal Plans: Support to Design and Execution. In Fourth European Conference on<lb/> Planning (ECP&apos;97). Springer.<lb/> </bibl>
+        <bibl><label>[Peleg et al., 2003]</label> Peleg, M., Tu, S., Bury, J., Ciccarese, P., Fox, J., Greenes, R., Hall, R., Johnson,<lb/> P., Jones, N., Kumar, A., Miksch, S., Quaglini, S., Seyfang, A., Shortliffe, E., and Stefanelli (2003).<lb/> Comparing Computer-Interpretable Guideline Models: A Case-Study Approach. The Journal of the<lb/> American Medical Informatics Association (JAMIA), 10(1):52-68.<lb/> </bibl>
+        <bibl><label>[Plaisant et al., 1998]</label> Plaisant, C., Mushlin, R., Snyder, A., Li, J., Heller, D., and Shneiderman, B.<lb/> (1998). LifeLines: Using Visualization to Enhance Navigation and Analysis of Patient Records. In<lb/> Proceedings of the 1998 American Medical Informatic Association Annual Fall Symposium, pages<lb/> 76-80.<lb/> </bibl>
+        <bibl><label>[Seyfang et al., 2002]</label> Seyfang, A., Kosara, R., and Miksch, S. (2002). Asbru 7.3 Reference Manual.<lb/> Technical Report Asgaard-TR-2002-1, Vienna University of Technology, Institut of Software Technol-<lb/>ogy &amp; Interactive Systems, Vienna, Austria, Europe.<lb/> </bibl>
+        <bibl><label>[Society for Medical Decision Making, 1992]</label> Society for Medical Decision Making (1992). Proposal for<lb/> Clinical Algorithm Standards. Medical Decision Making, 12(02):149-154.<lb/> </bibl>
+        <bibl><label>[Wang et al., 2001]</label> Wang, D., Peleg, M., Tu, S., Shortliffe, E., and Greenes, R. (2001). Representation<lb/> of Clinical Practice Guidelines for Computer-Based Implementations. MedInfo, 10(Pt 1):285-9.<lb/> </bibl>
+        <bibl><label>[www.openclinical.org, 2003]</label> www.openclinical.org (2003). Open Clinical -Knowledge Management for<lb/> Medical Care. http://www.openclinical.org.</bibl>
+        </listBibl>
+    </text>
+</tei>
+

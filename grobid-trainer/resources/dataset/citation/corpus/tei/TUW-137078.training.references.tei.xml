@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:xlink="http://www.w3.org/1999/xlink" 
+ xmlns:mml="http://www.w3.org/1998/Math/MathML">
+	<teiHeader>
+		<fileDesc xml:id="0"/>
+	</teiHeader>
+	<text>
+		<front/>
+		<body/>
+		<back>
+<listBibl>
+	<bibl><author>Spiro, R.J., Feltovich, P.J., Jacobson, M.J., Coulson, R.L.</author> <title level="a">Cognitive Flexibility, Constructivism, and Hypertext:Random Access Instruction for Advanced Knowledge Acquisition in Ill -StructuredDomains</title> ,in: <editor>T. M.Duffy, D. H.Jonassen</editor>( Ed .)(<date>1992</date> ):<title level="m">Constructivismand the Technology of Instruction . AConversation</title>. <pubPlace>Hillsdale ,N .J .</pubPlace>:<publisher>LawrenceErlbaum</publisher>, p .<biblScope unit="page">57 -76</biblScope></bibl>
+	<bibl><author>McEneaney, J.E.</author> <title level="a">Visualizing and Assessing Navigation in Hypertext</title>, in <title level="m">Proceedings of the Hypertext&apos; 99conference</title> ( <pubPlace>Darmstadt,Germany</pubPlace> )<publisher>ACM</publisher> :<date>1999</date> ,p .<biblScope unit="page">61-70</biblScope></bibl>
+	<bibl><editor>Preece, J.</editor> (ed.) <title level="a">Human-Computer Interaction</title>. <pubPlace>Wokingham, England, Reading, Mass., Menlo Park, Cal</pubPlace>.:<publisher>Addison -Wesley</publisher><date>1994</date></bibl>
+	<bibl><author>Tosca, S.P.</author> <title level="a">A Pragmatic of Links</title>. In: <title level="m">Hypertext&apos;00 Proceedings</title> (<pubPlace>San Antonio, USA</pubPlace>), <publisher>ACM Press</publisher>: <date>2000</date>,p .<biblScope unit="page">77-84</biblScope>.</bibl>
+	<bibl><author>Barrit, M. and Scott, D.J.</author>, <title level="a">The element of surprise: Stories from the qualitative evaluation of educationaltechnology</title> in <title level="m">Proceedings of the ED -Media&apos;99</title>,( <pubPlace>Seattle,USA</pubPlace> )p .<biblScope unit="page">1584 -1885</biblScope></bibl>
+	<bibl><author>Dee-Lucas, D.</author> Instructional Hypertext: <title level="m">Attentional Strategies and Text Representations Developed for DifferentTypes of Learning Goals in Proceedings of the ED -Media&apos;98</title>( <pubPlace>Freiburg,Germany</pubPlace> )p .<biblScope unit="page">245 -250</biblScope></bibl>
+
+		</listBibl>
+	</back>
+	</text>
+</TEI>

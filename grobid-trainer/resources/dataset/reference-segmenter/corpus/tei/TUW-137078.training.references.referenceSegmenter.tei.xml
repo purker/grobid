@@ -1,0 +1,18 @@
+<tei>
+    <teiHeader>
+        <fileDesc xml:id="_0"/>
+    </teiHeader>
+    <text xml:lang="en">
+        <listBibl>
+
+        REFERENCES<lb/> 
+        <bibl><label>1.</label> Spiro, R.J., Feltovich, P.J., Jacobson, M.J., Coulson, R.L. Cognitive Flexibility, Constructivism, and<lb/> Hypertext: Random Access Instruction for Advanced Knowledge Acquisition in Ill-Structured<lb/> Domains, in: T.M. Duffy, D.H. Jonassen (Ed.) (1992): Constructivism and the Technology of<lb/> Instruction. A Conversation. Hillsdale, N.J.: Lawrence Erlbaum, p.57-76<lb/> </bibl>
+        <bibl><label>2.</label> McEneaney, J.E. Visualizing and Assessing Navigation in Hypertext, in Proceedings of the<lb/> Hypertext &apos;99 conference (Darmstadt, Germany) ACM: 1999, p.61-70<lb/> </bibl>
+        <bibl><label>3.</label> Preece, J. (ed.) Human-Computer Interaction. Wokingham, England, Reading, Mass., Menlo Park,<lb/> Cal.: Addison-Wesley 1994<lb/> </bibl>
+        <bibl><label>4.</label> Tosca, S.P. A Pragmatic of Links. In: Hypertext&apos;00 Proceedings (San Antonio, USA), ACM Press:<lb/> 2000, p.77-84.<lb/> </bibl>
+        <bibl><label>5.</label> Barrit, M. and Scott, D.J., The element of surprise: Stories from the qualitative evaluation of<lb/> educational technology in Proceedings of the ED-Media&apos;99, (Seattle, USA) p. 1584-1885<lb/> </bibl>
+        <bibl><label>6.</label> Dee-Lucas, D. Instructional Hypertext: Attentional Strategies and Text Representations Developed for<lb/> Different Types of Learning Goals in Proceedings of the ED-Media&apos;98 (Freiburg, Germany) p. 245-<lb/>250</bibl>
+        </listBibl>
+    </text>
+</tei>
+

@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:xlink="http://www.w3.org/1999/xlink" 
+ xmlns:mml="http://www.w3.org/1998/Math/MathML">
+	<teiHeader>
+		<fileDesc>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+
+
+						<author><surname>Spiro</surname>, <forename>R</forename>.<middlename>J</middlename>., <surname>Feltovich</surname>, <forename>P</forename>.<middlename>J</middlename>., <surname>Jacobson</surname>, <forename>M</forename>.<middlename>J</middlename>., <surname>Coulson</surname>, <forename>R</forename>.<middlename>L</middlename>.</author>
+
+						<author><surname>McEneaney</surname>, <forename>J</forename>.<middlename>E</middlename>.</author>
+
+						<author><surname>Tosca</surname>, <forename>S</forename>.<middlename>P</middlename>.</author>
+
+						<author><surname>Barrit</surname>, <forename>M</forename>. and <surname>Scott</surname>, <forename>D</forename>.<middlename>J</middlename>.</author>
+
+						<author><surname>Dee-Lucas</surname>, <forename>D</forename>.</author>
+
+					</analytic>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+	</teiHeader>
+</TEI>

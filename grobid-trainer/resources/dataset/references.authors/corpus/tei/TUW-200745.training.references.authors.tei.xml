@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:xlink="http://www.w3.org/1999/xlink" 
+ xmlns:mml="http://www.w3.org/1998/Math/MathML">
+	<teiHeader>
+		<fileDesc>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+
+
+						<author><surname>FEREMANS</surname>, <forename>C</forename>.</author>
+
+						<author><surname>GHOSH</surname>, <forename>D</forename>.</author>
+
+						<author><surname>HU</surname>, <forename>B</forename>. ; <surname>LEITNER</surname>, <forename>M</forename>. ; <surname>RAIDL</surname>, <forename>G</forename>. <middlename>R</middlename>.</author>
+
+						<author><surname>HU</surname>, <forename>B</forename>. ; <surname>LEITNER</surname>, <forename>M</forename>. ; <surname>RAIDL</surname>, <forename>G</forename>. <middlename>R</middlename>.</author>
+
+						<author><surname>HU</surname>, <forename>B</forename>. ; <surname>RAIDL</surname>, <forename>G</forename>. <middlename>R</middlename>.</author>
+
+						<author><surname>JIANG</surname>, <forename>H</forename>. ; <surname>CHEN</surname>, <forename>Y</forename>.</author>
+
+						<author><surname>LEITNER</surname>, <forename>M</forename>.</author>
+
+						<author><surname>MYUNG</surname>, <forename>Y</forename>. <middlename>S</middlename>. ; <surname>LEE</surname>, <forename>C</forename>. <middlename>H</middlename>. ; <surname>TCHA</surname>, <forename>D</forename>. <middlename>W</middlename>.</author>
+
+						<author><surname>NISSEN</surname>, <forename>V</forename>.</author>
+
+						<author><surname>POP</surname>, <forename>P</forename>. <middlename>C</middlename>. ; <surname>IORDACHE</surname>, <forename>S</forename>.</author>
+
+						<author><surname>POP</surname>, <forename>P</forename>.<middlename>C</middlename>.</author>
+
+						<author><surname>RAIDL</surname>, <forename>G</forename>. <middlename>R</middlename>. ; <surname>HU</surname>, <forename>B</forename>.</author>
+
+						<author><surname>SONNLEITNER</surname>, <forename>M</forename>.</author>
+
+						<author><surname>ŠRAMKO</surname>, <forename>A</forename>.</author>
+
+						<author><surname>WOLF</surname>, <forename>M</forename>.</author>
+
+						<author><surname>ZAUBZER</surname>, <forename>S</forename>.</author>
+
+					</analytic>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+	</teiHeader>
+</TEI>

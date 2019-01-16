@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<tei>
+	<teiHeader>
+		<fileDesc xml:id="TUW-200745"/>
+	</teiHeader>
+	<text xml:lang="de">
+		<front>
+<lb/>
+	<docTitle>
+	<titlePart>Ein Lösungsarchiv mit<lb/> Branch-and-Bound-Erweiterung<lb/> für das Generalized Minimum<lb/> Spanning Tree Problem<lb/></titlePart>
+	</docTitle>
+	
+	<degree>DIPLOMARBEIT<lb/> zur Erlangung des akademischen Grades<lb/>Diplom-Ingenieur<lb/>im Rahmen des Studiums<lb/>Computational Intelligence<lb/></degree>
+
+	<note type="other">eingereicht von<lb/></note>
+
+	<byline>
+	<docAuthor>Christian Gruber<lb/>Matrikelnummer 0625102<lb/></docAuthor>
+	</byline>
+
+	<byline>
+	<degree>an der<lb/>Fakultät für Informatik der Technischen Universität Wien<lb/></degree>
+	</byline>
+
+	<note type="other">Betreuung<lb/> Betreuer: Univ.-Prof Dr.Günther Raidl<lb/> Mitwirkung: Univ.-Ass. Dr. Bin Hu<lb/></note>
+	
+	<byline>Wien, 
+	<date>September 5, 2011<lb/></date></byline>
+	
+	<note type="other">(Unterschrift Verfasser)<lb/> (Unterschrift Betreuer)<lb/></note>
+
+	<byline>
+	<affiliation>Technische Universität Wien<lb/>A-1040 Wien Karlsplatz 13 Tel. +43-1-58801-0 www.tuwien.ac.at<lb/></affiliation>
+	</byline>
+	
+	<note type="other">Erklärung<lb/> Christian Gruber<lb/> Wachbergsraße 29<lb/> 3382 Schollach<lb/> Hiermit erkläre ich, dass ich diese Arbeit selbständig verfasst habe, dass ich die<lb/> verwendeten Quellen und Hilfsmittel vollständig angegeben habe und dass ich die<lb/> Stellen der Arbeit -einschließlich Tabellen, Karten und Abbildungen -, die an-<lb/>deren Werken oder dem Internet im Wortlaut oder dem Sinn nach entnommen sind,<lb/> auf jeden Fall unter Angabe der Quelle als Entlehnung kenntlich gemacht habe.<lb/></note>
+
+	<div type="abstract">Kurzfassung<lb/> In dieser Arbeit wird ein Algorithmus für das Generalized Minimum Span-<lb/>ning Tree-Problem (GMST) entwickelt. Beim GMST-Problem ist ein vollständiger<lb/> Graph gegeben, bei dem die Knoten in Cluster partitioniert sind. Als Lösung wird<lb/> ein Spannbaum gesucht, der von jedem Cluster genau einen Knoten beinhaltet und<lb/> dessen Kosten minimal sind. Dieses Problem ist NP-schwierig. In dieser Arbeit<lb/> wird eine Heuristik für dieses Problem entwickelt.<lb/> Bei diesem Verfahren wird ein Evolutionärer Algorithmus (EA) mit zwei ver-<lb/>schiedenen Lösungsarchiven verwendet. Die Lösungsarchive werden dazu benutzt<lb/> Lösungen zu speichern, um Duplikate zu erkennen und diese in neue Lösungen<lb/> umzuwandeln. Das eine Lösungsarchiv beruht auf einer Kodierung, bei der die<lb/> ausgewählten Knoten der Cluster einer Lösung gespeichert werden, während das<lb/> andere Archiv auf einer Kodierung beruht, bei der gespeichert wird, welche Clus-<lb/>ter in der Lösung verbunden sind.<lb/> Diese Archive werden in dieser Arbeit durch eine Bounding-Strategie basierend<lb/> auf dem Branch and Bound Verfahren erweitert. Dabei wird versucht im Archiv an<lb/> günstigen Positionen geeignete Bounds zu berechnen, die Auskunft darüber geben,<lb/> wie gut die Lösungen in diesem Bereich des Archivs höchstens sein können. Wird<lb/> eine Bound gefunden, die schlechter als die beste gefunden Lösung ist, sind diese<lb/> Lösungen im weiteren Verlauf des Algorithmus uninteressant und werden nicht<lb/> mehr berücksichtigt. Das führt dazu, dass mehrere Lösungen von vornherein als<lb/> schlecht erkannt werden können und somit nur Lösungen verfolgt werden, die auch<lb/> Verbesserungen bringen können.<lb/> Zusätzlich zu der Bounding-Strategie wird auch noch ein Nearest Neighbour Ansatz<lb/> verwendet, bei dem beim Anhängen eines Clusters an den Spannbaum die n näch-<lb/>sten Nachbarcluster bevorzugt werden.<lb/> Am Ende der Arbeit wurden Tests durchgeführt, bei denen die Bounding Strate-<lb/>gie in den unterschiedlichen Archiven verwendet wurde. Diese Tests führten zu<lb/> dem Ergebnis, dass die Bounding Strategie zu einer Verbesserung gegenüber den<lb/> Archiven ohne Bounding Strategie führt. Der Vergleich zwischen den Archiven hat<lb/> ergeben, dass die Pop-Variante bessere Ergebnisse liefert als die Gosh-Variante.<lb/> Die Variante, in der beide Archive gleichzeitig verwendet werden, ist wiederum<lb/> besser als die anderen beiden Varianten.<lb/></div>
+	
+	<div type="abstract">Abstract<lb/> In this work, an algorithm for the generalized minimum spanning tree problem<lb/> (GMST) is developed. Given is a complete graph where the nodes are partitioned<lb/> into clusters. A solution is a spanning tree which contains exactly one node of<lb/> each cluster and its costs are minimal. This problem is NP-hard. In this work, a<lb/> heuristic is developed for this problem.<lb/> In this method, an evolutionary algorithm (EA) is used with two different solu-<lb/>tion archives. Using a solution archive, it is possible to store solutions generated<lb/> by the EA in order to detect duplicates and converts duplicate solutions into new<lb/> solutions. One solution archive based on an encoding in which the spanned nodes<lb/> of each cluster in the solution are stored. The other archive is based on an encoding<lb/> which characterizes the connections between the clusters.<lb/> These archives are extended by a bounding strategy based on the branch-and-bound<lb/> technique. They try to calculate appropriate bounds at a convenient positions which<lb/> give information about how good the solutions in the respective area of the archive<lb/> can be in the best case. If a bound was found which is worse than the best known<lb/> solution, the solutions are unattractive in the course of the algorithm and will not<lb/> be considered. Therefore inferior solutions can be detected at an early stage and<lb/> only promising solutions that can bring improvements will be pursued.<lb/> In addition to the bounding strategy a nearest neighbor approach is implemented in<lb/> which a cluster attached to the spanning tree is preferred among the the n nearest<lb/> neighboring clusters.<lb/> Tests were carried out in which the bounding strategy was used in the different<lb/> variants. These tests led to the conclusion that the bounding strategy leads to an<lb/> improvement in comparison to the &quot;normal&quot; archives. The comparison between<lb/> the archives shows that the pop version lead to better results than the gosh version.<lb/> When both archives are used simultaneously, the results are better than the results<lb/> of the other two variants.</div>
+
+		</front>
+	</text>
+</tei>

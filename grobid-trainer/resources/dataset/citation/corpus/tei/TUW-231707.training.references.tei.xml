@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:xlink="http://www.w3.org/1999/xlink" 
+ xmlns:mml="http://www.w3.org/1998/Math/MathML">
+	<teiHeader>
+		<fileDesc xml:id="2"/>
+	</teiHeader>
+	<text>
+		<front/>
+		<body/>
+		<back>
+<listBibl>
+	<bibl><title level="m">VRVis</title>, <date>2014</date>.<ptr type="web">www .vrvis .at</ptr></bibl>
+
+		</listBibl>
+	</back>
+	</text>
+</TEI>
