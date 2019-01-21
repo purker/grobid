@@ -1,16 +1,16 @@
 package org.grobid.trainer.sax;
 
-import org.grobid.core.engines.tagging.GenericTaggerUtils;
-import org.grobid.core.lexicon.Lexicon;
-import org.grobid.core.utilities.Pair;
-import org.grobid.core.utilities.TextUtilities;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+
+import org.grobid.core.engines.tagging.GenericTaggerUtils;
+import org.grobid.core.lexicon.Lexicon;
+import org.grobid.core.utilities.TextUtilities;
+import org.grobid.core.utilities.TokenLabelPair;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * SAX parser for reference strings encoded in the TEI format data for training purposes.
@@ -203,7 +203,7 @@ public class TEIReferenceSegmenterSaxParser extends DefaultHandler {
 		return totalReferences;
 	}
 
-	public List<Pair<String, String>> getLabeledResultAsPairs() {
+	public List<TokenLabelPair> getLabeledResultAsPairs() {
 		return GenericTaggerUtils.getTokensAndLabelsAsPair(labeled);
 	}
 }

@@ -374,7 +374,8 @@ public class ProcessEngine implements Closeable {
     public void createTraining(final GrobidMainArgs pGbdArgs) {
         inferPdfInputPath(pGbdArgs);
         inferOutputPath(pGbdArgs);
-        int result = getEngine().batchCreateTraining(pGbdArgs.getPath2Input(), pGbdArgs.getPath2Output(), -1);
+		inferErrorPath(pGbdArgs);
+		int result = getEngine().batchCreateTraining(pGbdArgs.getPath2Input(), pGbdArgs.getPath2Output(), pGbdArgs.getPath2Error(), -1);
         LOGGER.info(result + " files processed.");
     }
 
@@ -641,5 +642,19 @@ public class ProcessEngine implements Closeable {
             pGbdArgs.setPath2Output(tmpFilePath);
         }
     }
+
+	/**
+	 * Infer the error path if not given in arguments.
+	 *
+	 * @param pGbdArgs The GrobidArgs.
+	 */
+	protected final static void inferErrorPath(final GrobidMainArgs pGbdArgs) {
+		String tmpFilePath;
+		if (pGbdArgs.getPath2Error() == null) {
+			tmpFilePath = new File(".").getAbsolutePath();
+			LOGGER.info("No path set for the error directory. Using: " + tmpFilePath);
+			pGbdArgs.setPath2Error(tmpFilePath);
+		}
+	}
 
 }

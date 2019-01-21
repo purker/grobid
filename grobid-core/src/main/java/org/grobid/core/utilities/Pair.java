@@ -40,12 +40,12 @@ public class Pair<A, B> {
         return 7 * (a != null ? a.hashCode() : 11) + 13 * (b != null ? b.hashCode() : 3);
     }
 
-    public A getA() {
-        return a;
-    }
+	public A getA() {
+		return a;
+	}
 
-    public B getB() {
-        return b;
-    }
+	public B getB() {
+		return b;
+	}
 
 }

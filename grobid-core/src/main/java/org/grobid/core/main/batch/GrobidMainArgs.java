@@ -16,6 +16,8 @@ public class GrobidMainArgs {
 
 	private String path2Output;
 
+	private String path2Error;
+
 	private String processMethodName;
 
 	private String input;
@@ -90,6 +92,21 @@ public class GrobidMainArgs {
 	 */
 	public final void setPath2Output(final String pPath2Output) {
 		path2Output = pPath2Output;
+	}
+
+	/**
+	 * @return the path2Error
+	 */
+	public final String getPath2Error() {
+		return path2Error;
+	}
+
+	/**
+	 * @param pPath2Error
+	 *            the path2Error to set
+	 */
+	public final void setPath2Error(final String pPath2Error) {
+		path2Error = pPath2Error;
 	}
 
 	/**

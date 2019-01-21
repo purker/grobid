@@ -115,43 +115,45 @@ public class TEIHeaderSaxParser extends DefaultHandler {
 			dateString = getText();
 		}
 
-        if ((qName.equals("titlePart")) | (qName.equals("note")) | (qName.equals("docAuthor")) |
-                (qName.equals("affiliation")) | (qName.equals("address")) | (qName.equals("email")) |
-                (qName.equals("idno")) | (qName.equals("date")) | (qName.equals("biblScope")) |
-                (qName.equals("keywords")) | (qName.equals("reference")) | (qName.equals("degree")) |
-                (qName.equals("keyword")) | (qName.equals("ptr")) | (qName.equals("div")) |
-                (qName.equals("web")) | (qName.equals("english-title")) |
-                (qName.equals("title")) | (qName.equals("introduction")) |
+        if ((qName.equals("other")) || (qName.equals("titlePart")) || (qName.equals("note")) || (qName.equals("docAuthor")) ||
+                (qName.equals("affiliation")) || (qName.equals("address")) || (qName.equals("email")) ||
+                (qName.equals("idno")) || (qName.equals("date")) || (qName.equals("biblScope")) ||
+                (qName.equals("keywords")) || (qName.equals("reference")) || (qName.equals("degree")) ||
+                (qName.equals("keyword")) || (qName.equals("ptr")) || (qName.equals("div")) ||
+                (qName.equals("web")) || (qName.equals("english-title")) ||
+                (qName.equals("title")) || (qName.equals("introduction")) ||
                 (qName.equals("intro"))
                 ) {
 			String text = getText();
 			// we segment the text
-			//StringTokenizer st = new StringTokenizer(text, " \n\t");
-			StringTokenizer st = new StringTokenizer(text, " \n\t" + TextUtilities.fullPunctuations, true);
+			// don't tokenize be TextUtilities.fullPunctations because the delimiters are needed
+			// so split_delimiters are not labeled
+			StringTokenizer st = new StringTokenizer(text, TextUtilities.split_delimiters, true);
 			boolean begin = true;
 			while (st.hasMoreTokens()) {
-				String tok = st.nextToken().trim();
-                if (tok.length() == 0) continue;
+				String line = st.nextToken().trim();
+				for (String tok : TextUtilities.segment(line, TextUtilities.punctuations)) {
+					if (tok.length() == 0)
+						continue;
 
-				if (tok.equals("+L+")) {
-					labeled.add("@newline\n");
-				} else if (tok.equals("+PAGE+")) {
-					// page break should be a distinct feature
-					labeled.add("@newline\n");
-				} else {
-					String content = tok;
-					int i = 0;
-					if (content.length() > 0) {
-						if (begin) {
-							labeled.add(content + " I-" + currentTag + "\n");
-							begin = false;
-						} else {
-							labeled.add(content + " " + currentTag + "\n");
+					if (tok.equals("+L+")) {
+						labeled.add("@newline\n");
+					} else if (tok.equals("+PAGE+")) {
+						// page break should be a distinct feature
+						labeled.add("@newline\n");
+					} else {
+						String content = tok;
+						if (content.length() > 0) {
+							if (begin) {
+								labeled.add(content + " I-" + currentTag + "\n");
+								begin = false;
+							} else {
+								labeled.add(content + " " + currentTag + "\n");
+							}
 						}
 					}
+					begin = false;
 				}
-
-				begin = false;
 			}
 
 			accumulator.setLength(0);
@@ -164,7 +166,7 @@ public class TEIHeaderSaxParser extends DefaultHandler {
 
 	}
 
-	public List<Pair<String, String>> getLabeledResultAsPairs() {
+	public List<TokenLabelPair> getLabeledResultAsPairs() {
 		return GenericTaggerUtils.getTokensAndLabelsAsPair(labeled);
 	}
 
@@ -186,7 +188,7 @@ public class TEIHeaderSaxParser extends DefaultHandler {
 					if (name.equals("type")) {
 						if (value.equals("abstract")) {
 							currentTag = "<abstract>";
-						} else if (value.equals("intro") | value.equals("introduction")) {
+						} else if (value.equals("intro") || value.equals("introduction")) {
 							currentTag = "<intro>";
 						} else if (value.equals("paragraph")) {
 							currentTag = "<other>";
@@ -307,12 +309,12 @@ public class TEIHeaderSaxParser extends DefaultHandler {
 					}
 				}
 			}
-		} else if ((qName.equals("keywords")) | (qName.equals("keyword"))) {
+		} else if ((qName.equals("keywords")) || (qName.equals("keyword"))) {
 			currentTag = "<keyword>";
 			accumulator.setLength(0);
 		} else if (qName.equals("title")) {
 			currentTag = "<journal>";
-		} else if ((qName.equals("introduction")) | (qName.equals("intro"))) {
+		} else if ((qName.equals("introduction")) || (qName.equals("intro"))) {
 			currentTag = "<intro>";
 		} else if (qName.equals("fileDesc")) {
 			int length = atts.getLength();

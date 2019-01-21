@@ -328,8 +328,7 @@ public class EvaluationUtilities {
 				obtainedLabel = obtainedFields.get(i).getA();
 				if (!expectedLabel.equals(obtainedLabel)) 
 					continue;
-				if ( (expectedStart == obtainedFields.get(i).getB().start) &&
-					 (expectedEnd == obtainedFields.get(i).getB().end) ) {
+				if ((expectedStart == obtainedFields.get(i).getB().start) && (expectedEnd == obtainedFields.get(i).getB().end)) {
 					// we have a match
 					labelStat.incrementObserved(); // TP
 					found = true;

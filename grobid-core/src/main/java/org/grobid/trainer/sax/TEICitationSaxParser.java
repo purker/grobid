@@ -1,22 +1,18 @@
 package org.grobid.trainer.sax;
 
-import org.grobid.core.lexicon.Lexicon;
-import org.grobid.core.utilities.OffsetPosition;
-import org.grobid.core.utilities.TextUtilities;
-import org.grobid.core.utilities.UnicodeUtil;
-import org.grobid.core.lang.Language;
-import org.grobid.core.engines.label.TaggingLabel;
-import org.grobid.core.layout.LayoutToken;
-import org.grobid.core.analyzers.*;
-
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
+import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.apache.commons.collections4.CollectionUtils.isEmpty;
+import org.grobid.core.analyzers.GrobidAnalyzer;
+import org.grobid.core.lang.Language;
+import org.grobid.core.layout.LayoutToken;
+import org.grobid.core.utilities.TokenLabelPair;
+import org.grobid.core.utilities.UnicodeUtil;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * SAX parser for the XML format for citation data. Normally all training data should be in this unique format which
@@ -35,15 +31,15 @@ public class TEICitationSaxParser extends DefaultHandler {
     private String output = null;
     private String currentTag = null;
 
-    private List<String> labeled = null; // store token by token the labels
-    private List<List<String>> allLabeled = null; // list of labels
-    private List<LayoutToken> tokens = null;
-    private List<List<LayoutToken>> allTokens = null; // list of LayoutToken segmentation
+	private List<String> labeled = null; // store token by token the labels
+	private List<List<String>> allLabeled = null; // list of labels
+	private List<LayoutToken> tokens = null;
+	private List<List<LayoutToken>> allTokens = null; // list of LayoutToken segmentation
     public int nbCitations = 0;
 
     public TEICitationSaxParser() {
-        allTokens = new ArrayList<List<LayoutToken>>();
-        allLabeled = new ArrayList<List<String>>();
+		allTokens = new ArrayList<List<LayoutToken>>();
+		allLabeled = new ArrayList<List<String>>();
     }
 
     public void characters(char[] buffer, int start, int length) {
@@ -57,15 +53,15 @@ public class TEICitationSaxParser extends DefaultHandler {
         return accumulator.toString().trim();
     }
 
-    public List<List<String>> getLabeledResult() {
-        return allLabeled;
-    }
+	public List<List<String>> getLabeledResult() {
+		return allLabeled;
+	}
 
-    public List<List<LayoutToken>> getTokensResult() {
-        return allTokens;
-    }
+	public List<List<LayoutToken>> getTokensResult() {
+		return allTokens;
+	}
 
-    public void endElement(java.lang.String uri,
+	public void endElement(java.lang.String uri,
                            java.lang.String localName,
                            java.lang.String qName) throws SAXException {
         qName = qName.toLowerCase();
@@ -94,8 +90,8 @@ public class TEICitationSaxParser extends DefaultHandler {
                 writeField(text);
             }
             nbCitations++;
-            allLabeled.add(labeled);
-            allTokens.add(tokens);
+			allLabeled.add(labeled);
+			allTokens.add(tokens);
             allContent = null;
         }
 
@@ -250,14 +246,14 @@ public class TEICitationSaxParser extends DefaultHandler {
         } else if (qName.equals("bibl")) {
             accumulator = new StringBuffer();
             allContent = new StringBuffer();
-            labeled = new ArrayList<String>();
-            tokens = new ArrayList<LayoutToken>();
+			labeled = new ArrayList<String>();
+			tokens = new ArrayList<LayoutToken>();
         }
         accumulator.setLength(0);
     }
 
     private void writeField(String text) {
-        if (tokens == null) {
+		if (tokens == null) {
             // nothing to do, text must be ignored
             return;
         }
@@ -275,10 +271,10 @@ public class TEICitationSaxParser extends DefaultHandler {
         
         boolean begin = true;
         for (LayoutToken token : localTokens) {
-            tokens.add(token);
+			tokens.add(token);
             String content = token.getText();
             if (content.equals(" ") || content.equals("\n")) {
-                labeled.add(null);
+				labeled.add(null);
                 continue;
             }
 
@@ -299,5 +295,22 @@ public class TEICitationSaxParser extends DefaultHandler {
         }
     }
 
+	/**
+	 * @return
+	 */
+	public List<List<TokenLabelPair>> getLabeledResultAsPairs() {
+		List<List<TokenLabelPair>> allPairs = new ArrayList<>();
 
+		for (int i = 0; i < allTokens.size(); i++) {
+			List<LayoutToken> tokensPerReference = allTokens.get(i);
+			List<TokenLabelPair> pairsPerReference=new ArrayList<>();
+			
+			for (int j = 0; j < tokensPerReference.size(); j++) {
+				LayoutToken layoutToken = tokensPerReference.get(j);
+				pairsPerReference.add(new TokenLabelPair(layoutToken.getText(), allLabeled.get(i).get(j)));
+			}
+			allPairs.add(pairsPerReference);
+		}
+		return allPairs;
+	}
 }

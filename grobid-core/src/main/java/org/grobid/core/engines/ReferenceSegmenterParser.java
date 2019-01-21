@@ -2,6 +2,7 @@ package org.grobid.core.engines;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -12,10 +13,13 @@ import java.util.regex.Matcher;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.grobid.core.GrobidModels;
 import org.grobid.core.document.Document;
 import org.grobid.core.document.DocumentPiece;
 import org.grobid.core.document.DocumentPointer;
+import org.grobid.core.document.TrainingDocument;
 import org.grobid.core.engines.citations.LabeledReferenceResult;
 import org.grobid.core.engines.citations.ReferenceSegmenter;
 import org.grobid.core.engines.label.SegmentationLabels;
@@ -28,8 +32,10 @@ import org.grobid.core.layout.LayoutToken;
 import org.grobid.core.tokenization.LabeledTokensContainer;
 import org.grobid.core.tokenization.TaggingTokenSynchronizer;
 import org.grobid.core.utilities.BoundingBoxCalculator;
+import org.grobid.core.utilities.GrobidUtil;
 import org.grobid.core.utilities.Pair;
 import org.grobid.core.utilities.TextUtilities;
+import org.grobid.core.utilities.TokenLabelPair;
 import org.grobid.core.utilities.Triple;
 import org.grobid.trainer.ReferenceSegmenterTrainer;
 import org.grobid.trainer.document.TrainingDocumentSource;
@@ -107,8 +113,8 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
         return getExtractionResult(tokenizationsReferences, labeled);
     }
 
-	public List<LabeledReferenceResult> extractWithGivenLabelsFromTeiFile(Document doc,
-			File referenceSegmenterFile) throws ParserConfigurationException, SAXException, IOException {
+	public List<LabeledReferenceResult> extractWithGivenLabelsFromTeiFile(TrainingDocument doc)
+			throws ParserConfigurationException, SAXException, IOException {
 		SortedSet<DocumentPiece> referencesParts = doc.getDocumentPart(SegmentationLabels.REFERENCES);
 		Pair<String, List<LayoutToken>> featSeg = getReferencesSectionFeatured(doc, referencesParts);
 		List<LayoutToken> tokenizationsReferences;
@@ -120,11 +126,27 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 		//not needed String featureVector = featSeg.getA();
 		tokenizationsReferences = featSeg.getB();
 
-		List<Pair<String, String>> labels = ReferenceSegmenterTrainer.getLabeledTokensFromTeiFile(null, referenceSegmenterFile);
+		List<TokenLabelPair> labels = ReferenceSegmenterTrainer.getLabeledTokensFromTeiFile(null, doc.getDocumentSource().getTeiFileReferenceSegmenter());
 
+		//pairs to triples
 		List<Triple<String, String, String>> labeledTriples = new ArrayList<>();
-		for (Pair<String, String> pair : labels) {
-			labeledTriples.add(new Triple<String, String, String>(pair.getA(), pair.getB(), null));
+		for (TokenLabelPair pair : labels) {
+			labeledTriples.add(new Triple<String, String, String>(pair.getToken(), pair.getLabel(), null));
+		}
+
+		if (FullTextParser.PRINTLABELFILES) {
+			//TODO Angela delete
+			try {
+				File errorDir = new File(doc.getDocumentSource().getPdfFile().getParentFile().getParent(), "error");
+				File labelsFile = new File(errorDir, doc.getPdfFileName().replace(".pdf", ".references.referenceSegmenter.labels"));
+				FileUtils.writeStringToFile(labelsFile, StringUtils.join(labels, "\n"), StandardCharsets.UTF_8);
+
+				File file = new File(errorDir, doc.getPdfFileName().replace(".pdf", ".references.referenceSegmenter.tokenizations"));
+				GrobidUtil.writeLayoutTokensAsTextToFileWithOutWhitespaceAndNewline(tokenizationsReferences, file);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		return getExtractionResult(tokenizationsReferences, labeledTriples);
@@ -200,7 +222,7 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
         return resultList;
     }
 
-	public Pair<String, String> createTrainingData(Document doc, int id) {
+	public Pair<String, String> createTrainingData(TrainingDocument doc, int id) {
 		SortedSet<DocumentPiece> referencesParts = doc.getDocumentPart(SegmentationLabels.REFERENCES);
 		Pair<String, List<LayoutToken>> featSeg = getReferencesSectionFeatured(doc, referencesParts);
 
@@ -213,20 +235,15 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 		String featureVector = featSeg.getA();
 		tokenizations = featSeg.getB();
 
-		List<Pair<String, String>> labeled = null;
+		List<TokenLabelPair> labeled = null;
 
-		if (doc.getDocumentSource() instanceof TrainingDocumentSource) {
-			File teiFileReferenceSegmenter = ((TrainingDocumentSource) doc.getDocumentSource()).getTeiFileReferenceSegmenter();
-
-			if (teiFileReferenceSegmenter != null && teiFileReferenceSegmenter.exists()) {
+		if (doc.getDocumentSource().getTeiFileReferenceSegmenterExisted()) {
 				try {
-					labeled = ReferenceSegmenterTrainer.getLabeledTokensFromTeiFile(null, teiFileReferenceSegmenter);
-					System.out.println(doc.getDocumentSource().getPdfFile() + ": labels set from tei file " + teiFileReferenceSegmenter.getAbsolutePath());
+				labeled = ReferenceSegmenterTrainer.getLabeledTokensFromTeiFile(null, doc.getDocumentSource().getTeiFileReferenceSegmenter());
 				} catch (Exception e) {
 					throw new GrobidException("An exception occured while running Grobid.", e);
 				}
 			}
-		}
 		//extract from scratch, if labels not predetermined by trainingfiles
 		if (CollectionUtils.isEmpty(labeled)) {
 			try {
@@ -256,7 +273,7 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 		boolean addEOL = false;
 		String lastTag = null;
 		boolean refOpen = false;
-		for (Pair<String, String> l : labeled) {
+		for (TokenLabelPair l : labeled) {
             String tok = l.a;
             String label = l.b;
 
@@ -698,6 +715,7 @@ System.out.println("");
 					String accumulated = text;
                     while ((n + ii < tokenizations.size()) && (!endloop)) {
                         String tok = tokenizations.get(n + ii).getText();
+						//System.out.printf("n:%d ii:%d n+ii: %d tok:%s", n, ii, n + ii, tok);
                         if (tok != null) {
 							if (currentLineProfile == null)
 								accumulated += tok;

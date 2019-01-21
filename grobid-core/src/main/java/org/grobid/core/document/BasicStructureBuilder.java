@@ -16,6 +16,7 @@ import org.grobid.core.layout.Cluster;
 import org.grobid.core.layout.LayoutToken;
 import org.grobid.core.utilities.Pair;
 import org.grobid.core.utilities.TextUtilities;
+import org.grobid.core.utilities.TokenLabelPair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -233,7 +234,7 @@ public class BasicStructureBuilder {
 
 	}
 
-	static public Document generalResultSegmentation(Document doc, List<Pair<String, String>> labeledTokens,
+	static public Document generalResultSegmentation(Document doc, List<TokenLabelPair> labeledTokens,
 			List<LayoutToken> documentTokens) {
 		SortedSetMultimap<String, DocumentPiece> labeledBlocks = TreeMultimap.create();
 		doc.setLabeledBlocks(labeledBlocks);

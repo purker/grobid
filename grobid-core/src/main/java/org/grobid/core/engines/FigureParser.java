@@ -1,5 +1,13 @@
 package org.grobid.core.engines;
 
+import static org.grobid.core.engines.label.TaggingLabels.FIG_DESC;
+import static org.grobid.core.engines.label.TaggingLabels.FIG_HEAD;
+import static org.grobid.core.engines.label.TaggingLabels.FIG_LABEL;
+import static org.grobid.core.engines.label.TaggingLabels.FIG_OTHER;
+import static org.grobid.core.engines.label.TaggingLabels.FIG_TRASH;
+
+import java.util.List;
+
 import org.grobid.core.GrobidModels;
 import org.grobid.core.data.Figure;
 import org.grobid.core.engines.label.TaggingLabel;
@@ -11,12 +19,9 @@ import org.grobid.core.tokenization.TaggingTokenClusteror;
 import org.grobid.core.utilities.LayoutTokensUtil;
 import org.grobid.core.utilities.Pair;
 import org.grobid.core.utilities.TextUtilities;
+import org.grobid.core.utilities.TokenLabelPair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
-
-import static org.grobid.core.engines.label.TaggingLabels.*;
 
 /**
  * @author Patrice
@@ -44,7 +49,7 @@ class FigureParser extends AbstractParser {
         if (res == null) {
             return null;
         }
-//        List<Pair<String, String>> labeled = GenericTaggerUtils.getTokensAndLabels(res);
+//        List<TokenLabelPair> labeled = GenericTaggerUtils.getTokensAndLabels(res);
 
 //		System.out.println(Joiner.on("\n").join(labeled));
 //		System.out.println("----------------------");
@@ -90,7 +95,7 @@ class FigureParser extends AbstractParser {
     /**
      * The training data creation is called from the full text training creation in cascade.
      */
-    public org.grobid.core.utilities.Pair<String, String> createTrainingData(List<LayoutToken> tokenizations,
+	public org.grobid.core.utilities.Pair<String, String> createTrainingData(List<LayoutToken> tokenizations,
                                                                              String featureVector, String id) {
 //System.out.println(tokenizations.toString() + "\n" );
         String res = null;
@@ -103,7 +108,7 @@ class FigureParser extends AbstractParser {
             return new Pair<>(null, featureVector);
         }
 //System.out.println(res + "\n" );
-        List<Pair<String, String>> labeled = GenericTaggerUtils.getTokensAndLabels(res);
+        List<TokenLabelPair> labeled = GenericTaggerUtils.getTokensAndLabels(res);
         StringBuilder sb = new StringBuilder();
 
         int tokPtr = 0;
@@ -111,7 +116,7 @@ class FigureParser extends AbstractParser {
         boolean addEOL = false;
         String lastTag = null;
         boolean figOpen = false;
-        for (Pair<String, String> l : labeled) {
+        for (TokenLabelPair l : labeled) {
             String tok = l.a;
             String label = l.b;
 

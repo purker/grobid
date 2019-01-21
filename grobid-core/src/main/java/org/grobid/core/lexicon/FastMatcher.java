@@ -548,7 +548,7 @@ public final class FastMatcher {
     public List<OffsetPosition> matcherPairs(List<Pair<String, String>> tokens) {
         StringBuilder text = new StringBuilder();
         for (Pair<String, String> tokenP : tokens) {
-            String token = tokenP.getA();
+			String token = tokenP.getA();
             text.append(processToken(token));
         }
         return matchToken(text.toString());

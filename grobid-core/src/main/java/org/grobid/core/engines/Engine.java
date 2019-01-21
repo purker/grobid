@@ -16,6 +16,8 @@
 package org.grobid.core.engines;
 
 import com.google.common.io.Files;
+
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -58,6 +60,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -510,8 +513,8 @@ public class Engine implements Closeable {
      * @param id           : an optional ID to be used in the TEI file and the full text
      *                     file, -1 if not used
      */
-    public void createTraining(File inputFile, String pathFullText, String pathTEI, int id) {
-        Document doc = parsers.getFullTextParser().createTraining(inputFile, pathFullText, pathTEI, id);
+	public void createTraining(File inputFile, String pathFullText, String pathTEI, String errorPath, int id) {
+		Document doc = parsers.getFullTextParser().createTraining(inputFile, pathFullText, pathTEI, errorPath, id);
     }
 
     /**
@@ -654,55 +657,54 @@ public class Engine implements Closeable {
     }*/
 
     /**
-     * Process all the PDF in a given directory and produce the corresponding training 
-     * data format files for all models, ready for manual correction. The goal of this 
-     * method is to help to produce additional training data based on an existing model.
-     *
-     * @param directoryPath - the path to the directory containing PDF to be processed.
-     * @param resultPath    - the path to the directory where the results as XML files
-     *                      shall be written.
-     * @param ind           - identifier integer to be included in the resulting files to
-     *                      identify the training case. This is optional: no identifier
-     *                      will be included if ind = -1
-     * @return the number of processed files.
-     */
-    public int batchCreateTraining(String directoryPath, String resultPath, int ind) {
-        return batchCreateTraining(directoryPath, resultPath, ind, 4);
+	 * Process all the PDF in a given directory and produce the corresponding training 
+	 * data format files for all models, ready for manual correction. The goal of this 
+	 * method is to help to produce additional training data based on an existing model.
+	 *
+	 * @param directoryPath - the path to the directory containing PDF to be processed.
+	 * @param resultPath    - the path to the directory where the results as XML files
+	 *                      shall be written.
+	 * @param errorPath     - the path to the directory where error files shall be written.
+	 * @param ind           - identifier integer to be included in the resulting files to
+	 *                      identify the training case. This is optional: no identifier
+	 *                      will be included if ind = -1
+	 * @return the number of processed files.
+	 */
+	public int batchCreateTraining(String directoryPath, String resultPath, String errorPath, int ind) {
+		return batchCreateTraining(directoryPath, resultPath, errorPath, ind, 4);
     }
 
     /**
-     * Process all the PDF in a given directory with a segmentation process and
-     * produce the corresponding training data format files for manual
-     * correction. The goal of this method is to help to produce additional
-     * traning data based on an existing model.
-     *
-     * @param directoryPath - the path to the directory containing PDF to be processed.
-     * @param resultPath    - the path to the directory where the results as XML files
-     *                      shall be written.
-     * @param ind           - identifier integer to be included in the resulting files to
-     *                      identify the training case. This is optional: no identifier
-     *                      will be included if ind = -1
-     * @return the number of processed files.
-     */
+	 * Process all the PDF in a given directory with a segmentation process and
+	 * produce the corresponding training data format files for manual
+	 * correction. The goal of this method is to help to produce additional
+	 * traning data based on an existing model.
+	 *
+	 * @param directoryPath  - the path to the directory containing PDF to be processed.
+	 * @param resultPath     - the path to the directory where the results as XML files
+	 *                       shall be written.
+	 * @param errorPath      - the path to the directory where error files shall be written.
+	 * @param ind            - identifier integer to be included in the resulting files to
+	 *                       identify the training case. This is optional: no identifier
+	 *                       will be included if ind = -1
+	 * @return the number of processed files.
+	 */
     /*public int batchCreateTrainingSegmentation(String directoryPath, String resultPath, int ind) {
         return batchCreateTraining(directoryPath, resultPath, ind, 2);
     }*/
 
-    private int batchCreateTraining(String directoryPath, String resultPath, int ind, int type) {
+	private int batchCreateTraining(String directoryPath, String resultPath, String errorPath, int ind, int type) {
         try {
             File path = new File(directoryPath);
             // we process all pdf files in the directory
-            File[] refFiles = path.listFiles(new FilenameFilter() {
-                public boolean accept(File dir, String name) {
-                    System.out.println(name);
-                    return name.endsWith(".pdf") || name.endsWith(".PDF");
-                }
-            });
+			Collection<File> refFiles = FileUtils.listFiles(path, new String[] { "pdf", "PDF" }, false);
 
-            if (refFiles == null)
+			if (CollectionUtils.isEmpty(refFiles)) {
+				System.out.println("No files to process.");
                 return 0;
+			}
 
-            System.out.println(refFiles.length + " files to be processed.");
+			System.out.println(refFiles.size() + " files to be processed.");
 
             int n = 0;
 			if (ind == -1) {
@@ -724,7 +726,7 @@ public class Engine implements Closeable {
                         createTrainingReferenceSegmentation(pdfFile, resultPath, ind + n);
                     } else */
                     if (type == 4) {
-                        createTraining(pdfFile, resultPath, resultPath, ind + n);
+						createTraining(pdfFile, resultPath, resultPath, errorPath, ind + n);
                     }
                 } catch (final Exception exp) {
                     LOGGER.error("An error occured while processing the following pdf: "
@@ -734,7 +736,7 @@ public class Engine implements Closeable {
 					n++;
             }
 
-            return refFiles.length;
+			return refFiles.size();
         } catch (final Exception exp) {
             throw new GrobidException("An exception occured while running Grobid batch.", exp);
         }

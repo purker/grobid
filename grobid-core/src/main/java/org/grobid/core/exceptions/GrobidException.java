@@ -41,7 +41,8 @@ public class GrobidException extends RuntimeException {
     }
 
     public GrobidException(String message, Throwable cause) {
-        super(message, cause);
+		super(message, cause);
+		cause.printStackTrace(); //otherwise only in the log
     }
 
     public GrobidException(String message, Throwable cause, GrobidExceptionStatus grobidExceptionStatus) {

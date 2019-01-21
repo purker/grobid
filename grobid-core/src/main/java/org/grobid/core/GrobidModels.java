@@ -95,7 +95,7 @@ public enum GrobidModels implements GrobidModel {
         models.putIfAbsent(name.toString(/* null-check */), new GrobidModel() {
             @Override
             public String getFolderName() {
-                return name;
+				return name;
             }
 
             @Override

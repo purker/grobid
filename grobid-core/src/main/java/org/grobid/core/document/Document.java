@@ -163,7 +163,7 @@ public class Document {
     // map of sequence of LayoutTokens for the fulltext model labels
     //Map<String, List<LayoutTokenization>> labeledTokenSequences = null;
 
-    public Document(DocumentSource documentSource) {
+	public Document(DocumentSource documentSource) {
         top = new DocumentNode("top", "0");
         this.documentSource = documentSource;
         setPathXML(documentSource.getXmlFile());
@@ -1175,6 +1175,30 @@ public class Document {
         return null;
     }
 
+	/**
+	 * Use if documentHeaderParts already retrieved
+	 */
+	public List<LayoutToken> getTokenizationsFromDocumentParts(SortedSet<DocumentPiece> documentParts) {
+		List<LayoutToken> headerTokenizations = new ArrayList<LayoutToken>();
+
+		for (DocumentPiece docPiece : documentParts) {
+			DocumentPointer dp1 = docPiece.a;
+			DocumentPointer dp2 = docPiece.b;
+
+			int tokens = dp1.getTokenDocPos();
+			int tokene = dp2.getTokenDocPos();
+			for (int i = tokens; i < tokene; i++) {
+				headerTokenizations.add(tokenizations.get(i));
+			}
+		}
+		return headerTokenizations;
+	}
+	
+	public List<LayoutToken> getTokenizationsBySegmentationLabel(TaggingLabel segmentationLabel) {
+		SortedSet<DocumentPiece> documentHeaderParts = getDocumentPart(segmentationLabel);
+		return getTokenizationsFromDocumentParts(documentHeaderParts);
+	}
+
     /**
      * Return the text content of the body of the document. getHeader() and getReferences() must
      * have been called before.
@@ -2160,6 +2184,10 @@ public class Document {
         return result;
     }
 
+	public String getPdfFileName() {
+		return getDocumentSource().getPdfFile().getName();
+	}
+
     /**
      * Initialize the mapping between sequences of LayoutToken and 
      * fulltext model labels. 
@@ -2187,5 +2215,4 @@ public class Document {
             labeledTokenSequences.put(clusterLabel.getLabel(), theList);
         }
     }*/
-
 }

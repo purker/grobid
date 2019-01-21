@@ -12,6 +12,7 @@ import org.grobid.core.utilities.BoundingBoxCalculator;
 import org.grobid.core.utilities.LayoutTokensUtil;
 import org.grobid.core.utilities.Pair;
 import org.grobid.core.utilities.TextUtilities;
+import org.grobid.core.utilities.TokenLabelPair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -105,7 +106,7 @@ public class TableParser extends AbstractParser {
             return new Pair<>(null, featureVector);
         }
 //System.out.println(res + "\n" );
-        List<Pair<String, String>> labeled = GenericTaggerUtils.getTokensAndLabels(res);
+		List<TokenLabelPair> labeled = GenericTaggerUtils.getTokensAndLabels(res);
         StringBuilder sb = new StringBuilder();
 
         int tokPtr = 0;
@@ -113,9 +114,9 @@ public class TableParser extends AbstractParser {
         boolean addEOL = false;
         String lastTag = null;
         boolean figOpen = false;
-        for (Pair<String, String> l : labeled) {
-            String tok = l.a;
-            String label = l.b;
+		for (TokenLabelPair l : labeled) {
+			String tok = l.getToken();
+			String label = l.getLabel();
 
             int tokPtr2 = tokPtr;
             for (; tokPtr2 < tokenizations.size(); tokPtr2++) {
@@ -226,7 +227,7 @@ public class TableParser extends AbstractParser {
             sb.append("\t\t</figure>\n");
         }
 
-        return new Pair(sb.toString(), featureVector);
+		return new Pair<>(sb.toString(), featureVector);
     }
 
     public String getTEIHeader(String id) {

@@ -13,8 +13,8 @@ import org.grobid.core.features.FeaturesVectorAffiliationAddress;
 import org.grobid.core.layout.LayoutToken;
 import org.grobid.core.lexicon.Lexicon;
 import org.grobid.core.utilities.OffsetPosition;
-import org.grobid.core.utilities.Pair;
 import org.grobid.core.utilities.TextUtilities;
+import org.grobid.core.utilities.TokenLabelPair;
 import org.grobid.core.utilities.UnicodeUtil;
 
 /**
@@ -90,32 +90,32 @@ public class AffiliationAddressParser extends AbstractParser {
         List<String> affiliationBlocks = new ArrayList<String>();
         List<LayoutToken> subTokenizations = new ArrayList<LayoutToken>();
 
-		List<Pair<String, String>> labels = GenericTaggerUtils.getTokensAndLabels(result);
+		List<TokenLabelPair> labels = GenericTaggerUtils.getTokensAndLabels(result);
 		filterAffiliationAddress(labels, tokenizations, affiliationBlocks, subTokenizations);
 
 		return processingReflow(affiliationBlocks, subTokenizations);
 	}
 
-	private void filterAffiliationAddress(List<Pair<String, String>> labels,
+	private void filterAffiliationAddress(List<TokenLabelPair> labels,
 			List<LayoutToken> tokenizations,
 			List<String> affiliationBlocks,
 			List<LayoutToken> subTokenizations) {
-		Iterator<Pair<String, String>> iter = labels.iterator();
+		Iterator<TokenLabelPair> iter = labels.iterator();
 		//System.out.println(result);
 		String lastLabel = null;
 		int p = 0;
 		List<LayoutToken> tokenizationsBuffer = null;
 		boolean open = false;
 		while (iter.hasNext() && (p < tokenizations.size())) {
-			Pair<String, String> line = iter.next();
+			TokenLabelPair line = iter.next();
 			//System.out.println(line);
-			if (line.getA().trim().length() == 0) { //TODO Angela war vorher trim von der ganzen zeile, aber da labelresult gar nicht möglich
+			if (line.getToken().trim().length() == 0) { //TODO Angela war vorher trim von der ganzen zeile, aber da labelresult gar nicht möglich
 				affiliationBlocks.add("\n");
 				lastLabel = null;
 				//TODO Angela
 				throw new GrobidException("can happen?");
 			} else {
-				String s0 = line.getA().trim();
+				String s0 = line.getToken().trim();
 				int p0 = p;
 				boolean strop = false;
                 tokenizationsBuffer = new ArrayList<LayoutToken>();
@@ -144,7 +144,7 @@ public class AffiliationAddressParser extends AbstractParser {
 					}
 				}
 				//System.out.println("tokOriginal = " + tokOriginal);
-				String label = line.getB();
+				String label = line.getLabel();
 				//String plainLabel = GenericTaggerUtils.getPlainLabel(label);
 				//System.out.println(label);
 				if ((tokOriginal != null) && (((label.indexOf("affiliation") != -1) || (label.indexOf("address") != -1)))) {
@@ -753,7 +753,7 @@ public class AffiliationAddressParser extends AbstractParser {
 	/**
 	 * Extract results from a labelled header in the training format without any string modification.
 	 */
-	public StringBuilder trainingExtraction(List<Pair<String, String>> labels,
+	public StringBuilder trainingExtraction(List<TokenLabelPair> labels,
 			List<LayoutToken> tokenizations) {
 		if ((labels == null) || (labels.size() == 0)) {
 			return null;

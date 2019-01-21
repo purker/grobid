@@ -41,6 +41,7 @@ import org.grobid.core.utilities.GrobidProperties;
 import org.grobid.core.utilities.LanguageUtilities;
 import org.grobid.core.utilities.LayoutTokensUtil;
 import org.grobid.core.utilities.TextUtilities;
+import org.grobid.core.utilities.TokenLabelPair;
 import org.grobid.core.utilities.counters.CntManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -859,7 +860,7 @@ public class HeaderParser extends AbstractParser {
 						doc.setLanguage(lang.getLang());
 					}
 
-					List<org.grobid.core.utilities.Pair<String, String>> labels = GenericTaggerUtils.getTokensAndLabels(rese);
+					List<TokenLabelPair> labels = GenericTaggerUtils.getTokensAndLabels(rese);
 					// buffer for the affiliation+address block
                     StringBuilder bufferAffiliation =
 							parsers.getAffiliationAddressParser().trainingExtraction(labels, tokenizations);

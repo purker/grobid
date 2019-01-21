@@ -218,6 +218,10 @@ public class LayoutToken implements Comparable<LayoutToken> {
         return text;
     }
 
+	public String toStringDetailed() {
+		return "'" + text + "'" + " (page " + page + ")";
+	}
+
     @Override
     public int hashCode() {
         int result;
