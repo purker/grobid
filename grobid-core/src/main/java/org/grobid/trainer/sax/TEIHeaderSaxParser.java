@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import org.grobid.core.engines.tagging.GenericTaggerUtils;
-import org.grobid.core.utilities.Pair;
 import org.grobid.core.utilities.TextUtilities;
+import org.grobid.core.utilities.TokenLabelPair;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
