@@ -10,6 +10,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -18,16 +20,21 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 
 import javax.imageio.ImageIO;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.grobid.core.GrobidModels;
 import org.grobid.core.document.BasicStructureBuilder;
 import org.grobid.core.document.Document;
 import org.grobid.core.document.DocumentSource;
+import org.grobid.core.document.TrainingDocument;
 import org.grobid.core.engines.config.GrobidAnalysisConfig;
 import org.grobid.core.engines.tagging.GenericTaggerUtils;
+import org.grobid.core.engines.training.FileType;
+import org.grobid.core.engines.training.TrainingStepMethod;
+import org.grobid.core.engines.training.TrainingSteps;
 import org.grobid.core.exceptions.GrobidException;
 import org.grobid.core.exceptions.GrobidExceptionStatus;
 import org.grobid.core.features.FeatureFactory;
@@ -40,12 +47,12 @@ import org.grobid.core.layout.LayoutToken;
 import org.grobid.core.layout.Page;
 import org.grobid.core.utilities.GrobidProperties;
 import org.grobid.core.utilities.LanguageUtilities;
-import org.grobid.core.utilities.Pair;
 import org.grobid.core.utilities.TextUtilities;
+import org.grobid.core.utilities.TokenLabelPair;
 import org.grobid.trainer.SegmentationTrainer;
-import org.grobid.trainer.document.TrainingDocumentSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
 
 import eugfc.imageio.plugins.PNMRegistry;
 
@@ -61,6 +68,7 @@ import eugfc.imageio.plugins.PNMRegistry;
  * @author Patrice Lopez
  */
 public class Segmentation extends AbstractParser {
+	private final Charset UTF8 = StandardCharsets.UTF_8;
 
 	/*
         10 labels for this model:
@@ -109,84 +117,146 @@ public class Segmentation extends AbstractParser {
      * @param documentSource     document source
      * @return Document object with segmentation information
      */
-    public Document processing(DocumentSource documentSource, GrobidAnalysisConfig config) {
+	public Document processing(DocumentSource documentSource, GrobidAnalysisConfig config) {
+		Document doc = new Document(documentSource);
+		processing(doc, config);
+		return doc;
+	}
+
+	public Document processing(Document doc, GrobidAnalysisConfig config) {
         try {
-            Document doc = new Document(documentSource);
-            if (config.getAnalyzer() != null)
+			if (config.getAnalyzer() != null)
                 doc.setAnalyzer(config.getAnalyzer());
             doc.addTokenizedDocument(config);
-            doc = prepareDocument(doc);
-
+			if (doc instanceof TrainingDocument) {
+				doc = prepareDocument((TrainingDocument) doc);
+			}
+			else {
+				doc = prepareDocument(doc);
+			}
             // if assets is true, the images are still there under directory pathXML+"_data"
             // we copy them to the assetPath directory
 
             File assetFile = config.getPdfAssetPath();
             if (assetFile != null) {
-                dealWithImages(documentSource, doc, assetFile, config);
+				dealWithImages(doc.getDocumentSource(), doc, assetFile, config);
             }
-            return doc;
+			return doc;
         } finally {
             // keep it clean when leaving...
             if (config.getPdfAssetPath() == null) {
                 // remove the pdf2xml tmp file
-                DocumentSource.close(documentSource, false, true);
+				DocumentSource.close(doc.getDocumentSource(), false, true);
             } else {
                 // remove the pdf2xml tmp files, including the sub-directories
-                DocumentSource.close(documentSource, true, true);
+				DocumentSource.close(doc.getDocumentSource(), true, true);
             }
         }
     }
 
-    public Document processing(String text) {
+	public Document processing(String text) {
         Document doc = Document.createFromText(text);
         return prepareDocument(doc);
     }
-
 
 	public Document prepareDocument(Document doc) {
 
 		List<LayoutToken> tokenizations = doc.getTokenizations();
 		if (tokenizations.size() > GrobidProperties.getPdfTokensMax()) {
-            throw new GrobidException("The document has " + tokenizations.size() + " tokens, but the limit is " + GrobidProperties.getPdfTokensMax(),
-                    GrobidExceptionStatus.TOO_MANY_TOKENS);
+            throw new GrobidException("The document has " + tokenizations.size() + " tokens, but the limit is " + GrobidProperties.getPdfTokensMax(), GrobidExceptionStatus.TOO_MANY_TOKENS);
 		}
 
 		doc.produceStatistics();
-		List<Pair<String, String>> labels = new ArrayList<>();
-		if (doc.getDocumentSource() instanceof TrainingDocumentSource) {
-			File teiFile = ((TrainingDocumentSource) doc.getDocumentSource()).getTeiFileSegmentation();
-
-			if (teiFile != null && teiFile.exists()) {
-				try {
-					List<String> labelsFromTeiFile = SegmentationTrainer.getLabeledTokensFromTeiFile(SAXParserFactory.newInstance(), teiFile);
-					labels = GenericTaggerUtils.getTokensAndLabelsAsPair(labelsFromTeiFile);
-					System.out.println(doc.getDocumentSource().getPdfFile() + ": labels set from tei file " + teiFile.getName());
-				} catch (Exception e) {
-					throw new GrobidException("An exception occured while running Grobid.", e);
-				}
-			}
+		String content = getAllLinesFeatured(doc);
+		if (isNotEmpty(trim(content))) {
+			String labelledResult = label(content);
+			List<TokenLabelPair> labels = GenericTaggerUtils.getTokensAndLabels(labelledResult);
+			// set the different sections of the Document object
+			doc = BasicStructureBuilder.generalResultSegmentation(doc, labels, tokenizations);
 		}
-		//extract from scratch, if labels not predetermined by trainingfiles
-		if (CollectionUtils.isEmpty(labels)) {
-			System.out.println(doc.getDocumentSource().getPdfFile() + ": labels determined by wapiti");
-			String content = getAllLinesFeatured(doc);
-			if (isNotEmpty(trim(content))) {
-				String labelledResult = label(content);
-				labels = GenericTaggerUtils.getTokensAndLabels(labelledResult);
-
-				// set the different sections of the Document object
-				doc = BasicStructureBuilder.generalResultSegmentation(doc, labels, tokenizations);
-			}
-		}
-
-		//TODO Angela GrobidUtil.writeLabelPairs(labels, new File("D:\\Java\\git\\MethodDemosGit\\MethodDemos\\output\\training\\output", doc.getDocumentSource().getPdfFile().getName().replace(".pdf", ".segmentation.labels.txt")));
-
-		doc = BasicStructureBuilder.generalResultSegmentation(doc, labels, tokenizations);
-
 		return doc;
 	}
 
-    private void dealWithImages(DocumentSource documentSource, Document doc, File assetFile, GrobidAnalysisConfig config) {
+	public Document prepareDocument(TrainingDocument doc) {
+		try {
+			String pdfFileName = doc.getPdfFileName();
+
+			List<LayoutToken> tokenizations = doc.getTokenizations();
+			if (tokenizations.size() > GrobidProperties.getPdfTokensMax()) {
+				throw new GrobidException("The document has " + tokenizations.size() + " tokens, but the limit is " + GrobidProperties.getPdfTokensMax(), GrobidExceptionStatus.TOO_MANY_TOKENS);
+			}
+
+			doc.produceStatistics();
+			String fulltext = getAllLinesFeatured(doc);
+			if (isNotBlank(fulltext)) {
+				// we write first the full text untagged (but featurized with segmentation features)
+				TrainingSteps.print(TrainingSteps.SEGMENTATION, FileType.FEATURE);
+				File file = new File(doc.getDocumentSource().getPathFullText(), pdfFileName.replace(".pdf", ".training.segmentation"));
+
+				FileUtils.writeStringToFile(file, fulltext + "\n", UTF8);
+
+				// also write the raw text as seen before segmentation
+				StringBuffer rawtxt = new StringBuffer();
+				for (LayoutToken txtline : doc.getTokenizations()) {
+					rawtxt.append(txtline.getText());
+				}
+
+				TrainingSteps.print(TrainingSteps.SEGMENTATION, FileType.RAW);
+				File outPathRawtext = new File(doc.getDocumentSource().getPathFullText(), pdfFileName.replace(".pdf", ".training.segmentation.rawtxt"));
+				FileUtils.writeStringToFile(outPathRawtext, rawtxt.toString(), UTF8);
+				List<TokenLabelPair> labels;
+
+				File segmentationTEIFile = doc.getDocumentSource().getTeiFileSegmentation();
+				if (segmentationTEIFile.exists()) {
+					TrainingSteps.print(TrainingSteps.SEGMENTATION, TrainingStepMethod.TEI);
+
+					List<String> labelsFromTeiFile = SegmentationTrainer.getLabeledTokensFromTeiFile(SAXParserFactory.newInstance(), segmentationTEIFile);
+					labels = GenericTaggerUtils.getTokensAndLabelsAsPair(labelsFromTeiFile);
+				} else {
+					TrainingSteps.print(TrainingSteps.SEGMENTATION, TrainingStepMethod.PDF);
+
+					//extract from scratch, if labels not predetermined by trainingfiles
+					String rese = label(fulltext);
+					labels = GenericTaggerUtils.getTokensAndLabels(rese);
+					StringBuffer bufferFulltext = trainingExtraction(rese, doc);
+
+					// write the TEI file to reflect the extact layout of the text as extracted from the pdf
+					FullTextParser.writeTeiSegmentation(bufferFulltext, segmentationTEIFile, doc.getDocumentSource().getId());
+				}
+
+				if (FullTextParser.PRINTLABELFILES) {
+					//TODO Angela delete
+					File errorDir = new File(doc.getDocumentSource().getPdfFile().getParentFile().getParent(), "error");
+					File labelsFile = new File(errorDir, doc.getPdfFileName().replace(".pdf", ".segmentation.labels"));
+					FileUtils.writeStringToFile(labelsFile, StringUtils.join(labels, "\n"), StandardCharsets.UTF_8);
+
+					//					File file = new File(errorDir, doc.getPdfFileName().replace(".pdf", ".segmentation.tokenizations"));
+					//					GrobidUtil.writeLayoutTokensAsTextToFileWithOutWhitespaceAndNewline(tokenizations, file);
+
+					//					//TODO Angela
+					//					FileUtils.writeStringToFile(new File(doc.getErrorPath(), pdfFileName + "11-fulltext"), fulltext, StandardCharsets.UTF_8);
+					//					FileUtils.writeStringToFile(new File(doc.getErrorPath(), pdfFileName + "12-rese"), rese, StandardCharsets.UTF_8);
+					//					FileUtils.writeStringToFile(new File(doc.getErrorPath(), pdfFileName + "13-bufferFulltext"), bufferFulltext.toString(), StandardCharsets.UTF_8);
+					//TODO Angela GrobidUtil.writeLabelPairs(labels, new File("D:\\Java\\git\\MethodDemosGit\\MethodDemos\\output\\training\\output", doc.getDocumentSource().getPdfFile().getName().replace(".pdf", ".segmentation.labels.txt")));
+				}
+
+				BasicStructureBuilder.generalResultSegmentation(doc, labels, tokenizations);
+			} else {
+				TrainingSteps.printEmpty(TrainingSteps.SEGMENTATION, TrainingStepMethod.PDF);
+			}
+
+			return doc;
+		} catch (IOException e) {
+			throw new GrobidException("error preparing document for training", e);
+		} catch (SAXException | ParserConfigurationException e) {
+			throw new GrobidException("error parsing " + doc.getDocumentSource().getTeiFileSegmentation(), e);
+		}
+	}
+
+
+
+	private void dealWithImages(DocumentSource documentSource, Document doc, File assetFile,
+			GrobidAnalysisConfig config) {
         if (assetFile != null) {
             // copy the files under the directory pathXML+"_data"
             // we copy the asset files into the path specified by assetPath
@@ -703,7 +773,7 @@ public class Segmentation extends AbstractParser {
             File file = new File(inputFile);
 
             documentSource = new DocumentSource(file);
-            Document doc = new Document(documentSource);
+			Document doc = new Document(documentSource);
 
             String PDFFileName = file.getName();
             doc.addTokenizedDocument(GrobidAnalysisConfig.defaultInstance());
@@ -735,7 +805,7 @@ public class Segmentation extends AbstractParser {
 
             if (isNotBlank(fulltext)) {
                 String rese = label(fulltext);
-                StringBuffer bufferFulltext = trainingExtraction(rese, tokenizations, doc);
+				StringBuffer bufferFulltext = trainingExtraction(rese, doc);
 
                 // write the TEI file to reflect the extact layout of the text as extracted from the pdf
                 writer = new OutputStreamWriter(new FileOutputStream(new File(pathTEI +
@@ -761,11 +831,9 @@ public class Segmentation extends AbstractParser {
      * Extract results from a labelled full text in the training format without any string modification.
      *
      * @param result        reult
-     * @param tokenizations toks
      * @return extraction
      */
     public StringBuffer trainingExtraction(String result,
-                                            List<LayoutToken> tokenizations,
                                             Document doc) {
         // this is the main buffer for the whole full text
         StringBuffer buffer = new StringBuffer();
