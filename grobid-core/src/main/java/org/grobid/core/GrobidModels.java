@@ -14,12 +14,12 @@ import static org.grobid.core.engines.EngineParsers.LOGGER;
  *
  * @author Patrice Lopez
  */
-public enum GrobidModels implements GrobidModel {
+public enum GrobidModels implements IGrobidModel {
     AFFIILIATON_ADDRESS("affiliation-address"),
     SEGMENTATION("segmentation"),
-    CITATION("citation"),
+	CITATION("citation", false),
     REFERENCE_SEGMENTER("reference-segmenter"),
-    DATE("date"),
+	DATE("date", false),
     DICTIONARIES_LEXICAL_ENTRIES("dictionaries-lexical-entries"),
     DICTIONARIES_SENSE("dictionaries-sense"),
     EBOOK("ebook"),
@@ -31,7 +31,7 @@ public enum GrobidModels implements GrobidModel {
     TABLE("table"),
     HEADER("header"),
     NAMES_CITATION("name/citation"),
-    NAMES_HEADER("name/header"),
+	NAMES_HEADER("name/header", false),
     PATENT_PATENT("patent/patent"),
     PATENT_NPL("patent/npl"),
     PATENT_ALL("patent/all"),
@@ -44,14 +44,14 @@ public enum GrobidModels implements GrobidModel {
     ENTITIES_BIOTECH("bio"),
     ASTRO("astro");
 
-    /**
+	/**
      * Absolute path to the model.
      */
     private String modelPath;
-
     private String folderName;
+	private boolean splittedCorpus = true; //true = contains tei and raw subdirectory, false = tei files in corpus directory
 
-    private static final ConcurrentMap<String, GrobidModel> models = new ConcurrentHashMap<>();
+    private static final ConcurrentMap<String, IGrobidModel> models = new ConcurrentHashMap<>();
 
     GrobidModels(String folderName) {
         this.folderName = folderName;
@@ -64,6 +64,11 @@ public enum GrobidModels implements GrobidModel {
         }
         modelPath = path.getAbsolutePath();
     }
+
+	GrobidModels(String folderName, boolean splittedCorpus) {
+		this(folderName);
+		this.splittedCorpus = splittedCorpus;
+	}
 
     public String getFolderName() {
         return folderName;
@@ -86,43 +91,28 @@ public enum GrobidModels implements GrobidModel {
         return folderName;
     }
 
-    public static GrobidModel modelFor(final String name) {
+    public static IGrobidModel modelFor(final String name) {
         if (models.isEmpty()) {
-            for (GrobidModel model : values())
+            for (IGrobidModel model : values())
                 models.putIfAbsent(model.getFolderName(), model);
         }
 
-        models.putIfAbsent(name.toString(/* null-check */), new GrobidModel() {
-            @Override
-            public String getFolderName() {
-				return name;
-            }
-
-            @Override
-            public String getModelPath() {
-                File path = GrobidProperties.getModelPath(this);
-                if (!path.exists()) {
-                    LOGGER.warn("Warning: The file path to the "
-                            + name + " model is invalid: "
-                            + path.getAbsolutePath());
-                }
-                return path.getAbsolutePath();
-            }
-
-            @Override
-            public String getModelName() {
-                return getFolderName().replaceAll("/", "-");
-            }
-
-            @Override
-            public String getTemplateName() {
-                return StringUtils.substringBefore(getFolderName(), "/") + ".template";
-            }
-        });
+        models.putIfAbsent(name.toString(/* null-check */), new GrobidModel(name));
         return models.get(name);
     }
 
     public String getName() {
         return name();
     }
+
+	public boolean isSplittedCorpus() {
+		return splittedCorpus;
+	}
+
+	@Override
+	public boolean isCorpusSplitted() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

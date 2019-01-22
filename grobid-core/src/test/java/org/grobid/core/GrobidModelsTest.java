@@ -23,7 +23,7 @@ public class GrobidModelsTest {
     @Test
     public void testGrobidModelsEnum_StandardModel_affiliation() throws Exception {
 
-        GrobidModel model = GrobidModels.AFFIILIATON_ADDRESS;
+        IGrobidModel model = GrobidModels.AFFIILIATON_ADDRESS;
 
         assertThat(model.getFolderName(), is("affiliation-address"));
         assertThat(model.getModelName(), is("affiliation-address"));
@@ -37,7 +37,7 @@ public class GrobidModelsTest {
     @Test
     public void testGrobidModelsEnum_StandardModel_name() throws Exception {
 
-        GrobidModel model = GrobidModels.HEADER;
+        IGrobidModel model = GrobidModels.HEADER;
 
         assertThat(model.getFolderName(), is("header"));
         assertThat(model.getModelName(), is("header"));
@@ -50,7 +50,7 @@ public class GrobidModelsTest {
 
     @Test
     public void testGrobidModelsEnum_CustomModel() throws Exception {
-        GrobidModel model = GrobidModels.modelFor("dictionaries-senses");
+        IGrobidModel model = GrobidModels.modelFor("dictionaries-senses");
 
         assertThat(model.getFolderName(), is("dictionaries-senses"));
         assertThat(model.getModelName(), is("dictionaries-senses"));
@@ -62,10 +62,10 @@ public class GrobidModelsTest {
         assertThat(splittedPath[splittedPath.length - 3], is("models"));
         assertThat(splittedPath[splittedPath.length - 4], is("grobid-home"));
 
-        GrobidModel model2 = GrobidModels.modelFor("dictionaries-lemma");
+        IGrobidModel model2 = GrobidModels.modelFor("dictionaries-lemma");
         assertThat(model2.equals(model), is(false));
 
-        GrobidModel model3 = GrobidModels.modelFor("dictionaries-senses");
+        IGrobidModel model3 = GrobidModels.modelFor("dictionaries-senses");
         assertThat(model3.equals(model), is(true));
     }
 }

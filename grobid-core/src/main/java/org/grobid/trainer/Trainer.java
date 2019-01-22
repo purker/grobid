@@ -2,7 +2,7 @@ package org.grobid.trainer;
 
 import java.io.File;
 
-import org.grobid.core.GrobidModel;
+import org.grobid.core.IGrobidModel;
 
 /**
  * @author Patrice Lopez
@@ -25,6 +25,6 @@ public interface Trainer {
 
 	String splitTrainEvaluate(Double split);
 
-    GrobidModel getModel();
+    IGrobidModel getModel();
 
 }

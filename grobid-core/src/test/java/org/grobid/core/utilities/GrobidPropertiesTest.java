@@ -1,7 +1,7 @@
 package org.grobid.core.utilities;
 
 import org.apache.commons.lang3.StringUtils;
-import org.grobid.core.GrobidModel;
+import org.grobid.core.IGrobidModel;
 import org.grobid.core.GrobidModels;
 import org.grobid.core.exceptions.GrobidPropertyException;
 import org.grobid.core.mock.MockContext;
@@ -211,7 +211,7 @@ public class GrobidPropertiesTest {
 
     @Test
     public void testsetgetNBThreads() {
-        String value = "1";
+		String value = "2";
         GrobidProperties.setNBThreads(value);
         assertEquals("The property has not the value expected", value,
                 GrobidProperties.getNBThreads().toString());
@@ -269,7 +269,7 @@ public class GrobidPropertiesTest {
 
     //@Test
     public void testgetCorpusPath() {
-        GrobidModel value = GrobidModels.DATE;
+        IGrobidModel value = GrobidModels.DATE;
         assertEquals(
                 "The property has not the value expected",
                 new File(GrobidProperties.get_GROBID_HOME_PATH(), "dataset/"

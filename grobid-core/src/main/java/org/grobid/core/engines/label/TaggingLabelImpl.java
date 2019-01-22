@@ -3,7 +3,7 @@ package org.grobid.core.engines.label;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.grobid.core.GrobidModel;
+import org.grobid.core.IGrobidModel;
 import org.grobid.core.engines.tagging.GenericTaggerUtils;
 
 /**
@@ -11,15 +11,15 @@ import org.grobid.core.engines.tagging.GenericTaggerUtils;
  * Representing label that can be tagged
  */
 public class TaggingLabelImpl implements TaggingLabel {
-    private final GrobidModel grobidModel;
+    private final IGrobidModel grobidModel;
     private final String label;
 
-    TaggingLabelImpl(GrobidModel grobidModel, String label) {
+    TaggingLabelImpl(IGrobidModel grobidModel, String label) {
         this.grobidModel = grobidModel;
         this.label = label;
     }
 
-    public GrobidModel getGrobidModel() {
+    public IGrobidModel getGrobidModel() {
         return grobidModel;
     }
 

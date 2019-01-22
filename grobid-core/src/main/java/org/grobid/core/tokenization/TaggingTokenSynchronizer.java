@@ -2,7 +2,7 @@ package org.grobid.core.tokenization;
 
 import com.google.common.collect.Iterators;
 import com.google.common.collect.PeekingIterator;
-import org.grobid.core.GrobidModel;
+import org.grobid.core.IGrobidModel;
 import org.grobid.core.engines.label.TaggingLabels;
 import org.grobid.core.engines.tagging.GenericTaggerUtils;
 import org.grobid.core.layout.LayoutToken;
@@ -19,7 +19,7 @@ import java.util.List;
  * Synchronize tagging result and layout tokens
  */
 public class TaggingTokenSynchronizer implements Iterator<LabeledTokensContainer>, Iterable<LabeledTokensContainer> {
-    private final GrobidModel grobidModel;
+    private final IGrobidModel grobidModel;
     private final Iterator<Triple<String, String, String>> tokensAndLabelsIt;
     private final PeekingIterator<LayoutToken> tokenizationsIt;
     private int tokensAndLabelsPtr;
@@ -27,16 +27,16 @@ public class TaggingTokenSynchronizer implements Iterator<LabeledTokensContainer
     private List<Triple<String, String, String>> tokensAndLabels;
     private List<LayoutToken> tokenizations;
 
-    public TaggingTokenSynchronizer(GrobidModel grobidModel, String result, List<LayoutToken> tokenizations) {
+    public TaggingTokenSynchronizer(IGrobidModel grobidModel, String result, List<LayoutToken> tokenizations) {
         this(grobidModel, result, tokenizations, false);
     }
 
-    public TaggingTokenSynchronizer(GrobidModel grobidModel, String result, List<LayoutToken> tokenizations,
+    public TaggingTokenSynchronizer(IGrobidModel grobidModel, String result, List<LayoutToken> tokenizations,
                                     boolean addFeatureStrings) {
         this(grobidModel, GenericTaggerUtils.getTokensWithLabelsAndFeatures(result, addFeatureStrings), tokenizations);
     }
 
-    public TaggingTokenSynchronizer(GrobidModel grobidModel, List<Triple<String, String, String>> tokensAndLabels, List<LayoutToken> tokenizations) {
+    public TaggingTokenSynchronizer(IGrobidModel grobidModel, List<Triple<String, String, String>> tokensAndLabels, List<LayoutToken> tokenizations) {
         this.grobidModel = grobidModel;
         this.tokensAndLabels = tokensAndLabels;
         tokensAndLabelsIt = this.tokensAndLabels.iterator();

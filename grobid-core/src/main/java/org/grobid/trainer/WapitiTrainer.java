@@ -3,7 +3,7 @@ package org.grobid.trainer;
 import java.io.File;
 import java.math.BigDecimal;
 
-import org.grobid.core.GrobidModel;
+import org.grobid.core.IGrobidModel;
 import org.grobid.core.jni.WapitiModel;
 
 /**
@@ -20,7 +20,7 @@ public class WapitiTrainer implements GenericTrainer {
     protected int nbMaxIterations = 2000; // by default maximum of training iterations
 
     @Override
-    public void train(File template, File trainingData, File outputModel, int numThreads, GrobidModel model) {
+    public void train(File template, File trainingData, File outputModel, int numThreads, IGrobidModel model) {
 		System.out.println("\tepsilon: " + epsilon);
 		System.out.println("\twindow: " + window);
         System.out.println("\tnb max iterations: " + nbMaxIterations);
@@ -33,7 +33,7 @@ public class WapitiTrainer implements GenericTrainer {
         );
     }
     @Override
-    public void trainExistingModel(File template, File trainingData, File inputModel, File outputModel, int numThreads, GrobidModel model) {
+    public void trainExistingModel(File template, File trainingData, File inputModel, File outputModel, int numThreads, IGrobidModel model) {
     	System.out.println("\tepsilon: " + epsilon);
 		System.out.println("\twindow: " + window);
         System.out.println("\tnb max iterations: " + nbMaxIterations);

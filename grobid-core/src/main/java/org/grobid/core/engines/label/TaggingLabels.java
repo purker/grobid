@@ -1,6 +1,6 @@
 package org.grobid.core.engines.label;
 
-import org.grobid.core.GrobidModel;
+import org.grobid.core.IGrobidModel;
 import org.grobid.core.GrobidModels;
 import org.grobid.core.engines.tagging.GenericTaggerUtils;
 import org.grobid.core.utilities.Pair;
@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class TaggingLabels {
 
-    protected static final ConcurrentMap<Pair<GrobidModel, String>, TaggingLabel> cache = new ConcurrentHashMap<>();
+    protected static final ConcurrentMap<Pair<IGrobidModel, String>, TaggingLabel> cache = new ConcurrentHashMap<>();
 
     public static final String CITATION_MARKER_LABEL = "<citation_marker>";
     public static final String TABLE_MARKER_LABEL = "<table_marker>";
@@ -272,7 +272,7 @@ public class TaggingLabels {
     protected TaggingLabels() {
     }
 
-    public static TaggingLabel labelFor(final GrobidModel model, final String label) {
+    public static TaggingLabel labelFor(final IGrobidModel model, final String label) {
         final String plainLabel = GenericTaggerUtils.getPlainLabel(label);
 
         cache.putIfAbsent(new Pair<>(model, plainLabel.toString(/*null-check*/)),

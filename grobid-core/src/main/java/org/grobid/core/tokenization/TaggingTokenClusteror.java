@@ -3,7 +3,7 @@ package org.grobid.core.tokenization;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.PeekingIterator;
-import org.grobid.core.GrobidModel;
+import org.grobid.core.IGrobidModel;
 import org.grobid.core.engines.label.TaggingLabel;
 import org.grobid.core.layout.LayoutToken;
 
@@ -49,11 +49,11 @@ public class TaggingTokenClusteror {
         }
     }
 
-    public TaggingTokenClusteror(GrobidModel grobidModel, String result, List<LayoutToken> tokenizations) {
+    public TaggingTokenClusteror(IGrobidModel grobidModel, String result, List<LayoutToken> tokenizations) {
         taggingTokenSynchronizer = new TaggingTokenSynchronizer(grobidModel, result, tokenizations);
     }
 
-    public TaggingTokenClusteror(GrobidModel grobidModel, String result, List<LayoutToken> tokenizations,
+    public TaggingTokenClusteror(IGrobidModel grobidModel, String result, List<LayoutToken> tokenizations,
                                  boolean computerFeatureBlock) {
         taggingTokenSynchronizer = new TaggingTokenSynchronizer(grobidModel, result, tokenizations, computerFeatureBlock);
     }

@@ -1,17 +1,51 @@
 package org.grobid.core;
 
-/**
- * Created by lfoppiano on 19/08/16.
- */
-public interface GrobidModel {
-    String getFolderName();
+import static org.grobid.core.engines.EngineParsers.LOGGER;
 
-    String getModelPath();
+import java.io.File;
 
-    String getModelName();
+import org.apache.commons.lang3.StringUtils;
+import org.grobid.core.utilities.GrobidProperties;
 
-    String getTemplateName();
+public class GrobidModel implements IGrobidModel {
+	private final String name;
+	private boolean corpusSplitted = true;
 
-    String toString();
+	public GrobidModel(String name) {
+		this.name = name;
+	}
 
+	public GrobidModel(String name, boolean corpusSplitted) {
+		this(name);
+		this.corpusSplitted = corpusSplitted;
+	}
+
+	@Override
+	public String getFolderName() {
+		return name;
+	}
+
+	@Override
+	public String getModelPath() {
+		File path = GrobidProperties.getModelPath(this);
+		if (!path.exists()) {
+			LOGGER.warn("Warning: The file path to the " + name + " model is invalid: " + path.getAbsolutePath());
+		}
+		return path.getAbsolutePath();
+	}
+
+	@Override
+	public String getModelName() {
+		return getFolderName().replaceAll("/", "-");
+	}
+
+	@Override
+	public String getTemplateName() {
+		return StringUtils.substringBefore(getFolderName(), "/") + ".template";
+	}
+
+	@Override
+	public boolean isCorpusSplitted() {
+		return corpusSplitted;
+	}
 }

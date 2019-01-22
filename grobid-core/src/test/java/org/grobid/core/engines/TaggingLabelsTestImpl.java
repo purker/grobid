@@ -1,6 +1,6 @@
 package org.grobid.core.engines;
 
-import org.grobid.core.GrobidModel;
+import org.grobid.core.IGrobidModel;
 import org.grobid.core.GrobidModels;
 import org.grobid.core.engines.label.TaggingLabel;
 import org.grobid.core.engines.label.TaggingLabels;
@@ -22,7 +22,7 @@ public class TaggingLabelsTestImpl {
         assertNotNull(label);
 
         assertThat(label.getLabel(), is("<section>"));
-        assertThat(label.getGrobidModel(), is((GrobidModel) GrobidModels.FULLTEXT));
+        assertThat(label.getGrobidModel(), is((IGrobidModel) GrobidModels.FULLTEXT));
         assertThat(label.getName(), is("FULLTEXT_SECTION"));
     }
 
@@ -34,7 +34,7 @@ public class TaggingLabelsTestImpl {
         assertNotNull(label);
 
         assertThat(label.getLabel(), is("<section>"));
-        assertThat(label.getGrobidModel(), is((GrobidModel) GrobidModels.FULLTEXT));
+        assertThat(label.getGrobidModel(), is((IGrobidModel) GrobidModels.FULLTEXT));
         assertThat(label.getName(), is("FULLTEXT_SECTION"));
     }
 
@@ -46,7 +46,7 @@ public class TaggingLabelsTestImpl {
         assertNotNull(label);
 
         assertThat(label.getLabel(), is("<sectionsLabel>"));
-        assertThat(label.getGrobidModel(), is((GrobidModel) GrobidModels.FULLTEXT));
+        assertThat(label.getGrobidModel(), is((IGrobidModel) GrobidModels.FULLTEXT));
         assertThat(label.getName(), is("FULLTEXT_SECTIONSLABEL"));
     }
 
@@ -58,7 +58,7 @@ public class TaggingLabelsTestImpl {
         assertNotNull(label);
 
         assertThat(label.getLabel(), is("<section>"));
-        assertThat(label.getGrobidModel(), is((GrobidModel) GrobidModels.FULLTEXT));
+        assertThat(label.getGrobidModel(), is((IGrobidModel) GrobidModels.FULLTEXT));
         assertThat(label.getName(), is("FULLTEXT_SECTION"));
     }
 
@@ -70,7 +70,7 @@ public class TaggingLabelsTestImpl {
         assertNotNull(label);
 
         assertThat(label.getLabel(), is("<lemma>"));
-        assertThat(label.getGrobidModel(), is((GrobidModel) GrobidModels.DICTIONARIES_LEXICAL_ENTRIES));
+        assertThat(label.getGrobidModel(), is((IGrobidModel) GrobidModels.DICTIONARIES_LEXICAL_ENTRIES));
         assertThat(label.getName(), is("dictionaries-lexical-entries_LEMMA".toUpperCase()));
 
     }
