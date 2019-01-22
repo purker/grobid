@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<tei>
+	<teiHeader>
+		<fileDesc xml:id="TUW-139299"/>
+	</teiHeader>
+	<text xml:lang="en">
+		<front>
+<lb/>
+	<docTitle>
+	<titlePart>Interactive Visualization of Time-Oriented Treatment Plans and<lb/> Patient Data<lb/></titlePart>
+	<note>THESIS SUMMARY<lb/></note>
+	</docTitle>
+
+	<byline>
+	<docAuthor>Wolfgang Aigner<lb/></docAuthor>
+	</byline>
+
+	<date>March 15, 2004<lb/></date>
+
+	<div type="abstract">Abstract<lb/> This thesis presents methods to support protocol-based care in medicine. Time-oriented treat-<lb/>ment plans and patient data are represented visually providing various interaction possibilities to aid<lb/> execution and analysis of medical therapy plans formulated in the representation language Asbru.<lb/> We introduce a two-view approach consisting of a Logical View and a Temporal View. The Logical<lb/> View depicts therapy plans using a flow-chart like representation based on &quot;clinical algorithm maps&quot;.<lb/> The Temporal View on the other hand depicts plans as well as patient data in form of parameters<lb/> and variables over time. The plan visualization method within the Temporal View is based on the<lb/> idea of LifeLines. For being able to depict hierarchical structures and temporal uncertainties, we<lb/> extended this concept and a novel glyph called PlanningLine has been developed.<lb/> The development is embedded into a 3-step evaluation process including a user study with eight<lb/> domain experts (physicians) at the beginning to acquire users&apos; needs, a design evaluation, and an<lb/> evaluation of our software prototype at the end of the thesis project.</div>
+
+		</front>
+	</text>
+</tei>

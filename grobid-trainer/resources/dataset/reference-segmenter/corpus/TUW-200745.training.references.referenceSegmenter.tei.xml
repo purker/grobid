@@ -1,0 +1,27 @@
+<tei>
+    <teiHeader>
+        <fileDesc xml:id="_2"/>
+    </teiHeader>
+    <text xml:lang="en">
+        <listBibl>
+				Literaturverzeichnis <lb/>
+        <bibl><label>[1]</label> FEREMANS, C.: Generalized Spanning Trees and Extensions, Universite Libre de<lb/> Bruxelles, Diss., 2001<lb/> </bibl>
+        <bibl><label>[2]</label> GHOSH, D.: Solving medium to large sized Euclidean generalized minimum span-<lb/>ning tree problems / Indian Institute of Management, Research and Publication<lb/> Department. 2003. -Forschungsbericht<lb/> </bibl>
+        <bibl><label>[3]</label> HU, B. ; LEITNER, M. ; RAIDL, G. R.: Computing Generalized Minimum Span-<lb/>ning Trees with Variable Neighborhood Search. In: HANSEN, P. (Hrsg.) ; MLADE-<lb/>NOVI´<lb/> C, N. (Hrsg.) ; PÉREZ, J. A. M. (Hrsg.) ; BATISTA, B. M. (Hrsg.) ; MORENO-<lb/>VEGA, J. M. (Hrsg.): Proceedings of the 18th Mini Euro Conference on Variable<lb/> Neighborhood Search. Teneriffa, Spanien, 2005<lb/> </bibl>
+        <bibl><label>[4]</label> HU, B. ; LEITNER, M. ; RAIDL, G. R.: Combining Variable Neighborhood Search<lb/> with Integer Linear Programming for the Generalized Minimum Spanning Tree<lb/> Problem. In: Journal of Heuristics 14 (2008), Nr. 5, S. 473-499<lb/> </bibl>
+        <bibl><label>[5]</label> HU, B. ; RAIDL, G. R.: An Evolutionary Algorithm with Solution Archive for the<lb/> Generalized Minimum Spanning Tree Problem. In: QUESADA-ARENCIBIA, A.<lb/> (Hrsg.) u. a.: Proceedings of EUROCAST 2011 -13th International Conference on<lb/> Computer Aided Systems Theory, Las Palmas de Gran Canaria, Spain, February<lb/> 6-11, 2011, 2011, S. 256-259<lb/> </bibl>
+        <bibl><label>[6]</label> JIANG, H. ; CHEN, Y.: An efficient algorithm for generalized minimum spanning<lb/> tree problem. In: GECCO &apos;10: Proceedings of the 12th annual conference on<lb/> Genetic and evolutionary computation. New York, NY, USA : ACM, 2010. -<lb/>ISBN 978-1-4503-0072-8, S. 217-224<lb/> </bibl>
+        <bibl><label>[7]</label> LEITNER, M.: Solving Two Generalized Network Design Problems with Exact<lb/> and Heuristic Methods, Technische Universität Wien, Diplomarbeit, 2006. -su-<lb/>pervised by G. Raidl and B. Hu<lb/> </bibl>
+        <bibl><label>[8]</label> MYUNG, Y. S. ; LEE, C. H. ; TCHA, D. W.: On the Generalized Minimum Span-<lb/>ning Tree Problem. In: Networks 26 (1995), S. 231-241<lb/> </bibl>
+        <bibl><label>[9]</label> NISSEN, V.: Einführung in Evolutionäre Algorithmen.: Optimierung nach dem<lb/> Vorbild der Evolution. Vieweg, 1997<lb/> </bibl>
+        <bibl><label>[10]</label> POP, P. C. ; IORDACHE, S.: A hybrid heuristic approach for solving the gener-<lb/>alized traveling salesman problem. In: KRASNOGOR, Natalio (Hrsg.) ; LANZI,<lb/> Pier L. (Hrsg.): GECCO, ACM, 2011, S. 481-488<lb/> </bibl>
+        <bibl><label>[11]</label> POP, P.C.: Generalized Minimum Spanning Tree Problem, University of Twente,<lb/> Diss., 2002<lb/> </bibl>
+        <bibl><label>[12]</label> RAIDL, G. R. ; HU, B.: Enhancing Genetic Algorithms by a Trie-Based Complete<lb/> Solution Archive. In: Evolutionary Computation in Combinatorial Optimisation<lb/> -EvoCOP 2010 Bd. 6022, Springer, 2010 (LNCS), S. 239-251<lb/> </bibl>
+        <bibl><label>[13]</label> SONNLEITNER, M.: Ein neues Lösungsarchiv für das Generalized Minimum<lb/> Spanning Tree-Problem, Technische Universität Wien, Diplomarbeit, 2010<lb/> </bibl>
+        <bibl><label>[14]</label> ŠRAMKO, A.: Enhancing a Genetic Algorithm by a Complete Solution Archive<lb/> Based on a Trie Data Structure, Technische Universität Wien, Diplomarbeit, 2009<lb/> </bibl>
+        <bibl><label>[15]</label> WOLF, M.: Ein Lösungsarchiv-unterstützter evolutionärer Algorithmus für das<lb/> Generalized Minimum Spanning Tree-Problem, Diplomarbeit, 2009<lb/> </bibl>
+        <bibl><label>[16]</label> ZAUBZER, S.: A Complete Archive Genetic Algorithm for the Multidimensional<lb/> Knapsack Problem, Technische Universität Wien, Diplomarbeit, 2008</bibl>
+        </listBibl>
+    </text>
+</tei>
+

@@ -1,0 +1,107 @@
+<tei>
+    <teiHeader>
+        <fileDesc xml:id="_TUW-200745.pdf"/>
+    </teiHeader>
+    <text xml:lang="en">
+
+
+        <figure>
+
+            <head>Abb. </head>
+ 
+            <label>1</label>
+
+            <head>: </head>
+ 
+            <figDesc>Lösung für ein GMST-Problem</figDesc>
+        </figure>
+
+
+        <figure>
+
+            <head>Abb. </head>
+ 
+            <label>2</label>
+
+            <head>: </head>
+ 
+            <figDesc>Pop-Kodierung mit V 1 als Wurzelknoten</figDesc>
+        </figure>
+
+
+        <figure>
+
+            <head>Abb. </head>
+ 
+            <label>3</label>
+
+            <head>: </head>
+ 
+            <figDesc>Lösung &lt;321112&gt; im Gosh-Lösungsarchiv eingefügt</figDesc>
+        </figure>
+
+
+        <figure>
+
+            <head>Abb. </head>
+ 
+            <label>4</label>
+
+            <head>: </head>
+ 
+            <figDesc>Lösung &lt;-65611&gt; im Pop-Lösungsarchiv eingefügt, V 1 ist Wurzelcluster</figDesc>
+        </figure>
+
+
+        <figure>
+
+            <head>Abb. </head>
+ 
+            <label>5</label>
+
+            <head>: </head>
+ 
+            <figDesc>Boundberechnung im Cluster V 3 beim Einfügen der Lösung &lt;321112&gt;</figDesc>
+        </figure>
+
+
+        <figure>
+
+            <head>Abb. </head>
+ 
+            <label>6</label>
+
+            <head>: </head>
+ 
+            <figDesc>Boundberechnung im Cluster V 6</figDesc>
+        </figure>
+
+
+        <figure>
+
+            <head>Abb. </head>
+ 
+            <label>7</label>
+
+            <head>: </head>
+ 
+            <figDesc>Rekombination von zwei Lösungen</figDesc>
+        </figure>
+
+
+        <figure>
+
+            <head>Abb. </head>
+ 
+            <label>8</label>
+
+            <head>: </head>
+ 
+            <figDesc>Grund für erhöhten Speicherverbrauch</figDesc>
+        </figure>
+
+
+
+    </text>
+</tei>
+

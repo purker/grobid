@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+<tei>
+	<teiHeader>
+		<fileDesc xml:id="TUW-137078"/>
+	</teiHeader>
+	<text xml:lang="en">
+		<front>
+<lb/>
+	<docTitle>
+	<titlePart>Usability Study of the ECIC Learning System<lb/></titlePart>
+	</docTitle>
+
+	<byline>
+	<docAuthor>Monika Lanzenberger<lb/> Margit Pohl<lb/></docAuthor>
+	</byline>
+
+	<byline>
+	<affiliation><orgName type="institution">Vienna University of Technology</orgName>,</affiliation>
+	</byline>
+
+	<address>Austria<lb/></address>
+
+	<email>E-mail: monika@asgaard.tuwien.ac.at<lb/></email>
+
+	<byline>
+	<affiliation><orgName type="institution">Vienna University of Technology</orgName>,</affiliation>
+	</byline>
+	
+	<address><country>Austria</country><lb/></address>
+
+	<email>E-mail: margit@igw.tuwien.ac.at<lb/></email>
+
+	<div type="abstract">ABSTRACT<lb/> The aim of the ECIC project is the dissemination of participative methods of organizational development<lb/> originating from Scandinavian countries to other European countries. To support this process we<lb/> developed a hypertextual learning system. Because of the heterogeneous target group and the ill-<lb/>structured domains of ECIC detailed usability testing is necessary. First tentative results indicate that<lb/> graphical overview maps play an important role and interactive examples are very motivating.<lb/></div>
+
+	<keywords>KEYWORDS: hypermedia application, usability, interactivity, navigation</keywords>
+
+		</front>
+	</text>
+</tei>

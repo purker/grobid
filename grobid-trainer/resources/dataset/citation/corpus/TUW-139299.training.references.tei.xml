@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:xlink="http://www.w3.org/1999/xlink" 
+ xmlns:mml="http://www.w3.org/1998/Math/MathML">
+	<teiHeader>
+		<fileDesc xml:id="2"/>
+	</teiHeader>
+	<text>
+		<front/>
+		<body/>
+		<back>
+<listBibl>
+	<bibl><author>Alder, G.</author> (<date>2002a</date>). <title level="a">Design and Implementation of the JGraph Swing Component</title>. <note type="report">Tech-nicalReport</note> <idno>1 .0.6</idno>.</bibl>
+	<bibl><author>Alder, G.</author> (<date>2002b</date>). <title level="a">The Home Page of JGraph</title>. <ptr type="web">http://jgraph.sourceforge.net</ptr>.</bibl>
+	<bibl><author>Hadorn, D. C.</author> (<date>1995</date>). <title level="a">Use of Algorithms in Clinical Practice Guideline Development: MethodologyPerspectives</title> .<publisher>AHCPR Pub .</publisher>,( No.<biblScope unit="volume">95</biblScope> -<biblScope unit="issue">0009</biblScope>):<biblScope unit="page">93-104</biblScope>.</bibl>
+	<bibl><author>Miksch, S.</author> (<date>1999</date>). <title level="a">Plan Management in the Medical Domain</title>. <title level="j">AI Communications</title>, <biblScope unit="volume">12</biblScope>(<biblScope unit="issue">4</biblScope>):<biblScope unit="page">209-235</biblScope>.</bibl>
+	<bibl><author>Miksch, S., Shahar, Y., Horn, W., Popow, C., Paky, F., and Johnson, P.</author> (<date>1997</date>). <title level="a">Time-OrientedSkeletal Plans :Support to Design and Execution</title> .In <title level="m">Fourth European Conference on Planning (ECP &apos;97)</title>.<publisher>Springer</publisher>.</bibl>
+	<bibl><author>Peleg, M., Tu, S., Bury, J., Ciccarese, P., Fox, J., Greenes, R., Hall, R., Johnson, P.,Jones ,N .,Kumar ,A .,Miksch ,S .,Quaglini ,S .,Seyfang ,A .,Shortliffe ,E .,and Stefanelli</author> ( <date>2003</date>).<title level="a">Comparing Computer- InterpretableGuidelineModels : ACase - StudyApproach</title>. <title level="j">TheJournal of the American Medical InformaticsAssociation ( JAMIA )</title> ,<biblScope unit="volume">10</biblScope>(<biblScope unit="issue">1</biblScope> ):<biblScope unit="page">52-68</biblScope>.</bibl>
+	<bibl><author>Plaisant, C., Mushlin, R., Snyder, A., Li, J., Heller, D., and Shneiderman, B.</author> (<date>1998</date>).<title level="a">LifeLines :Using Visualization to Enhance Navigation and Analysis of Patient Records</title> .In <title level="m">Proceedings ofthe 1998 American Medical Informatic Association Annual Fall Symposium</title> , pages<biblScope unit="page">76 - 80</biblScope>.</bibl>
+	<bibl><author>Seyfang, A., Kosara, R., and Miksch, S.</author> (<date>2002</date>). <title level="a">Asbru 7.3 Reference Manual</title>. <note type="report">TechnicalReport</note> <idno>Asgaard -TR-2002-1</idno>,<orgName>Vienna University of Technology</orgName> ,<title level="m">Institut of Software Technol -ogy&amp;Interactive Systems</title> , <pubPlace>Vienna, Austria, Europe</pubPlace>.</bibl>
+	<bibl><title level="j">Society for Medical Decision Making</title> (<date>1992</date>). <title level="a">Proposal for ClinicalAlgorithm Standards</title> .<title level="j">Medical Decision Making</title> ,<biblScope unit="volume">12</biblScope> (<biblScope unit="issue">02</biblScope>):<biblScope unit="page">149-154</biblScope>.</bibl>
+	<bibl><author>Wang, D., Peleg, M., Tu, S., Shortliffe, E., and Greenes, R.</author> (<date>2001</date>). <title level="a">Representation ofClinical Practice Guidelines for Computer -BasedImplementations</title> .<title level="j">MedInfo</title> ,<biblScope unit="volume">10</biblScope> (<biblScope unit="issue">Pt1</biblScope> ):<biblScope unit="page">285-9</biblScope>.</bibl>
+	<bibl><publisher>www.openclinical.org</publisher> (<date>2003</date>). <title level="a">Open Clinical -Knowledge Management for MedicalCare</title> .<ptr type="web">http ://www.openclinical.org</ptr>.</bibl>
+
+		</listBibl>
+	</back>
+	</text>
+</TEI>

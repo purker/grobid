@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<tei>
+	<teiHeader>
+		<fileDesc xml:id="TUW-231707"/>
+	</teiHeader>
+	<text xml:lang="en">
+		<front>
+<lb/>
+	<docTitle>
+	<titlePart>Requirements on the Staff of an Application Oriented Research<lb/> Organization<lb/></titlePart>
+	</docTitle>
+
+	<byline>
+	<docAuthor>Werner Purgathofer<lb/></docAuthor>
+	</byline>
+
+	<byline>
+	<affiliation>Vienna University of Technology,</affiliation>
+	</byline>
+
+	<address>1040 Wien, Karlsplatz 13, Austria</address><lb/>
+
+	<other>&amp;</other>
+
+	<byline>
+	<affiliation>VRVis Research Center,</affiliation>
+	</byline>
+
+	<address>1220 Wien, Donau-City-Straße 1, Austria<lb/></address>
+
+	<div type="abstract">ABSTRACT: The VRVis Research Center in Vienna is the largest technology transfer<lb/> institution in the area of Visual Computing in Austria. The requirements of the funding body<lb/> FFG include the publication of scientific research results in first class peer reviewed media, and<lb/> the active cooperation with co-funding companies. As a consequence the requirements on the<lb/> staff of VRVis are manifold: they have to communicate with real users, use real data, know<lb/> about software and hardware, understand the market, do professional documentation, initiate<lb/> new projects and write funding proposals for these, be part of the scientific community and<lb/> publish and review papers, manage several projects in parallel and obey strict deadlines for their<lb/> projects and some more. Such staff is barely available and must be trained on the job.</div>
+
+		</front>
+	</text>
+</tei>

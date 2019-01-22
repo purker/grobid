@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:xlink="http://www.w3.org/1999/xlink" 
+ xmlns:mml="http://www.w3.org/1998/Math/MathML">
+	<teiHeader>
+		<fileDesc>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+
+
+						<author><surname>Alder</surname>, <forename>G</forename>.</author>
+
+						<author><surname>Alder</surname>, <forename>G</forename>.</author>
+
+						<author><surname>Hadorn</surname>, <forename>D</forename>. <middlename>C</middlename>.</author>
+
+						<author><surname>Miksch</surname>, <forename>S</forename>.</author>
+
+						<author><surname>Miksch</surname>, <forename>S</forename>., <surname>Shahar</surname>, <forename>Y</forename>., <surname>Horn</surname>, <forename>W</forename>., <surname>Popow</surname>, <forename>C</forename>., <surname>Paky</surname>, <forename>F</forename>., and <surname>Johnson</surname>, <forename>P</forename>.</author>
+
+						<author><surname>Peleg</surname>, <forename>M</forename>., <surname>Tu</surname>, <forename>S</forename>., <surname>Bury</surname>, <forename>J</forename>., <surname>Ciccarese</surname>, <forename>P</forename>., <surname>Fox</surname>, <forename>J</forename>., <surname>Greenes</surname>, <forename>R</forename>., <surname>Hall</surname>, <forename>R</forename>., <surname>Johnson</surname>, <forename>P</forename>., <surname>Jones</surname>, <forename>N</forename>., <surname>Kumar</surname>, <forename>A</forename>., <surname>Miksch</surname>, <forename>S</forename>., <surname>Quaglini</surname>, <forename>S</forename>., <surname>Seyfang</surname>, <forename>A</forename>., <surname>Shortliffe</surname>, <forename>E</forename>., and <forename>Stefanelli</forename></author>
+
+						<author><surname>Plaisant</surname>, <forename>C</forename>., <surname>Mushlin</surname>, <forename>R</forename>., <surname>Snyder</surname>, <forename>A</forename>., <surname>Li</surname>, <forename>J</forename>., <surname>Heller</surname>, <forename>D</forename>., and <surname>Shneiderman</surname>, <forename>B</forename>.</author>
+
+						<author><surname>Seyfang</surname>, <forename>A</forename>., <surname>Kosara</surname>, <forename>R</forename>., and <surname>Miksch</surname>, <forename>S</forename>.</author>
+
+						<author><surname>Wang</surname>, <forename>D</forename>., <surname>Peleg</surname>, <forename>M</forename>., <surname>Tu</surname>, <forename>S</forename>., <surname>Shortliffe</surname>, <forename>E</forename>., and <surname>Greenes</surname>, <forename>R</forename>.</author>
+
+					</analytic>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+	</teiHeader>
+</TEI>

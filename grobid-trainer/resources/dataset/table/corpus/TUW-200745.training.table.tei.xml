@@ -1,0 +1,221 @@
+<tei>
+    <teiHeader>
+        <fileDesc xml:id="_TUW-200745.pdf"/>
+    </teiHeader>
+    <text xml:lang="en">
+
+
+		<figure type="table">
+		
+						<label>Algorithmus 1</label>
+						
+						<head>EA mit Lösungsarchiv<lb/></head>
+
+            <table>1: generate random population pop and insert into archiv<lb/> 2: while termination condition not satisfied do<lb/> 3:<lb/> parent1 ← selection(pop)<lb/> 4:<lb/> parent2 ← selection(pop)<lb/> 5:<lb/> sol new ← recombination(parent1, parent2)<lb/> 6:<lb/> mutation(sol new )<lb/> 7:<lb/> lokaleImprovement(sol new )<lb/> 8:<lb/> 9:<lb/> if sol new included in archiv then<lb/> 10:<lb/> convert sol new to new solution<lb/> 11:<lb/> end if<lb/> 12:<lb/> insert sol new into archiv<lb/> 13:<lb/> replace one solution in pop with sol new<lb/> 14: end while</table>
+		</figure>
+
+
+		<figure type="table">
+
+            <label>Algorithmus 2</label>
+						
+						<head>GoshTrie insert with Bound<lb/></head>
+						
+						<table>Eingabe: sol -solution to insert; best solution bestsol<lb/> Ausgabe: insertion successfull (true/false)<lb/> Variablen: m=number of clusters; root=root from archiv<lb/> 1: V<lb/> 0 ← list with all numbers from 0 to m − 1<lb/> 2: curr ← root<lb/> 3: for i = 0...m − 1 do<lb/> 4:<lb/> pos ← sol[curr.cluster]<lb/> 5:<lb/> move cluster curr from V<lb/> 0 to V<lb/> 1<lb/> 6:<lb/> if curr.next[pos] == complete then<lb/> 7:<lb/> return false<lb/> 8:<lb/> end if<lb/> 9:<lb/> if curr.next[pos] == null then<lb/> 10:<lb/> if i == m − 1 then<lb/> 11:<lb/> curr.next[pos] ← complete<lb/> 12:<lb/> end if<lb/> 13:<lb/> rand ← random cluster from V<lb/> 0<lb/> 14:<lb/> V<lb/> 0 ← list with all numbers from 0 to m − 1<lb/> 15:<lb/> curr.next[pos] ← new node with cluster rand<lb/> 16:<lb/> end if<lb/> 17:<lb/> random choice if bound has to be calculated<lb/> 18:<lb/> if bound has to be calculated then<lb/> 19:<lb/> if bestsol &lt; calculateBound(V<lb/> 1 , V<lb/> 0 ) then<lb/> 20:<lb/> delete curr.next[pos]<lb/> 21:<lb/> curr.next[pos] ← complete<lb/> 22:<lb/> return f alse<lb/> 23:<lb/> end if<lb/> 24:<lb/> end if<lb/> 25:<lb/> curr ← curr.next[pos]<lb/> 26: end for<lb/> 27: check if there are complete subtrees along sol<lb/> 28: return true</table>
+		</figure>
+
+
+		<figure type="table">
+
+            <label>Algorithmus 3</label>
+						
+						<head>GoshTrie convert with Bound<lb/></head>
+						
+						<table>Eingabe: sol -solution to convert, best solution bestsol<lb/> Ausgabe: convertion successfull (true/false)<lb/> 1: curr ← random Trie-node along sol<lb/> 2: add all clusters from root to curr to V<lb/> 1 and the other clusters to V<lb/> 0<lb/> 3: while curr! = null &amp;&amp; curr! = complete do<lb/> 4:<lb/> check if all pointers in curr are complete, so we can cancel<lb/> 5:<lb/> if curr has a null-pointer then<lb/> 6:<lb/> sol[curr.cluster] ← random null-pointer of curr<lb/> 7:<lb/> if bestsol &lt; calculateBound(V<lb/> 1 , V<lb/> 0 ) then<lb/> 8:<lb/> curr.next[sol[curr.cluster]] ← complete<lb/> 9:<lb/> undo changes of sol<lb/> 10:<lb/> else<lb/> 11:<lb/> return true<lb/> 12:<lb/> end if<lb/> 13:<lb/> end if<lb/> 14:<lb/> if curr.next[sol[curr.cluster]]! = complete] then<lb/> 15:<lb/> move curr.next[sol[curr.cluster]].cluster from V<lb/> 0 to V<lb/> 1<lb/> 16:<lb/> if bestsol &lt; calculateBound(V<lb/> 1 , V<lb/> 0 ) then<lb/> 17:<lb/> delete curr.next[sol[curr.cluster]]<lb/> 18:<lb/> curr.next[sol[curr.cluster]] ← complete<lb/> 19:<lb/> else<lb/> 20:<lb/> curr ← curr.next[sol[curr.cluster]]<lb/> 21:<lb/> end if<lb/> 22:<lb/> else<lb/> 23:<lb/> sol[curr.cluster] ← a random not-complete-pointer, of curr<lb/> 24:<lb/> move curr.next[sol[curr.cluster]].cluster from V<lb/> 0 to V<lb/> 1<lb/> 25:<lb/> if bestsol &lt; calculateBound(V<lb/> 1 , V<lb/> 0 ) then<lb/> 26:<lb/> delete curr.next[sol[curr.cluster]]<lb/> 27:<lb/> curr.next[sol[curr.cluster]] ← complete<lb/> 28:<lb/> undo changes of sol<lb/> 29:<lb/> else<lb/> 30:<lb/> curr ← curr.next[sol[cur.cluster]]<lb/> 31:<lb/> end if<lb/> 32:<lb/> end if<lb/> 33: end while<lb/> 34: return f alse</table>
+		</figure>
+
+
+		<figure type="table">
+
+            <label>Algorithmus 4</label>
+						
+						<head>calcBoundByDynProg<lb/></head>
+						
+						<table>Eingabe: root-node cN r; solution sol; current level of the trie aktP os<lb/> Ausgabe: bound<lb/> Variablen: data = list of the selected nodes of the clusters<lb/> 1: init data with −1<lb/> 2: nextcN r ← cN r<lb/> 3: repeat<lb/> 4:<lb/> calcClusters (nextcN r, sol, data, aktP os)<lb/> 5:<lb/> generateList (nextcN r, data[nextcN r], sol, aktP os)<lb/> 6:<lb/> nextinnerN ode ← next cluster with data[nextinnerN ode] = −1 and<lb/> nextinnerN ode &lt;= aktP os<lb/> 7:<lb/> if it exists a nextinnerN ode then<lb/> 8:<lb/> nextcN r ← getRootNode(sol, nextinnerN ode, aktP os)<lb/> 9:<lb/> end if<lb/> 10: until it exists a nextinnerN ode<lb/> 11: bound ← calculateBound(sol, data, aktP os)<lb/> 12: return bound</table>
+		</figure>
+
+
+		<figure type="table">
+
+            <label>Algorithmus 5</label>
+						
+						<head>calcClusters<lb/></head>
+						
+						<table>Eingabe: root-node cN r; solution sol; data; current level of the trie aktP os<lb/> 1: for i=0. . . aktP os do<lb/> 2:<lb/> if sol[i]==cN r then<lb/> 3:<lb/> calcClusters (i, sol, data, aktP os)<lb/> 4:<lb/> end if<lb/> 5: end for<lb/> 6: calcClusterweights (cN r, sol, data)</table>
+		</figure>
+
+
+		<figure type="table">
+
+            <label>Algorithmus 6</label>
+						
+						<head>calcClusterweights<lb/></head>
+						
+						<table>Eingabe: current cluster cN r; solution sol; data<lb/> Variablen: minW eight=current minimal weight of the cluster<lb/> 1: childCl ← all cluster which predecessor is cN r in sol<lb/> 2: for all nodes parentN ode in cluster cN r do<lb/> 3:<lb/> for all child in childCl do<lb/> 4:<lb/> for all nodes childN ode in cluster child do<lb/> 5:<lb/> value= nodes[childN ode].weight + distance(parentN ode, childN ode)<lb/> 6:<lb/> if value &lt; minV alue then<lb/> 7:<lb/> minV alue=value<lb/> 8:<lb/> minChildN odeN r=childN ode<lb/> 9:<lb/> end if<lb/> 10:<lb/> end for<lb/> 11:<lb/> nodes[parentN ode].addF olower(child, minChildN odeN r, minV alue)<lb/> 12:<lb/> end for<lb/> 13:<lb/> if nodes[parentN ode].weight &lt; minWeight then<lb/> 14:<lb/> minW eight = nodes[parentN ode].weight<lb/> 15:<lb/> data[cN r] = parentN ode<lb/> 16:<lb/> end if<lb/> 17: end for</table>
+		</figure>
+
+
+		<figure type="table">
+
+            <label>Algorithmus7</label>
+						
+						<head>generateList<lb/></head>
+						
+						<table>Eingabe: current cluster cN r; node -selected node of cluster cN r node; solution sol;<lb/> data; current level of the trie aktP os<lb/> 1: data[cN r] = node<lb/> 2: for i=0 . . . aktP os do<lb/> 3:<lb/> if sol[i] == cN r then<lb/> 4:<lb/> generateList(i, nodes[node].getF ollower(i), data, sol, aktP os)<lb/> 5:<lb/> end if<lb/> 6: end for</table>
+		</figure>
+
+
+		<figure type="table">
+
+            <label>Algorithmus 8</label>
+						
+						<head>calcClustersImprove<lb/></head>
+						
+						<table>Eingabe: root-node cN r; solution sol; data; current level of the trie aktP os<lb/> 1: if !valid[cNr] then<lb/> 2:<lb/> for i=0. . . aktP os do<lb/> 3:<lb/> if sol[i]==cN r then<lb/> 4:<lb/> calcClusters (i, sol, data, aktP os)<lb/> 5:<lb/> end if<lb/> 6:<lb/> end for<lb/> 7:<lb/> calcCluster (cN r, sol, data)<lb/> 8: end if</table>
+		</figure>
+
+
+		<figure type="table">
+
+            <label>Algorithmus 9</label>
+						
+						<head>mutatePredecessor<lb/></head>
+						
+						<table>Eingabe: Lösung sol<lb/> 1: mutate ← random cluster<lb/> 2: cand ← nearest neighbours from mutate where mutate is not the direct or indirect<lb/> predeccessor in sol<lb/> 3: if cand.size()! = 0 then<lb/> 4:<lb/> cand ←all cluster where mutate is not the direct or indirect predeccessor in sol<lb/> 5: end if<lb/> 6: pred new ← random element from cand<lb/> 7: sol[mutate] ← pred new</table>
+		</figure>
+
+
+		<figure type="table">
+
+            <label>Algorithmus 10</label>
+						
+						<head>PopTrie insert with Bound<lb/></head>
+						
+						<table>Eingabe: solution to insert sol; best solution bestsol<lb/> Ausgabe: insertion successfull (true/false)<lb/> Variablen: m=number of clusters; root=root from archiv<lb/> 1: curr ← root<lb/> 2: for i=0...m − 1 do<lb/> 3:<lb/> pos ← sol[curr.cluster]<lb/> 4:<lb/> if curr.next[pos] = complete then<lb/> 5:<lb/> return false<lb/> 6:<lb/> end if<lb/> 7:<lb/> if curr.next[pos] == null then<lb/> 8:<lb/> if i == m − 1 then<lb/> 9:<lb/> curr.next[pos] ← complete<lb/> 10:<lb/> end if<lb/> 11:<lb/> curr.next[pos] ← new trie-node<lb/> 12:<lb/> calculate forbidden pointers<lb/> 13:<lb/> end if<lb/> 14:<lb/> invalidate(i, sol)<lb/> 15:<lb/> if bestsol &lt; calcBoundByDynP rog(root.cluster, sol, i) then<lb/> 16:<lb/> delete curr.next[pos]<lb/> 17:<lb/> curr.next[pos] ← complete<lb/> 18:<lb/> check if trie-nodes are complete<lb/> 19:<lb/> return false<lb/> 20:<lb/> end if<lb/> 21:<lb/> curr ← curr.next[pos]<lb/> 22: end for<lb/> 23: check if trie-nodes are complete<lb/> 24: return true</table>
+		</figure>
+
+
+		<figure type="table">
+ 
+            <label>Algorithmus 11 </label>
+ 
+            <head>PopTrie convert with Bound<lb/></head>
+<lb/>
+            <table>Eingabe: solution to convert sol; best solution bestsol<lb/> Ausgabe: convertion successfull (true/false)<lb/> Variablen: nn[i]... Nearest Neighbours of Cluster i<lb/> 1: curr ← random trie-node of the possible startpoints from sol<lb/> 2: while curr! = null &amp;&amp; curr! = complete do<lb/> 3:<lb/> p null ← random null-pointer from nn[curr], if none exist, random null-pointern<lb/> from all pointer in curr<lb/> 4:<lb/> if p null exists then<lb/> 5:<lb/> change solution and check if cycle exist<lb/> 6:<lb/> invalidate(curr.cluster, sol)<lb/> 7:<lb/> if bestsol &lt; calcBoundByDynP rog(root.cluster, sol, curr.cluster) then<lb/> 8:<lb/> curr.next[sol[curr.cluster]] ← complete<lb/> 9:<lb/> undo changes of sol<lb/> 10:<lb/> else<lb/> 11:<lb/> return true<lb/> 12:<lb/> end if<lb/> 13:<lb/> else<lb/> 14:<lb/> if curr.next[sol[curr.cluster]]! = complete] then<lb/> 15:<lb/> invalidate(curr.cluster, sol)<lb/> 16:<lb/> if bestsol &lt; calcBoundByDynP rog(root.cluster, sol, curr.cluster) then<lb/> 17:<lb/> delete curr.next[sol[curr.cluster]] and set it complete<lb/> 18:<lb/> else<lb/> 19:<lb/> curr ← curr.next[sol[curr.cluster]]<lb/> 20:<lb/> end if<lb/> 21:<lb/> else<lb/> 22:<lb/> sol[curr.cluster] ← random not-complete-pointer from nn[curr], if none<lb/> exist, random not-complete-pointer from all pointer in curr<lb/> 23:<lb/> invalidate(curr.cluster, sol)<lb/> 24:<lb/> if bestsol &lt; calcBoundByDynP rog(root.cluster, sol, curr.cluster) then<lb/> 25:<lb/> delete curr.next[sol[curr.cluster]] and set it complete<lb/> 26:<lb/> undo changes of sol<lb/> 27:<lb/> else<lb/> 28:<lb/> curr ← curr.next[sol[cur.cluster]]<lb/> 29:<lb/> end if<lb/> 30:<lb/> end if<lb/> 31:<lb/> end if<lb/> 32: end while</table>
+		</figure>
+
+
+		<figure type="table">
+
+            <label>Tabelle 1</label>
+
+            <head>: Testinstanzen und die verwendete Laufzeit<lb/> </head>
+<lb/> 
+            <table>Instanz Knoten Cluster Laufzeit[s]<lb/> kroa150<lb/> 150<lb/> 30<lb/> 150<lb/> rat195<lb/> 195<lb/> 39<lb/> 150<lb/> d198<lb/> 198<lb/> 40<lb/> 150<lb/> krob200<lb/> 200<lb/> 40<lb/> 150<lb/> ts225<lb/> 225<lb/> 45<lb/> 200<lb/> pr226<lb/> 226<lb/> 46<lb/> 200<lb/> gil262<lb/> 262<lb/> 53<lb/> 300<lb/> pr264<lb/> 264<lb/> 54<lb/> 300<lb/> pr299<lb/> 299<lb/> 60<lb/> 300<lb/> lin318<lb/> 318<lb/> 64<lb/> 400<lb/> rd400<lb/> 400<lb/> 80<lb/> 450<lb/> fl417<lb/> 417<lb/> 84<lb/> 450<lb/> pr439<lb/> 439<lb/> 88<lb/> 600<lb/> pcb442<lb/> 442<lb/> 89<lb/> 600</table>
+		</figure>
+
+
+		<figure type="table">
+ 
+            <label>Tabelle 2</label>
+
+            <head>: Anzahl der Cuts in den unterschiedlichen Bereichen des Archivs<lb/> </head>
+<lb/> 
+            <table>Gosh-Archiv<lb/> Pop-Archiv<lb/> Instanz 0-25%25-50%50-75%75-100% 0-25%25-50%50-75%75-100%<lb/> kroa150 0<lb/> 0<lb/> 26<lb/> 11.081<lb/> 61<lb/> 857 10.721 23.394<lb/> rat195<lb/> 0<lb/> 0<lb/> 1<lb/> 5.982<lb/> 32<lb/> 635 3.376 14.438<lb/> d198<lb/> 0<lb/> 0<lb/> 3<lb/> 5.103<lb/> 410 5.500 11.913 14.468<lb/> krob200 0<lb/> 0<lb/> 1<lb/> 5.376<lb/> 19<lb/> 243 1.193 7.590<lb/> ts225<lb/> 0<lb/> 0<lb/> 0<lb/> 3.362<lb/> 0<lb/> 1<lb/> 99<lb/> 5.646<lb/> pr226<lb/> 0<lb/> 0<lb/> 3<lb/> 3.301<lb/> 721 6.687 12.744 15.731<lb/> gil262<lb/> 0<lb/> 0<lb/> 5<lb/> 6.937<lb/> 13<lb/> 295 3.067 9.529<lb/> pr264<lb/> 0<lb/> 0<lb/> 10<lb/> 5.473<lb/> 525 5.764 14.587 13.011<lb/> pr299<lb/> 0<lb/> 0<lb/> 1<lb/> 3.318<lb/> 45<lb/> 544 2.541 9.306<lb/> lin318<lb/> 0<lb/> 0<lb/> 6<lb/> 5.187<lb/> 332 3.119 12.809 16.113<lb/> rd400<lb/> 0<lb/> 0<lb/> 1<lb/> 3.475<lb/> 55<lb/> 637 4.898 9.744<lb/> fl417<lb/> 0<lb/> 0<lb/> 0<lb/> 1.835 2.741 14.811 10.400 7.802<lb/> pr439<lb/> 0<lb/> 0<lb/> 1<lb/> 3.141<lb/> 457 2.238 4.790 7.617<lb/> pcb442<lb/> 0<lb/> 0<lb/> 1<lb/> 3.349<lb/> 12<lb/> 360 2.510 6.367</table>
+		</figure>
+
+
+		<figure type="table">
+
+            <label>Tabelle 3</label>
+
+            <head>: Vergleich der verschiedenen Bounding-Varianten im Gosh-Archiv<lb/> </head>
+<lb/> 
+            <table>Trie<lb/> Trie+insert-Bound Trie+convert-Bound Trie+ins&amp;conv-Bound<lb/> Instanz C avg (T ) Gen C avg (T ) Gen C avg (T )<lb/> Gen<lb/> C avg (T )<lb/> Gen<lb/> kroa150 9.822,0 60.747 9.822,0 52.511 9.819,9 29.509 9.819,6<lb/> 26.609<lb/> (21,4)<lb/> (12,7)<lb/> (17,7)<lb/> (17,8)<lb/> rat195 754,4 33.232 752,7 28.739 752,9<lb/> 17.602<lb/> 753,9<lb/> 14.481<lb/> (4,7)<lb/> (3,1)<lb/> (3,5)<lb/> (4,1)<lb/> d198 7.054,6 29.272 7.051,5 23,219 7.052,4 14.513 7.053,3<lb/> 12.707<lb/> (7,6)<lb/> (5,3)<lb/> (4,5)<lb/> (3,5)<lb/> krob200 11.248,831.790 11.246,1 22.863 11.245,3 16.887 11.260,6 14.727<lb/> (8,7)<lb/> (6,3)<lb/> (5,1)<lb/> (11,0)<lb/> ts225 62.306,332.698 62.275,4 26.467 62.286,5 20.472 62.292,1 18.346<lb/> (59,3)<lb/> (17,7)<lb/> (23,9)<lb/> (46,5)<lb/> pr226 55.515,031.541 55.515,0 25.289 55.515,0 12.098 55.515,0 10.576<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> gil262 944,5 37.349 942,7 22.549 944,1<lb/> 19.123<lb/> 942,8<lb/> 15.878<lb/> (3,8)<lb/> (2,2)<lb/> (4,3)<lb/> (2,7)<lb/> pr264 21.895,133.368 21.891,1 21.467 21.890,1 16.071 21.890,6 11.679<lb/> (11,7)<lb/> (6,6)<lb/> (6,0)<lb/> (8,4)<lb/> pr299 20.354,326.404 20.339,7 15.985 20.346,2 13.081 20.341,0 11.389<lb/> (41,0)<lb/> (21,6)<lb/> (30,0)<lb/> (25,4)<lb/> lin318 18.540,527.309 18.535,1 21.289 18.532,4 13.220 18.528,0 10.738<lb/> (25,4)<lb/> (21,2)<lb/> (16,3)<lb/> (15,1)<lb/> rd400 5.950,6 21.185 5.945,4 14.815 5.947,6 9.260<lb/> 5.945,6<lb/> 8.261<lb/> (13,9)<lb/> (10,8)<lb/> (13,4)<lb/> (11,5)<lb/> fl417 7.982,0 22.146 7.982,0 15.208 7.982,0 6.324<lb/> 7.982,0<lb/> 5.457<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> pr439 51.873,917.653 51.828,2 7.855 51.827,0 10.339 51.826,3<lb/> 8.651<lb/> (54,5)<lb/> (35,5)<lb/> (35,7)<lb/> (26,7)<lb/> pcb442 19.667,218.106 19.657,4 7.576 19.648,9 10.707 19.654,5<lb/> 8.707<lb/> (38,0)<lb/> (40,3)<lb/> (27,3)<lb/> (34,3)</table>
+		</figure>
+
+
+		<figure type="table">
+
+						<label>Tabelle 4</label>
+						
+						<head>: Vergleich von &quot;normalen&quot; EA mit einem EA mit Nearest Neighbours<lb/></head>
+						
+            <table>EA<lb/> EA+NN<lb/> Instanz<lb/> C avg (T )<lb/> Gen<lb/> C avg (T )<lb/> Gen<lb/> kroa150<lb/> 9.831,8 302.576 9.831,5 303.589<lb/> (30,9)<lb/> (30,3)<lb/> rat195<lb/> 761,1<lb/> 199.953<lb/> 760,3<lb/> 199.391<lb/> (6,3)<lb/> (5,8)<lb/> d198<lb/> 7.068,7 183.405 7.057,3 180.270<lb/> (10,9)<lb/> (14,1)<lb/> krob200 11.291,4 185.572 11.277,6 185.052<lb/> (45,3)<lb/> (36,2)<lb/> ts225<lb/> 62.565,7 213.360 62.456,7 213.926<lb/> (131,1)<lb/> (152,7)<lb/> pr226<lb/> 55.515,0 199.954 55.515,0 200.307<lb/> (0,0)<lb/> (0,0)<lb/> gil262<lb/> 949,8<lb/> 244.354<lb/> 946,8<lb/> 243.635<lb/> (5,6)<lb/> (5,1)<lb/> pr264<lb/> 21.950,9 229.337 21.936,9 227.352<lb/> (29,9)<lb/> (32,2)<lb/> pr299<lb/> 20.411,4 187.223 20.369,1 185.952<lb/> (55,6)<lb/> (59,7)<lb/> lin318<lb/> 18.553,7 223.100 18.550,4 221.801<lb/> (33,9)<lb/> (30,3)<lb/> rd400<lb/> 5.993,6 166.799 5.978,6 165.978<lb/> (33,0)<lb/> (32,6)<lb/> fl417<lb/> 7.996,0 148.236 7.989,5 147.630<lb/> (6,9)<lb/> (8,2)<lb/> pr439<lb/> 52.045,4 178.455 52.016,5 177.110<lb/> (124,9)<lb/> (109,2)<lb/> pcb442 19.830,7 180.509 19.762,4 181.069<lb/> (113,7)<lb/> (113,6)</table>
+		</figure>
+
+
+		<figure type="table">
+
+            <label>Tabelle 5</label>
+
+            <head>: Vergleich der verschiedenen Bounding-Varianten im Pop-Archiv<lb/> </head>
+<lb/> 
+            <table>Trie<lb/> Trie+insert-Bound Trie+convert-Bound Trie+ins&amp;conv-Bound<lb/> Instanz C avg (T ) |Gen| C avg (T ) |Gen| C avg (T ) |Gen| C avg (T )<lb/> |Gen|<lb/> kroa150 9.815,0 62.747 9.815,0 44.525 9.815,0 32.376 9.815,0<lb/> 24.844<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> rat195 752,5 36.732 751,5 25.765 751,9<lb/> 22.772<lb/> 752,2<lb/> 16.854<lb/> (3,0)<lb/> (2,0)<lb/> (2,5)<lb/> (2,7)<lb/> d198 7.046,1 30.787 7.044,0 20.328 7044,0 14.011 7.044,3<lb/> 10.249<lb/> (3,9)<lb/> (0,0)<lb/> (0,0)<lb/> (1,6)<lb/> krob200 11.245,3 34.399 11.244,0 24.306 11.244,0 21.614 11.246,0 17.198<lb/> (5,1)<lb/> (0,0)<lb/> (0,0)<lb/> (6,1)<lb/> ts225 62.268,7 38.580 62.268,2 28.141 62.268,5 29.270 62.268,5 22.654<lb/> (0,5)<lb/> (0,4)<lb/> (0,5)<lb/> (0,5)<lb/> pr226 55.515,033.056 55.515,0 19.713 55.515,0 17.736 55.515,0 10.571<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> gil262 942,4 38.873 942,0 25.842 942,3<lb/> 24.078<lb/> 942,7<lb/> 18.201<lb/> (2,0)<lb/> (0,0)<lb/> (2,0)<lb/> (2,7)<lb/> pr264 21.886,0 36.538 21.886,0 23.104 21.886,0 22.734 21.886,0 13.226<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> pr299 20.318,6 28.971 20.316,1 18.548 20.316,0 20.506 20.320,6 13.950<lb/> (14,2)<lb/> (0,5)<lb/> (0,0)<lb/> (17,5)<lb/> lin318 18.525,5 34.659 18.523,9 17.283 18.523,0 22.782 18.522,2 11.108<lb/> (15,0)<lb/> (9,4)<lb/> (14,3)<lb/> (10,5)<lb/> rd400 5.945,2 25.867 5.943,2 14.627 5.942,5 19.263 5.942,7<lb/> 10.666<lb/> (16,5)<lb/> (7,9)<lb/> (6,9)<lb/> (7,2)<lb/> fl417 7.982,0 23.200 7.982,0 8.683 7.982,0 13.515 7.982,0<lb/> 2.578<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> pr439 51.796,5 24.933 51.794,0 14.215 51.793,5 20.692 51.791,6<lb/> 9.734<lb/> (29,7)<lb/> (16,6)<lb/> (10,8)<lb/> (2,7)<lb/> pcb442 19.630,2 26.755 19634,4 15.859 19.627,7 22.892 19.627,4 13.407<lb/> (23,6)<lb/> (20,2)<lb/> (15,7)<lb/> (15,6)</table>
+		</figure>
+
+
+		<figure type="table">
+ 
+            <label>Tabelle 6</label>
+
+            <head>: Vergleich der verschiedenen Bounding-Varianten bei der Kombination von<lb/> Gosh-und Pop Archiv<lb/> </head>
+<lb/> 
+            <table>Trie<lb/> Trie+insert-Bound Trie+convert-Bound Trie+ins&amp;conv-Bound<lb/> Instanz C avg (T ) |Gen| C avg (T ) |Gen| C avg (T ) |Gen| C avg (T )<lb/> |Gen|<lb/> kroa150 9.815,0 21.637 9.815,0 14.801 9.815,0 9.853<lb/> 9.815,0<lb/> 7.638<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> rat195 752,1 18.540 751,3 11.167 752,8<lb/> 9.476<lb/> 752,6<lb/> 5.372<lb/> (2,8)<lb/> (1,4)<lb/> (3,4)<lb/> (3,2)<lb/> d198 7.044,0 11.199 7.044,0 7.149 7.044,0 5.418<lb/> 7.044,0<lb/> 3.924<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> krob200 11.244,016.633 11.244,0 10.592 11.244,0 10.370 11.244,0<lb/> 7.531<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> ts225 62.268,517.676 62.268,3 11.333 62.268,3 13.357 62.268,3<lb/> 9.474<lb/> (0,5)<lb/> (0,5)<lb/> (0,5)<lb/> (0,5)<lb/> pr226 55.515,0 1.148 55.515,0 625 55.515,0<lb/> 416<lb/> 55.515,0<lb/> 323<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> gil262 942,0 20.694 942,0 11.228 942,0<lb/> 11.494<lb/> 942,0<lb/> 8.025<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> pr264 21.886,016.198 21.886,0 9.744 21.886,0 9.458 21.886,0<lb/> 6.099<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> pr299 20.316,015.475 20.316,0 8.480 20.316,0 9.625 20.316,0<lb/> 6.671<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> lin318 18.522,916.954 18.515,9 8.576 18.517,7 8.670 18.519,5<lb/> 5.218<lb/> (9,2)<lb/> (12,4)<lb/> (8,7)<lb/> (8,3)<lb/> rd400 5.940,3 14.236 5.937,7 6.692 5.938,9 8.545<lb/> 5.939,9<lb/> 5.184<lb/> (6,4)<lb/> (5,8)<lb/> (7,6)<lb/> (5,6)<lb/> fl417 7.982,0 1.486 7.982,0 875<lb/> 7.982,0<lb/> 585<lb/> 7.982,0<lb/> 418<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> pr439 51.791,012.837 51.792,2 6.101 51.791,0 9.331 51.791,0<lb/> 4.716<lb/> (0,0)<lb/> (6,4)<lb/> (0,0)<lb/> (0,0)<lb/> pcb442 19.625,817.457 19.623,6 8.198 19.620,5 10.872 19.622,8<lb/> 6.961<lb/> (19,1)<lb/> (17,4)<lb/> (18,7)<lb/> (18,3)</table>
+		</figure>
+
+
+		<figure type="table">
+
+            <label>Tabelle 7</label>
+						
+						<head>: Vergleich von Gosh-Trie mit 10000 Generationen<lb/></head>
+						
+            <table>Trie<lb/> Trie+insert-Bound<lb/> Trie+convert-Bound<lb/> Instanz C avg (T ) Zeit [s]M em [M B] C avg (T ) Zeit [s]M em [M B] C avg (T ) Zeit [s]M em [M B]<lb/> kroa150 9.828,8 23<lb/> 6,7<lb/> 9.819,3 36<lb/> 8,0<lb/> 9.823,1 33<lb/> 6,6<lb/> (27,5)<lb/> (11,4)<lb/> (17,8)<lb/> rat195 755,9<lb/> 39<lb/> 10,7<lb/> 758,3<lb/> 75<lb/> 12,5<lb/> 757,6<lb/> 52<lb/> 11,4<lb/> (5,2)<lb/> (5,6)<lb/> (5,0)<lb/> d198 7.061,7 49<lb/> 8,2<lb/> 7.062,9 82<lb/> 9,7<lb/> 7.063,3 76<lb/> 8,4<lb/> (9,5)<lb/> (9,0)<lb/> (8,4)<lb/> krob200 11.269,1 42<lb/> 10,0<lb/> 11.273,9 68<lb/> 11,6<lb/> 11.279,9 58<lb/> 10,3<lb/> (25,2)<lb/> (42,0)<lb/> (48,3)<lb/> ts225 62.422,1 49<lb/> 17,3<lb/> 62.406,5 73<lb/> 19,0<lb/> 62.404,7 65<lb/> 16,6<lb/> (106,2)<lb/> (92,5)<lb/> (101,6)<lb/> pr226 55.515,0 64<lb/> 6,8<lb/> 55.515,0 126<lb/> 7,7<lb/> 55.515,0 128<lb/> 6,7<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> gil262 948,9<lb/> 74<lb/> 17,9<lb/> 947,5 123<lb/> 21,3<lb/> 948,4 95,6<lb/> 18,2<lb/> (5,1)<lb/> (4,7)<lb/> (4,3)<lb/> pr264 21.913,2 80<lb/> 15,1<lb/> 21.905,0 139<lb/> 17,8<lb/> 21.914,9 118<lb/> 15,3<lb/> (31,4)<lb/> (18,2)<lb/> (26,1)<lb/> pr299 20.402,5 101<lb/> 18,8<lb/> 20.398,5 174<lb/> 22,1<lb/> 20.370,9 144<lb/> 19,1<lb/> (55,4)<lb/> (45,7)<lb/> (39,3)<lb/> lin318 18.548,9 113<lb/> 17,8<lb/> 18.545,6 217<lb/> 22,1<lb/> 18.556,1 183<lb/> 17,7<lb/> (26,6)<lb/> (22,1)<lb/> (27,5)<lb/> rd400 5.977,7 168<lb/> 25,8<lb/> 5.974,1 318<lb/> 31,9<lb/> 5.981,9 263<lb/> 25,7<lb/> (22,3)<lb/> (25,9)<lb/> (21,0)<lb/> fl417 7.982,0 204<lb/> 18,1<lb/> 7.982,0 499<lb/> 20,5<lb/> 7.982,0 478<lb/> 18,3<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> pr439 51.954,4 243<lb/> 28,9<lb/> 51.949,2 466<lb/> 34,3<lb/> 51.947,1 365<lb/> 62,8<lb/> (54,3)<lb/> (50,3)<lb/> (64,4)<lb/> pcb442 19.829,7 217<lb/> 34,4<lb/> 19.791,0 406<lb/> 41,1<lb/> 19.837,9 309<lb/> 34,5<lb/> (105,0)<lb/> (75,2)<lb/> (109,1)</table>
+		</figure>
+
+
+		<figure type="table">
+
+            <label>Tabelle 8</label>
+
+            <head>: Vergleich von Pop-Trie mit 10000 Generationen<lb/> </head>
+<lb/> 
+            <table>Trie<lb/> Trie+insert-Bound<lb/> Trie+convert-Bound<lb/> Instanz C avg (T ) Zeit [s]M em [M B] C avg (T ) Zeit [s]M em [M B] C avg (T ) Zeit [s]M em [M B]<lb/> kroa150 9.815,0 24<lb/> 28,9<lb/> 9.815,0 35<lb/> 42,3<lb/> 9.815,0 37<lb/> 32,8<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> rat195 751,6<lb/> 41<lb/> 55,4<lb/> 751,5<lb/> 64<lb/> 84,1<lb/> 752,1<lb/> 58<lb/> 59,5<lb/> (2,1)<lb/> (2,0)<lb/> (2,8)<lb/> d198 7.046,5 49<lb/> 49,0<lb/> 7.045,4 90<lb/> 95,9<lb/> 7.044,6 99<lb/> 54,1<lb/> (4,0)<lb/> (3,3)<lb/> (2,3)<lb/> krob200 11.246,1 44<lb/> 58,3<lb/> 11.246,3 66<lb/> 75,7<lb/> 11.244,7 55<lb/> 61,2<lb/> (6,2)<lb/> (6,4)<lb/> (3,7)<lb/> ts225 62.268,5 53<lb/> 84,7<lb/> 62.268,5 74<lb/> 96,9<lb/> 62.268,4 61<lb/> 85,3<lb/> (0,5)<lb/> (0,5)<lb/> (0,5)<lb/> pr226 55.515,0 61<lb/> 76,1<lb/> 55.515,0 140<lb/> 171,2<lb/> 55.515,0 100<lb/> 89,3<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> gil262 942,4<lb/> 78<lb/> 111,4<lb/> 942,5 128<lb/> 158,3<lb/> 942,4<lb/> 93<lb/> 115,8<lb/> (2,0)<lb/> (2,3)<lb/> (2,0)<lb/> pr264 21.886,0 83<lb/> 108,5<lb/> 21.886,0 169<lb/> 210,9<lb/> 21.886,0 106<lb/> 115,9<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> pr299 20.325,3 105<lb/> 133,6<lb/> 20.318,6 202<lb/> 225,2<lb/> 20.317,7 129<lb/> 137,4<lb/> (19,5)<lb/> (9,3)<lb/> (7,8)<lb/> lin318 18.521,4 116<lb/> 163,5<lb/> 18.519,5 298<lb/> 384,1<lb/> 18.524,2 152<lb/> 174,2<lb/> (13,2)<lb/> (14,2)<lb/> (12,8)<lb/> rd400 5.943,0 178<lb/> 264,7<lb/> 5.942,8 502<lb/> 600,1<lb/> 5.944,7 212<lb/> 276,9<lb/> (9,7)<lb/> (7,1)<lb/> (7,8)<lb/> fl417 7.982,0 196<lb/> 265,0<lb/> 7.982,0 1.041<lb/> 845,7<lb/> 7.982,0 326<lb/> 302,5<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> pr439 51.792,3 248<lb/> 309,3<lb/> 51.793,0 687<lb/> 679,3<lb/> 51.791,1 267<lb/> 315,3<lb/> (6,7)<lb/> (8,0)<lb/> (0,3)<lb/> pcb442 19.628,9 229<lb/> 360,0<lb/> 19.628,1 527<lb/> 615,6<lb/> 19.633,6 244<lb/> 367,4<lb/> (20,5)<lb/> (19,1)<lb/> (21,4)</table>
+		</figure>
+
+
+		<figure type="table">
+
+            <label>Tabelle 9</label>
+
+            <head>: Vergleich von Pop-Tries mit 10000 Generationen ohne return<lb/> </head>
+<lb/> 
+            <table>Trie<lb/> Trie+insert-Bound<lb/> Instanz<lb/> C avg (T ) Zeit [s] M em [M B] C avg (T ) Zeit [s] M em [M B]<lb/> kroa150<lb/> 9.815,0<lb/> 24<lb/> 28,9<lb/> 9.815,0<lb/> 36<lb/> 29,2<lb/> (0,0)<lb/> (0,0)<lb/> rat195<lb/> 751,6<lb/> 41<lb/> 55,4<lb/> 751,5<lb/> 61<lb/> 54,6<lb/> (2,1)<lb/> (2,0)<lb/> d198<lb/> 7.046,5<lb/> 49<lb/> 49,0<lb/> 7.045,6<lb/> 89<lb/> 44,4<lb/> (4,0)<lb/> (3,4)<lb/> krob200 11.246,1<lb/> 44<lb/> 58,3<lb/> 11.244,7<lb/> 62<lb/> 58,3<lb/> (6,2)<lb/> (3,7)<lb/> ts225<lb/> 62.268,5<lb/> 53<lb/> 84,7<lb/> 62.268,4<lb/> 71,9<lb/> 82,8<lb/> (0,5)<lb/> (0,5)<lb/> pr226<lb/> 55.515,0<lb/> 61<lb/> 76,1<lb/> 55.515,0<lb/> 106<lb/> 75,8<lb/> (0,0)<lb/> (0,0)<lb/> gil262<lb/> 942,4<lb/> 78<lb/> 111,4<lb/> 942,3<lb/> 111<lb/> 111,9<lb/> (2,0)<lb/> (2,0)<lb/> pr264<lb/> 21.886,0<lb/> 83<lb/> 108,5<lb/> 21.886,0<lb/> 121<lb/> 101,8<lb/> (0,0)<lb/> (0,0)<lb/> pr299<lb/> 20.325,3<lb/> 105<lb/> 133,6<lb/> 20.320,3<lb/> 158<lb/> 130,9<lb/> (19,5)<lb/> (13,0)<lb/> lin318<lb/> 18.521,4<lb/> 116<lb/> 163,5<lb/> 18.522,4<lb/> 183<lb/> 156,8<lb/> (13,2)<lb/> (11,2)<lb/> rd400<lb/> 5.943,0<lb/> 178<lb/> 264,7<lb/> 5.944,7<lb/> 292<lb/> 259,6<lb/> (9,7)<lb/> (7,7)<lb/> fl417<lb/> 7.982,0<lb/> 196<lb/> 265,0<lb/> 7.982,0<lb/> 384<lb/> 239,5<lb/> (0,0)<lb/> (0,0)<lb/> pr439<lb/> 51.792,3<lb/> 248<lb/> 309,3<lb/> 51.791,0 377,9<lb/> 299,2<lb/> (6,7)<lb/> (0,0)<lb/> pcb442 19.628,9<lb/> 229<lb/> 360,0<lb/> 19.630,5<lb/> 354<lb/> 355,2<lb/> (20,5)<lb/> (21,8)</table>
+		</figure>
+
+
+		<figure type="table">
+
+						<label>Tabelle 10</label>
+						
+						<head>: Vergleich mit anderen State of the Art Verfahren<lb/></head>
+						
+            <table>TS<lb/> VNS<lb/> DCS<lb/> EA+Archiv+Bound<lb/> Instanz<lb/> C avg (T ) C avg (T ) C avg (T )<lb/> C avg (T )<lb/> kroa150<lb/> 9.815,0<lb/> 9.815,0<lb/> 9.815,0<lb/> 9.815,0<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> d198<lb/> 7.062,0<lb/> 7.044,0<lb/> 7.044,0<lb/> 7.044,0<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> krob200 11.245,0 11.244,0 11.244,0<lb/> 11.244,0<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> ts225<lb/> 62.366,0 62.268,5 62.268,3<lb/> 62.268,3<lb/> (0,5)<lb/> (0,5)<lb/> (0,5)<lb/> pr226<lb/> 55.515,0 55.515,0 55.515,0<lb/> 55.515,0<lb/> (0,0)<lb/> (0,0)<lb/> (0,0)<lb/> gil262<lb/> 942,0<lb/> 942,3<lb/> 942,0<lb/> 942,0<lb/> (1,0)<lb/> (0,0)<lb/> (0,0)<lb/> pr264<lb/> 21.886,0 21.886,5 21.886,0<lb/> 21.886,0<lb/> (1,8)<lb/> (0,0)<lb/> (0,0)<lb/> pr299<lb/> 20.339,0 20.322,6 20.317,4<lb/> 20.316,0<lb/> (14,7)<lb/> (1,5)<lb/> (0,0)<lb/> lin318<lb/> 18.521,0 18.506,8 18.513,6<lb/> 18.517,7<lb/> (11,6)<lb/> (7,8)<lb/> (8,7)<lb/> rd400<lb/> 5.943,0<lb/> 5.943,6<lb/> 5.941,5<lb/> 5.938,9<lb/> (9,7)<lb/> (9,9)<lb/> (7,6)<lb/> fl417<lb/> 7.990,0<lb/> 7.982,0<lb/> 7.982,7<lb/> 7.982,0<lb/> (0,0)<lb/> (0,5)<lb/> (0,0)<lb/> pr439<lb/> 51.852,0 51.847,9 51.833,8<lb/> 51.791,0<lb/> (40,9)<lb/> (36,0)<lb/> (0,0)<lb/> pcb442 19.621,0 19.702,8 19.662,5<lb/> 19.620,5<lb/> (52,1)<lb/> (39,8)<lb/> (18,7)</table>
+		</figure>
+
+
+
+    </text>
+</tei>
+

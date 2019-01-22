@@ -1,0 +1,89 @@
+<?xml version="1.0" ?>
+<tei>
+	<teiHeader>
+		<fileDesc xml:id="2"/>
+	</teiHeader>
+	<text xml:lang="en">
+			<head>1 Introduction<lb/></head>
+
+			<p>The use of clinical guidelines and treatment plans has a profound history in the medical field and is<lb/> widely used. The purpose of such representations and documents is primarily to enable discussion<lb/> and communication among medical staff (physicians, nursing personnel, etc.) as well as improving the<lb/> quality of care by setting up certain &quot;standard procedures&quot;.<lb/></p>
+
+			<p>Most clinical guidelines are represented in plain text, rarely including tables and flow-charts. Com-<lb/>puter support is desirable for various reasons: First of all obviously to ease document exchange, editing,<lb/> and reuse. Furthermore, due to the semiformal structure of such documents, taking it a step further<lb/> towards creation, runtime, and analysis support introduces a much higher level of aid. Tool support<lb/> in this sense helps to cope with ongoing information overflow, eases quality assessment, and facilitates<lb/> information respectively knowledge exchange. Clinical guidelines and protocols can be seen as skeletal<lb/> plans as used in some planning approaches.<lb/></p>
+
+			<p>Planning techniques are well known in the field of Artificial Intelligence (AI). Various approaches and<lb/> solutions to solve planning problems have been carried out by the AI-, respectively planning community<lb/> since the 1960s. But most of these techniques can only be applied to well defined and limited problems.<lb/> The real-world domain medicine requires much more flexibility: Well defined problems and processes<lb/> are the exception rather than the rule, and uncertainty is an important factor. Traditional planning<lb/> approaches are not able to support these requirements. Therefore, special techniques for medical plan<lb/> management, like the Asgaard/Asbru <ref type="biblio">[Miksch, 1999]</ref> approach (this work is part of) and others <ref type="biblio">[Wang<lb/> et al., 2001]</ref>, have been carried out.<lb/></p>
+
+			<p>Most of the scientific projects dealing with medical treatment planning concentrate on the knowledge<lb/> representation and acquisition as well as the implementation of that knowledge in real world environ-<lb/>ments. From a human-machine point of view, they focus almost entirely on the &quot;machine end&quot; of the<lb/> human-machine chain. Very little work has been carried out to bridge the gap between the formal AI<lb/> methods used &quot;behind the scenes&quot; and real consumers: physicians, nursing and other medical person-<lb/>nel. This work is intended to fill this gap. It aids physicians during plan execution by providing an<lb/> easy-to-use, intuitive interface approach towards medical treatment planning, starting from the user&apos;s<lb/> point of view.<lb/></p>
+
+			<p>The top level goals of this thesis are to:<lb/></p>
+
+			<list>
+				<item>• provide a considerable treatment documentation,<lb/></item>
+
+				<item>• offer better analysis support by using appropriate visualization methods,<lb/></item>
+
+				<item>• merge various information sources,<lb/></item>
+
+				<item>• improve therapy, and<lb/></item>
+
+				<item>• help to concentrate on the essentials in the daily routine.<lb/></item>
+			</list>
+
+			<p>These goals represent vital improvements and advantages for the work process of physicians.<lb/></p>
+
+			<head>2 The Plan Representation Language Asbru<lb/></head>
+
+			<p>The underlying plan representation language used for this work is Asbru <ref type="biblio">[Seyfang et al., 2002, Miksch<lb/> et al., 1997]</ref> which is a time-oriented, intention-based, skeletal plan-specification representation language<lb/> that is used in the Asgaard Project to represent clinical guidelines and protocols.<lb/></p>
+
+			<p>Visualizing Asbru plans imposes six fundamental problem characteristics on the representation that<lb/> have to be considered:<lb/></p>
+
+			<list>
+				<item>• time-oriented data from the past to future planning data including a rich set of time attributes<lb/> allowing to depict uncertainties<lb/></item>
+
+				<item>• logical sequences<lb/></item>
+
+				<item>• hierarchical decomposition<lb/></item>
+
+				<item>• flexible execution order (sequential, parallel, unordered, any-order)<lb/></item>
+
+				<item>• non-uniform element types<lb/></item>
+
+				<item>• state characteristics of conditions<lb/> Based on the identified basic issues, we investigated related work in medical treatment planning,<lb/> information visualization, medicine, and commercial medical software products.<lb/></item>
+			</list>					
+
+			<head>3 Related Work<lb/></head>
+
+			<p>The related work presented here is only a part of the state-of-the-art research carried out in this thesis,<lb/> but represents the most important and most influential ones:<lb/></p>
+
+			<p>There is a number of scientific projects dealing with protocol based care in medicine present (see<lb/> <ref type="biblio">[Peleg et al., 2003, www.openclinical.org, 2003]</ref>), but only some of these projects provide graphical tools<lb/> at all, and most of them only for authoring plans. They use a flowchart-or workflow-like presentation<lb/> depicting the elements used in their formal representation.<lb/></p>
+
+			<p>The most widely used visual representation of clinical guidelines in the medical domain are so-called<lb/> flow-chart algorithms also known as clinical algorithm maps <ref type="biblio">[Hadorn, 1995,Society for Medical Decision<lb/> Making, 1992]</ref>. But these clinical algorithm maps were intended to be used on paper only and have<lb/> never been enriched by computer support as for example navigation or versatile annotation possibilities.<lb/> Furthermore, flow-charts cannot straightforwardly be used to represent temporal data, concurrent tasks,<lb/> or the complex conditions used in Asbru.<lb/></p>
+
+			<p>A simple and intuitive information visualization technique representing processes respectively states<lb/> over time are so called &quot;Life Lines&quot; <ref type="biblio">[Plaisant et al., 1998]</ref> which have previously been used to depict<lb/> patient histories.<lb/></p>
+
+			<p>Because none of the existing visualization methods fulfilled all the requirements defined, we framed<lb/> out a new conceptual design.<lb/></p>
+
+			<head>4 Design and Implementation<lb/></head>
+
+			<p>We took a two-view approach introducing a Logical View and a Temporal View for representing plans,<lb/> parameters, and variables (see <ref type="figure">Fig. 1</ref>). For the Logical View we created a flowchart-like representation<lb/> based on clinical algorithm maps. For depicting plans within the Temporal View, we extended the<lb/> LifeLine concept and developed a novel glyph called PlanningLine. A PlanningLine is able to represent<lb/> incidents having temporal uncertainties. Moreover, this glyph is not limited to the medical domain, but<lb/> can be used for a variety of applications.<lb/></p>
+
+			<figure>Figure 1: Application window showing the execution of a plan (Mockup).<lb/></figure>
+
+			<p>In order to proof our concept and give as well as get a better impression especially of interaction<lb/> issues, we implemented a Java prototype. For displaying the flowchart-like part of our representa-<lb/>tion to depict plan step elements, we use the graph drawing framework JGraph <ref type="biblio">[Alder, 2002a, Alder,<lb/> 2002b]</ref>. This is a flexible, small, and powerful package using the Model-View-Controller paradigm and<lb/> is structured analogous to the standard Swing component javax.swing.JTree.<lb/></p>
+
+			<head>5 User Involvement<lb/></head>
+
+			<p>We applied a user-centric approach when developing our visual representation: We involved real con-<lb/>sumers from the very beginning by carrying out a user study and evaluated our design as well as<lb/> our prototype thoroughly. This increases the quality of design, the user acceptance, and serves as an<lb/> indicator of the maturity of development.<lb/></p>
+
+			<p>The first step of major importance for requirement analysis in our development process was to con-<lb/>duct a user study with eight physicians to gain deeper insights into the medical domain, work practices,<lb/> application of guidelines in daily work, users&apos; needs, expectations, and imaginations. When summariz-<lb/>ing and evaluating the results of our user study the following desired fundamental characteristics can be<lb/> recognized: a simple and transparent structure, intuitive interaction (easy to learn and comprehend),<lb/> a cleaned up interface, a high level of application safety (undo where possible), time saving (allowing<lb/> quick and effective work), fast, and flexible.<lb/></p>
+
+			<p>We have examined and proven the usefulness of our two-view approach (Logical View and Temporal<lb/> View) by performing a 3-step evaluation process including the user study, design evaluation, and<lb/> prototype evaluation as described in detail in Chapters 7 and 8 of the thesis.<lb/></p>
+
+			<head>6 Conclusion<lb/></head>
+
+			<p>The use of software in contrast to paper allows us to support the process of exploring and understanding<lb/> treatment plans at a higher level. It enables a meaningful navigation, providing annotations on demand<lb/> for not overwhelming the viewer, and keeping orientation by using Focus + Context techniques, thus<lb/> increasing the flexibility in working with treatment plans. The interaction is carried out intuitively<lb/> by applying well known techniques from standard software supported by different Focus + Context<lb/> techniques for keeping an overview. The most important user requirement of being time-saving is<lb/> achieved by combining intuitive navigation and rich information presentation including annotations<lb/> and linked documents in a structured way. This is in contrast to working with paper-based treatment<lb/> protocols that are often a mix of text, tables, and graphics, scattered over various pages, making it hard<lb/> to keep an overview and conceive the logic of a guideline.<lb/></p>
+
+			<p>An additional value besides communicating plans to domain experts became apparent during devel-<lb/>opment: The visualization of plans helps to spot problems, bugs, and ambiguities in the formal plan<lb/> representation which are hard to see and detect otherwise. Furthermore, the visualization serves as an<lb/> important basis for the communication between medical domain experts and computer scientists.</p>
+
+
+	</text>
+</tei>
