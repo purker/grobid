@@ -187,7 +187,7 @@ public abstract class AbstractTrainer implements Trainer {
         trainer.train();
         long end = System.currentTimeMillis();
 
-        System.out.println("Model for " + trainer.getModel() + " created in " + (end - start) + " ms");
+        System.err.println("Model for " + trainer.getModel() + " created in " + (end - start) + " ms");
 	}
 
 	public static void runTrainingExistingModel(final Trainer trainer) {
@@ -195,7 +195,7 @@ public abstract class AbstractTrainer implements Trainer {
 		trainer.train(true);
 		long end = System.currentTimeMillis();
 
-		System.out.println("Model for " + trainer.getModel() + " created in " + (end - start) + " ms");
+		System.err.println("Model for " + trainer.getModel() + " created in " + (end - start) + " ms");
     }
 
     public File getEvalDataPath() {

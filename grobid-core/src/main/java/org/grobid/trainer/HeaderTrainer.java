@@ -18,6 +18,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.grobid.core.GrobidModels;
 import org.grobid.core.exceptions.GrobidException;
 import org.grobid.core.mock.MockContext;
@@ -26,6 +27,8 @@ import org.grobid.core.utilities.TokenLabelPair;
 import org.grobid.core.utilities.UnicodeUtil;
 import org.grobid.trainer.sax.TEIHeaderSaxParser;
 import org.xml.sax.SAXException;
+
+import net.sf.cglib.core.CollectionUtils;
 
 /**
  * @author Patrice Lopez
@@ -39,7 +42,7 @@ public class HeaderTrainer extends AbstractTrainer {
 	@Override
 	public int createCRFPPData(File corpusPath, File trainingOutputPath) {
         return addFeaturesHeaders(corpusPath.getAbsolutePath() + "/tei", 
-						  		corpusPath.getAbsolutePath() + "/headers", 
+						  		corpusPath.getAbsolutePath() + "/raw", 
 								trainingOutputPath, null, 1.0);
 	}
 
@@ -102,8 +105,9 @@ public class HeaderTrainer extends AbstractTrainer {
 				}
 			});
 
-			if (refFiles == null)
-				return 0;
+			if (ArrayUtils.isEmpty(refFiles)) {
+				throw new IllegalStateException("Folder " + pathh.getAbsolutePath() + " does not seem to contain training data. Please check");
+			}
 
 			//            TreeMap<String, String> pdfs = new TreeMap<String, String>();
 			nbExamples = refFiles.length;
@@ -149,7 +153,7 @@ public class HeaderTrainer extends AbstractTrainer {
 				File[] refFiles2 = refDir2.listFiles();
 				for (File aRefFiles2 : refFiles2) {
 					String localFileName = aRefFiles2.getName();
-					if (localFileName.equals(parser2.getPDFName() + ".header")) {
+					if (localFileName.equals(parser2.getPDFName() + ".training.header")) {
 						headerFile = localFileName;
 						break;
 					}

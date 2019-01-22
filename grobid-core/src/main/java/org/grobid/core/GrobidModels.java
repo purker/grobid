@@ -111,8 +111,7 @@ public enum GrobidModels implements IGrobidModel {
 
 	@Override
 	public boolean isCorpusSplitted() {
-		// TODO Auto-generated method stub
-		return false;
+		return splittedCorpus;
 	}
 
 }

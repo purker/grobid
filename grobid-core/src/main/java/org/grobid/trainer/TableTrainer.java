@@ -97,7 +97,7 @@ public class TableTrainer extends AbstractTrainer {
             });
 
             if (ArrayUtils.isEmpty(refFiles)) {
-                return 0;
+            	throw new IllegalStateException("Folder " + input.getAbsolutePath() + " does not seem to contain training data. Please check");
             }
 
             System.out.println(refFiles.length + " tei files");
@@ -140,7 +140,7 @@ public class TableTrainer extends AbstractTrainer {
                 // we open the featured file
                 File theRawFile = new File(sourceRawPathLabel + File.separator + name.replace(".tei.xml", ""));
                 if (!theRawFile.exists()) {
-                    System.out.println("Raw file " + theRawFile +
+                    System.err.println("Raw file " + theRawFile +
                             " does not exist. Please have a look!");
                     continue;
                 }
