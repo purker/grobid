@@ -15,7 +15,7 @@ import static org.grobid.core.engines.EngineParsers.LOGGER;
  * @author Patrice Lopez
  */
 public enum GrobidModels implements IGrobidModel {
-    AFFIILIATON_ADDRESS("affiliation-address"),
+    AFFIILIATON_ADDRESS("affiliation-address", false),
     SEGMENTATION("segmentation"),
 	CITATION("citation", false),
     REFERENCE_SEGMENTER("reference-segmenter"),
@@ -30,7 +30,7 @@ public enum GrobidModels implements IGrobidModel {
     FIGURE("figure"),
     TABLE("table"),
     HEADER("header"),
-    NAMES_CITATION("name/citation"),
+    NAMES_CITATION("name/citation", false),
 	NAMES_HEADER("name/header", false),
     PATENT_PATENT("patent/patent"),
     PATENT_NPL("patent/npl"),
