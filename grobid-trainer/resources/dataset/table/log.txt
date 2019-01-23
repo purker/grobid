@@ -1,0 +1,98 @@
+sourceTEIPathLabel: D:\Java\git\grobid-0.4.4\grobid-home\..\grobid-trainer\resources\dataset\table\corpus/tei
+sourceRawPathLabel: D:\Java\git\grobid-0.4.4\grobid-home\..\grobid-trainer\resources\dataset\table\corpus/raw
+trainingOutputPath: D:\Java\git\grobid-0.4.4\grobid-home\tmp\table7786485536552042371.train
+evalOutputPath: null
+16 tei files
+0070234.training.table.tei.xml
+12862_2014_Article_245.training.table.tei.xml
+12970_2015_Article_108.training.table.tei.xml
+12985_2015_Article_447.training.table.tei.xml
+1309.7222.training.table.tei.xml
+1471-2148-8-1.training.table.tei.xml
+1512.00002.training.table.tei.xml
+1512.00014.training.table.tei.xml
+1678-7757-jaos-16-06-0380.training.table.tei.xml
+6603563.training.table.tei.xml
+9911409.training.table.tei.xml
+jep0016-1301.training.table.tei.xml
+pgen.1002065.training.table.tei.xml
+TUW-200745.training.table.tei.xml
+Wang-paperAVE2008.training.table.tei.xml
+Y05-1024.training.table.tei.xml
+	epsilon: 1.0E-5
+	window: 20
+	nb max iterations: 2000
+	nb threads: 8
+Training with equivalent command line: 
+wapiti train --nthread 8 -e 0.000010 -w 20 -i 2000 -p D:\Java\git\grobid-0.4.4\grobid-home\..\grobid-trainer\resources\dataset\table\crfpp-templates\table.template D:\Java\git\grobid-0.4.4\grobid-home\tmp\table7786485536552042371.train D:\Java\git\grobid-0.4.4\grobid-home\models\table\model.wapiti.new
+* Load patterns
+* Load training data
+* Initialize the model
+* Summary
+    nb train:    79
+    nb labels:   8
+    nb blocks:   107966
+    nb features: 863784
+* Train the model with l-bfgs
+  [   1] obj=9657.60    act=217035   err= 7.95%/100.00% time=0.55s/0.55s
+  [   2] obj=8917.97    act=139648   err= 7.95%/100.00% time=0.34s/0.89s
+  [   3] obj=6742.93    act=63964    err= 7.95%/100.00% time=0.36s/1.25s
+  [   4] obj=6073.96    act=61908    err= 9.11%/98.73% time=0.60s/1.85s
+  [   5] obj=5880.54    act=78016    err= 7.95%/100.00% time=0.65s/2.49s
+  [   6] obj=5129.44    act=76472    err= 7.03%/98.73% time=0.65s/3.14s
+  [   7] obj=5054.62    act=79110    err= 7.94%/98.73% time=0.91s/4.05s
+  [   8] obj=4985.82    act=69895    err= 9.14%/97.47% time=0.65s/4.70s
+  [   9] obj=4194.86    act=72571    err= 6.62%/98.73% time=0.39s/5.09s
+  [  10] obj=3903.19    act=70633    err= 6.51%/98.73% time=0.39s/5.47s
+  [  11] obj=3294.93    act=57717    err= 6.87%/98.73% time=0.38s/5.85s
+  [  12] obj=3121.17    act=68983    err= 6.55%/98.73% time=0.38s/6.23s
+  [  13] obj=2657.61    act=65019    err= 6.00%/98.73% time=0.39s/6.62s
+  [  14] obj=2049.74    act=68064    err= 4.69%/98.73% time=0.39s/7.01s
+  [  15] obj=1827.54    act=64202    err= 4.05%/98.73% time=0.37s/7.38s
+  [  16] obj=1424.27    act=57248    err= 3.72%/98.73% time=0.39s/7.77s
+  [  17] obj=1132.57    act=51161    err= 3.45%/89.87% time=0.39s/8.16s
+  [  18] obj=801.33     act=54887    err= 1.91%/84.81% time=0.37s/8.53s
+  [  19] obj=707.35     act=51440    err= 1.96%/75.95% time=0.37s/8.90s
+  [  20] obj=646.45     act=48114    err= 1.64%/73.42% time=0.40s/9.30s
+  [  21] obj=584.01     act=42883    err= 1.18%/60.76% time=0.38s/9.68s
+  [  22] obj=527.96     act=40991    err= 0.97%/55.70% time=0.39s/10.07s
+  [  23] obj=463.98     act=37096    err= 0.76%/49.37% time=0.39s/10.47s
+  [  24] obj=387.11     act=32429    err= 0.56%/40.51% time=0.37s/10.84s
+  [  25] obj=342.08     act=29180    err= 0.27%/26.58% time=0.38s/11.22s
+  [  26] obj=319.43     act=27797    err= 0.24%/21.52% time=0.38s/11.60s
+  [  27] obj=296.44     act=25369    err= 0.14%/18.99% time=0.39s/11.99s
+  [  28] obj=269.79     act=19536    err= 0.14%/15.19% time=0.39s/12.38s
+  [  29] obj=250.89     act=17601    err= 0.05%/ 7.59% time=0.38s/12.76s
+  [  30] obj=236.69     act=15255    err= 0.01%/ 2.53% time=0.41s/13.17s
+  [  31] obj=218.03     act=11214    err= 0.07%/ 2.53% time=0.40s/13.57s
+  [  32] obj=204.87     act=10256    err= 0.00%/ 0.00% time=0.38s/13.95s
+  [  33] obj=195.85     act=8870     err= 0.00%/ 0.00% time=0.38s/14.33s
+  [  34] obj=182.71     act=6415     err= 0.08%/ 1.27% time=0.39s/14.72s
+  [  35] obj=177.20     act=5323     err= 0.08%/ 2.53% time=0.38s/15.10s
+  [  36] obj=165.00     act=5241     err= 0.00%/ 0.00% time=0.38s/15.48s
+  [  37] obj=160.57     act=4811     err= 0.00%/ 0.00% time=0.36s/15.84s
+  [  38] obj=154.01     act=4031     err= 0.07%/ 1.27% time=0.39s/16.23s
+  [  39] obj=148.46     act=3814     err= 0.00%/ 0.00% time=0.38s/16.61s
+  [  40] obj=144.70     act=3522     err= 0.00%/ 0.00% time=0.39s/17.00s
+  [  41] obj=141.52     act=2905     err= 0.00%/ 0.00% time=0.38s/17.38s
+  [  42] obj=138.32     act=3174     err= 0.00%/ 0.00% time=0.41s/17.79s
+  [  43] obj=135.84     act=2600     err= 0.00%/ 0.00% time=0.39s/18.18s
+  [  44] obj=133.08     act=2321     err= 0.00%/ 0.00% time=0.37s/18.54s
+  [  45] obj=131.59     act=2189     err= 0.00%/ 0.00% time=0.38s/18.92s
+  [  46] obj=129.86     act=2398     err= 0.00%/ 0.00% time=0.39s/19.31s
+  [  47] obj=128.95     act=2185     err= 0.00%/ 0.00% time=0.38s/19.69s
+  [  48] obj=127.79     act=1989     err= 0.00%/ 0.00% time=0.39s/20.08s
+  [  49] obj=127.05     act=1802     err= 0.00%/ 0.00% time=0.40s/20.48s
+  [  50] obj=125.98     act=2169     err= 0.00%/ 0.00% time=0.37s/20.85s
+  [  51] obj=124.89     act=1847     err= 0.00%/ 0.00% time=0.38s/21.23s
+  [  52] obj=123.70     act=1761     err= 0.00%/ 0.00% time=0.38s/21.61s
+  [  53] obj=123.07     act=1605     err= 0.00%/ 0.00% time=0.37s/21.98s
+  [  54] obj=121.98     act=1665     err= 0.00%/ 0.00% time=0.38s/22.36s
+  [  55] obj=121.84     act=1699     err= 0.00%/ 0.00% time=0.45s/22.81s
+  [  56] obj=121.29     act=1591     err= 0.00%/ 0.00% time=0.63s/23.45s
+  [  57] obj=121.01     act=1639     err= 0.00%/ 0.00% time=0.68s/24.13s
+  [  58] obj=120.16     act=1533     err= 0.00%/ 0.00% time=0.38s/24.51s
+* Save the model
+* Done
+
+Model for table created in 26017 ms
