@@ -1,0 +1,126 @@
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\fulltext\corpus\raw\TUW-137078.training.fulltext
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\fulltext\corpus\tei\TUW-137078.training.fulltext.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\header\corpus\raw\TUW-137078.training.header
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\affiliation-address\corpus\TUW-137078.training.header.affiliation.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\name\header\corpus\TUW-137078.training.header.authors.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\header\corpus\tei\TUW-137078.training.header.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\name\citation\corpus\tei\TUW-137078.training.references.authors.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\reference-segmenter\corpus\raw\TUW-137078.training.references.referenceSegmenter
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\reference-segmenter\corpus\tei\TUW-137078.training.references.referenceSegmenter.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\citation\corpus\TUW-137078.training.references.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\segmentation\corpus\raw\TUW-137078.training.segmentation
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\segmentation\corpus\tei\TUW-137078.training.segmentation.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\figure\corpus\raw\TUW-139299.training.figure
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\figure\corpus\tei\TUW-139299.training.figure.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\fulltext\corpus\raw\TUW-139299.training.fulltext
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\fulltext\corpus\tei\TUW-139299.training.fulltext.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\header\corpus\raw\TUW-139299.training.header
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\name\header\corpus\TUW-139299.training.header.authors.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\date\corpus\TUW-139299.training.header.date.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\header\corpus\tei\TUW-139299.training.header.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\name\citation\corpus\tei\TUW-139299.training.references.authors.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\reference-segmenter\corpus\raw\TUW-139299.training.references.referenceSegmenter
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\reference-segmenter\corpus\tei\TUW-139299.training.references.referenceSegmenter.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\citation\corpus\TUW-139299.training.references.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\segmentation\corpus\raw\TUW-139299.training.segmentation
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\segmentation\corpus\tei\TUW-139299.training.segmentation.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\figure\corpus\raw\TUW-200745.training.figure
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\figure\corpus\tei\TUW-200745.training.figure.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\fulltext\corpus\raw\TUW-200745.training.fulltext
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\fulltext\corpus\tei\TUW-200745.training.fulltext.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\header\corpus\raw\TUW-200745.training.header
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\affiliation-address\corpus\TUW-200745.training.header.affiliation.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\name\header\corpus\TUW-200745.training.header.authors.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\date\corpus\TUW-200745.training.header.date.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\header\corpus\tei\TUW-200745.training.header.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\name\citation\corpus\tei\TUW-200745.training.references.authors.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\reference-segmenter\corpus\raw\TUW-200745.training.references.referenceSegmenter
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\reference-segmenter\corpus\tei\TUW-200745.training.references.referenceSegmenter.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\citation\corpus\TUW-200745.training.references.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\segmentation\corpus\raw\TUW-200745.training.segmentation
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\segmentation\corpus\tei\TUW-200745.training.segmentation.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\table\corpus\raw\TUW-200745.training.table
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\table\corpus\tei\TUW-200745.training.table.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\fulltext\corpus\raw\TUW-231707.training.fulltext
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\fulltext\corpus\tei\TUW-231707.training.fulltext.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\header\corpus\raw\TUW-231707.training.header
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\affiliation-address\corpus\TUW-231707.training.header.affiliation.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\name\header\corpus\TUW-231707.training.header.authors.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\header\corpus\tei\TUW-231707.training.header.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\name\citation\corpus\tei\TUW-231707.training.references.authors.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\reference-segmenter\corpus\raw\TUW-231707.training.references.referenceSegmenter
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\reference-segmenter\corpus\tei\TUW-231707.training.references.referenceSegmenter.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\citation\corpus\TUW-231707.training.references.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\segmentation\corpus\raw\TUW-231707.training.segmentation
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\segmentation\corpus\tei\TUW-231707.training.segmentation.tei.xml
+training data under: D:\Java\git\grobid-0.4.4\grobid-home\tmp\reference-segmenter8319043256979715719.train
+evaluation data under: null
+	epsilon: 1.0E-5
+	window: 20
+	nb max iterations: 2000
+	nb threads: 8
+Training with equivalent command line: 
+wapiti train --nthread 8 -e 0.000010 -w 20 -i 2000 -m D:\Java\git\grobid-0.4.4\grobid-home\models\reference-segmenter\model.wapiti -c -p D:\Java\git\grobid-0.4.4\grobid-home\..\grobid-trainer\resources\dataset\reference-segmenter\crfpp-templates\reference-segmenter.template D:\Java\git\grobid-0.4.4\grobid-home\tmp\reference-segmenter8319043256979715719.train D:\Java\git\grobid-0.4.4\grobid-home\models\reference-segmenter\model.wapiti.new
+reference-segmenter
+* Load previous model
+* Load patterns
+* Load training data
+* Resync the model
+* Summary
+    nb train:    4
+    nb labels:   6
+    nb blocks:   308042
+    nb features: 1848282
+* Train the model with l-bfgs
+  [   1] obj=626.34     act=3119     err= 5.64%/50.00% time=0.23s/0.23s
+  [   2] obj=520.08     act=3067     err=17.28%/100.00% time=0.35s/0.57s
+  [   3] obj=430.87     act=9113     err= 3.92%/50.00% time=0.37s/0.94s
+  [   4] obj=262.06     act=8735     err= 2.88%/50.00% time=0.39s/1.33s
+  [   5] obj=259.48     act=5816     err= 2.76%/50.00% time=0.46s/1.79s
+  [   6] obj=257.60     act=5409     err= 2.33%/50.00% time=0.55s/2.34s
+  [   7] obj=254.80     act=4240     err= 2.27%/50.00% time=0.23s/2.57s
+  [   8] obj=227.38     act=2778     err= 1.29%/25.00% time=0.22s/2.79s
+  [   9] obj=224.95     act=2716     err= 1.23%/25.00% time=0.22s/3.01s
+  [  10] obj=216.47     act=2890     err= 1.47%/25.00% time=0.23s/3.24s
+  [  11] obj=211.70     act=2726     err= 0.43%/25.00% time=0.22s/3.46s
+  [  12] obj=209.37     act=2603     err= 0.00%/ 0.00% time=0.23s/3.70s
+  [  13] obj=208.36     act=2432     err= 0.00%/ 0.00% time=0.23s/3.92s
+  [  14] obj=207.54     act=2349     err= 0.00%/ 0.00% time=0.22s/4.14s
+  [  15] obj=205.40     act=2134     err= 0.00%/ 0.00% time=0.23s/4.37s
+  [  16] obj=202.23     act=1330     err= 0.43%/25.00% time=0.22s/4.59s
+  [  17] obj=192.29     act=1692     err= 0.00%/ 0.00% time=0.22s/4.82s
+  [  18] obj=179.86     act=1504     err= 0.00%/ 0.00% time=0.22s/5.04s
+  [  19] obj=154.42     act=1033     err= 0.12%/25.00% time=0.30s/5.34s
+  [  20] obj=142.17     act=942      err= 2.88%/25.00% time=0.29s/5.63s
+  [  21] obj=124.28     act=1813     err= 0.25%/50.00% time=0.35s/5.98s
+  [  22] obj=117.11     act=2280     err= 0.61%/25.00% time=0.41s/6.39s
+  [  23] obj=109.82     act=1337     err= 0.06%/25.00% time=0.35s/6.73s
+  [  24] obj=101.07     act=1256     err= 0.00%/ 0.00% time=0.23s/6.96s
+  [  25] obj=76.70      act=650      err= 0.00%/ 0.00% time=0.24s/7.20s
+  [  26] obj=70.30      act=1156     err= 0.00%/ 0.00% time=0.35s/7.56s
+  [  27] obj=65.35      act=1074     err= 0.00%/ 0.00% time=0.35s/7.90s
+  [  28] obj=60.68      act=1234     err= 0.00%/ 0.00% time=0.35s/8.26s
+  [  29] obj=57.23      act=1331     err= 0.00%/ 0.00% time=0.35s/8.61s
+  [  30] obj=54.39      act=1297     err= 0.00%/ 0.00% time=0.36s/8.96s
+  [  31] obj=51.65      act=1139     err= 0.00%/ 0.00% time=0.29s/9.25s
+  [  32] obj=47.75      act=1252     err= 0.00%/ 0.00% time=0.28s/9.54s
+  [  33] obj=43.05      act=1236     err= 0.00%/ 0.00% time=0.30s/9.84s
+  [  34] obj=42.89      act=1296     err= 0.00%/ 0.00% time=0.29s/10.13s
+  [  35] obj=39.31      act=2232     err= 0.00%/ 0.00% time=0.29s/10.42s
+  [  36] obj=38.03      act=1346     err= 0.00%/ 0.00% time=0.22s/10.65s
+  [  37] obj=36.59      act=1012     err= 0.00%/ 0.00% time=0.29s/10.93s
+  [  38] obj=35.74      act=689      err= 0.00%/ 0.00% time=0.23s/11.16s
+  [  39] obj=34.95      act=634      err= 0.00%/ 0.00% time=0.22s/11.38s
+  [  40] obj=34.65      act=708      err= 0.00%/ 0.00% time=0.30s/11.69s
+  [  41] obj=34.39      act=684      err= 0.00%/ 0.00% time=0.29s/11.97s
+  [  42] obj=34.21      act=682      err= 0.00%/ 0.00% time=0.29s/12.26s
+  [  43] obj=33.69      act=670      err= 0.00%/ 0.00% time=0.22s/12.48s
+* Compacting the model
+    - Scan the model
+    - Compact it
+      307749 observations removed
+     1846494 features removed
+* Save the model
+* Done
+
+Model for reference-segmenter created in 13736 ms

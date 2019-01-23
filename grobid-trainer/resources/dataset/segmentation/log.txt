@@ -1,0 +1,133 @@
+sourceTEIPathLabel: D:\Java\git\grobid-0.4.4\grobid-home\..\grobid-trainer\resources\dataset\segmentation\corpus/tei
+sourceRawPathLabel: D:\Java\git\grobid-0.4.4\grobid-home\..\grobid-trainer\resources\dataset\segmentation\corpus/raw
+trainingOutputPath: D:\Java\git\grobid-0.4.4\grobid-home\tmp\segmentation1192207218171259528.train
+evalOutputPath: null
+4 tei files
+	epsilon: 1.0E-4
+	window: 20
+	nb max iterations: 2000
+	nb threads: 8
+Training with equivalent command line: 
+wapiti train --nthread 8 -e 0.00010 -w 20 -i 2000 -m D:\Java\git\grobid-0.4.4\grobid-home\models\segmentation\model.wapiti -c -p D:\Java\git\grobid-0.4.4\grobid-home\..\grobid-trainer\resources\dataset\segmentation\crfpp-templates\segmentation.template D:\Java\git\grobid-0.4.4\grobid-home\tmp\segmentation1192207218171259528.train D:\Java\git\grobid-0.4.4\grobid-home\models\segmentation\model.wapiti.new
+* Load previous model
+* Load patterns
+* Load training data
+* Resync the model
+* Summary
+    nb train:    4
+    nb labels:   20
+    nb blocks:   982411
+    nb features: 19648600
+* Train the model with l-bfgs
+  [   1] obj=1522.52    act=15067    err= 6.51%/75.00% time=4.23s/4.23s
+  [   2] obj=1515.13    act=15034    err= 9.89%/75.00% time=2.54s/6.77s
+  [   3] obj=1514.10    act=19972    err= 6.41%/75.00% time=2.79s/9.56s
+  [   4] obj=1507.63    act=20626    err= 9.93%/75.00% time=2.92s/12.47s
+  [   5] obj=1506.53    act=20203    err= 2.83%/75.00% time=3.19s/15.67s
+  [   6] obj=1504.04    act=19617    err= 3.39%/75.00% time=2.68s/18.35s
+  [   7] obj=1501.29    act=19458    err= 2.70%/75.00% time=2.59s/20.94s
+  [   8] obj=1499.17    act=17773    err= 2.60%/75.00% time=2.58s/23.52s
+  [   9] obj=1475.82    act=11678    err= 5.10%/75.00% time=3.35s/26.87s
+  [  10] obj=1473.72    act=14809    err= 2.83%/75.00% time=4.90s/31.77s
+  [  11] obj=1473.33    act=17764    err= 2.86%/75.00% time=4.82s/36.59s
+  [  12] obj=1472.95    act=17347    err= 2.10%/75.00% time=4.98s/41.57s
+  [  13] obj=1472.93    act=17197    err= 2.10%/75.00% time=5.83s/47.39s
+  [  14] obj=1470.87    act=16583    err= 2.10%/75.00% time=4.93s/52.32s
+  [  15] obj=1468.48    act=13967    err= 2.10%/75.00% time=2.58s/54.90s
+  [  16] obj=1457.22    act=12021    err= 5.16%/75.00% time=2.55s/57.45s
+  [  17] obj=1443.70    act=13282    err= 1.87%/75.00% time=2.61s/60.06s
+  [  18] obj=1431.46    act=11564    err= 1.74%/75.00% time=2.62s/62.68s
+  [  19] obj=1422.34    act=10606    err= 4.44%/75.00% time=5.03s/67.70s
+  [  20] obj=1409.94    act=14274    err= 1.71%/75.00% time=2.67s/70.38s
+  [  21] obj=1400.07    act=14513    err= 4.17%/75.00% time=2.60s/72.98s
+  [  22] obj=1382.44    act=14475    err= 1.05%/75.00% time=2.60s/75.58s
+  [  23] obj=1370.19    act=14172    err= 1.05%/75.00% time=2.62s/78.20s
+  [  24] obj=1334.47    act=11714    err= 0.79%/75.00% time=2.72s/80.92s
+  [  25] obj=1303.21    act=9085     err= 3.32%/25.00% time=2.62s/83.54s
+  [  26] obj=1282.96    act=10651    err= 0.43%/25.00% time=2.63s/86.17s
+  [  27] obj=1276.72    act=9855     err= 0.43%/25.00% time=2.63s/88.80s
+  [  28] obj=1260.36    act=9502     err= 0.16%/25.00% time=2.62s/91.42s
+  [  29] obj=1239.56    act=9077     err= 1.18%/25.00% time=4.14s/95.56s
+  [  30] obj=1234.77    act=10375    err= 2.99%/25.00% time=4.13s/99.69s
+  [  31] obj=1228.82    act=11598    err= 0.07%/25.00% time=3.45s/103.14s
+  [  32] obj=1206.20    act=10016    err= 0.00%/ 0.00% time=3.42s/106.57s
+  [  33] obj=1196.01    act=8612     err= 3.91%/50.00% time=5.66s/112.23s
+  [  34] obj=1189.58    act=12112    err= 0.03%/25.00% time=2.58s/114.81s
+  [  35] obj=1189.41    act=6455     err= 5.75%/75.00% time=2.61s/117.42s
+  [  36] obj=1122.34    act=11154    err= 0.03%/25.00% time=3.34s/120.76s
+  [  37] obj=1101.63    act=9777     err= 5.82%/25.00% time=3.43s/124.19s
+  [  38] obj=1068.97    act=14207    err= 0.03%/25.00% time=2.61s/126.81s
+  [  39] obj=1016.03    act=14838    err= 0.00%/ 0.00% time=2.67s/129.47s
+  [  40] obj=856.49     act=6097     err= 8.68%/75.00% time=2.68s/132.15s
+  [  41] obj=813.89     act=13744    err= 1.74%/50.00% time=3.83s/135.98s
+  [  42] obj=622.89     act=9815     err= 4.87%/50.00% time=3.98s/139.96s
+  [  43] obj=572.78     act=13330    err= 0.95%/25.00% time=4.20s/144.16s
+  [  44] obj=515.30     act=14237    err= 1.87%/25.00% time=4.26s/148.41s
+  [  45] obj=460.04     act=11306    err= 7.69%/100.00% time=2.69s/151.10s
+  [  46] obj=344.26     act=17726    err=14.53%/50.00% time=2.71s/153.81s
+  [  47] obj=305.19     act=27421    err= 3.98%/75.00% time=3.54s/157.35s
+  [  48] obj=253.67     act=26375    err= 0.49%/25.00% time=2.86s/160.21s
+  [  49] obj=222.50     act=18062    err= 0.00%/ 0.00% time=2.97s/163.17s
+  [  50] obj=190.76     act=8334     err= 4.44%/75.00% time=3.37s/166.54s
+  [  51] obj=161.84     act=13078    err= 0.00%/ 0.00% time=2.65s/169.19s
+  [  52] obj=140.53     act=9720     err= 1.02%/25.00% time=3.34s/172.53s
+  [  53] obj=122.33     act=6747     err= 0.43%/25.00% time=2.68s/175.21s
+  [  54] obj=118.48     act=7128     err= 0.00%/ 0.00% time=3.22s/178.43s
+  [  55] obj=112.06     act=5934     err= 0.10%/25.00% time=3.20s/181.64s
+  [  56] obj=109.68     act=2875     err= 0.00%/ 0.00% time=4.18s/185.82s
+  [  57] obj=107.67     act=2751     err= 0.00%/ 0.00% time=3.37s/189.19s
+  [  58] obj=105.65     act=2439     err= 0.00%/ 0.00% time=2.65s/191.84s
+  [  59] obj=104.56     act=2244     err= 1.02%/25.00% time=2.60s/194.44s
+  [  60] obj=102.57     act=4645     err= 0.00%/ 0.00% time=4.15s/198.59s
+  [  61] obj=101.30     act=3701     err= 0.00%/ 0.00% time=2.63s/201.22s
+  [  62] obj=100.64     act=6032     err= 0.00%/ 0.00% time=4.69s/205.91s
+  [  63] obj=99.39      act=2804     err= 0.00%/ 0.00% time=2.62s/208.52s
+  [  64] obj=96.97      act=2018     err= 2.43%/25.00% time=2.65s/211.17s
+  [  65] obj=95.64      act=2266     err= 0.00%/ 0.00% time=3.41s/214.58s
+  [  66] obj=94.29      act=2043     err= 0.00%/ 0.00% time=2.57s/217.15s
+  [  67] obj=91.56      act=1494     err= 0.00%/ 0.00% time=4.84s/222.00s
+  [  68] obj=89.10      act=1885     err= 0.00%/ 0.00% time=3.57s/225.57s
+  [  69] obj=88.57      act=1726     err= 0.00%/ 0.00% time=2.63s/228.20s
+  [  70] obj=87.16      act=3901     err= 0.00%/ 0.00% time=3.42s/231.62s
+  [  71] obj=86.04      act=2562     err= 0.00%/ 0.00% time=4.11s/235.73s
+  [  72] obj=84.73      act=1613     err= 0.00%/ 0.00% time=2.64s/238.37s
+  [  73] obj=83.71      act=1917     err= 0.00%/ 0.00% time=3.09s/241.45s
+  [  74] obj=81.96      act=5078     err= 0.00%/ 0.00% time=4.41s/245.87s
+  [  75] obj=80.84      act=2409     err= 0.00%/ 0.00% time=3.34s/249.20s
+  [  76] obj=79.66      act=1573     err= 0.00%/ 0.00% time=2.57s/251.77s
+  [  77] obj=77.43      act=1543     err= 0.00%/ 0.00% time=2.60s/254.37s
+  [  78] obj=75.46      act=1527     err= 0.00%/ 0.00% time=2.59s/256.96s
+  [  79] obj=73.73      act=1452     err= 0.00%/ 0.00% time=3.34s/260.30s
+  [  80] obj=72.62      act=1407     err= 0.00%/ 0.00% time=4.12s/264.42s
+  [  81] obj=72.61      act=1374     err= 0.30%/25.00% time=2.56s/266.98s
+  [  82] obj=70.47      act=3161     err= 0.00%/ 0.00% time=2.61s/269.59s
+  [  83] obj=69.96      act=1999     err= 1.02%/25.00% time=3.10s/272.69s
+  [  84] obj=69.06      act=3502     err= 0.00%/ 0.00% time=4.11s/276.80s
+  [  85] obj=68.34      act=2348     err= 0.00%/ 0.00% time=2.62s/279.42s
+  [  86] obj=67.89      act=1667     err= 0.00%/ 0.00% time=2.66s/282.08s
+  [  87] obj=67.82      act=2199     err= 0.00%/ 0.00% time=3.32s/285.40s
+  [  88] obj=66.69      act=1493     err= 0.00%/ 0.00% time=2.63s/288.03s
+  [  89] obj=65.75      act=1199     err= 0.00%/ 0.00% time=2.62s/290.65s
+  [  90] obj=65.64      act=2532     err= 0.00%/ 0.00% time=2.56s/293.21s
+  [  91] obj=64.82      act=1619     err= 0.00%/ 0.00% time=2.62s/295.83s
+  [  92] obj=63.65      act=1175     err= 0.00%/ 0.00% time=2.62s/298.45s
+  [  93] obj=63.31      act=1051     err= 0.00%/ 0.00% time=3.42s/301.87s
+  [  94] obj=63.11      act=1408     err= 0.00%/ 0.00% time=2.64s/304.52s
+  [  95] obj=62.60      act=1185     err= 0.00%/ 0.00% time=2.66s/307.18s
+  [  96] obj=61.30      act=957      err= 0.00%/ 0.00% time=2.57s/309.75s
+  [  97] obj=61.12      act=797      err= 0.00%/ 0.00% time=4.16s/313.91s
+  [  98] obj=60.45      act=870      err= 0.00%/ 0.00% time=3.36s/317.27s
+  [  99] obj=60.04      act=851      err= 0.00%/ 0.00% time=2.56s/319.82s
+  [ 100] obj=59.75      act=940      err= 0.00%/ 0.00% time=3.43s/323.25s
+  [ 101] obj=59.39      act=867      err= 0.00%/ 0.00% time=2.67s/325.92s
+  [ 102] obj=59.08      act=1161     err= 0.00%/ 0.00% time=2.59s/328.51s
+  [ 103] obj=58.53      act=1554     err= 0.00%/ 0.00% time=3.40s/331.91s
+* Compacting the model
+    - Scan the model
+    - Compact it
+      981859 observations removed
+    19637180 features removed
+* Save the model
+* Done
+
+Model for segmentation created in 335100 ms

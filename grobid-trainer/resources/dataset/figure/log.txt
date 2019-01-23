@@ -1,0 +1,62 @@
+sourceTEIPathLabel: D:\Java\git\grobid-0.4.4\grobid-home\..\grobid-trainer\resources\dataset\figure\corpus/tei
+sourceRawPathLabel: D:\Java\git\grobid-0.4.4\grobid-home\..\grobid-trainer\resources\dataset\figure\corpus/raw
+trainingOutputPath: D:\Java\git\grobid-0.4.4\grobid-home\tmp\figure3318969846602039181.train
+evalOutputPath: null
+2 tei files
+TUW-139299.training.figure.tei.xml
+TUW-200745.training.figure.tei.xml
+	epsilon: 1.0E-5
+	window: 20
+	nb max iterations: 2000
+	nb threads: 8
+Training with equivalent command line: 
+wapiti train --nthread 8 -e 0.000010 -w 20 -i 2000 -m D:\Java\git\grobid-0.4.4\grobid-home\models\figure\model.wapiti -c -p D:\Java\git\grobid-0.4.4\grobid-home\..\grobid-trainer\resources\dataset\figure\crfpp-templates\figure.template D:\Java\git\grobid-0.4.4\grobid-home\tmp\figure3318969846602039181.train D:\Java\git\grobid-0.4.4\grobid-home\models\figure\model.wapiti.new
+figure
+* Load previous model
+* Load patterns
+* Load training data
+* Resync the model
+* Summary
+    nb train:    9
+    nb labels:   7
+    nb blocks:   44634
+    nb features: 312480
+* Train the model with l-bfgs
+  [   1] obj=51.71      act=131      err= 0.00%/ 0.00% time=0.03s/0.03s
+  [   2] obj=50.22      act=120      err= 0.00%/ 0.00% time=0.05s/0.08s
+  [   3] obj=50.12      act=608      err= 0.00%/ 0.00% time=0.03s/0.12s
+  [   4] obj=48.88      act=564      err= 0.00%/ 0.00% time=0.06s/0.18s
+  [   5] obj=48.84      act=624      err= 0.00%/ 0.00% time=0.04s/0.22s
+  [   6] obj=47.03      act=568      err= 0.00%/ 0.00% time=0.07s/0.29s
+  [   7] obj=43.31      act=558      err= 0.00%/ 0.00% time=0.03s/0.32s
+  [   8] obj=33.02      act=406      err= 0.00%/ 0.00% time=0.03s/0.35s
+  [   9] obj=31.88      act=414      err=16.19%/11.11% time=0.07s/0.42s
+  [  10] obj=27.66      act=1326     err= 0.00%/ 0.00% time=0.03s/0.45s
+  [  11] obj=25.01      act=1270     err= 0.00%/ 0.00% time=0.05s/0.50s
+  [  12] obj=22.50      act=371      err= 0.00%/ 0.00% time=0.05s/0.55s
+  [  13] obj=20.40      act=401      err= 0.00%/ 0.00% time=0.05s/0.60s
+  [  14] obj=18.36      act=327      err= 0.00%/ 0.00% time=0.05s/0.65s
+  [  15] obj=16.87      act=422      err= 0.00%/ 0.00% time=0.07s/0.72s
+  [  16] obj=16.26      act=460      err= 0.00%/ 0.00% time=0.06s/0.78s
+  [  17] obj=14.78      act=455      err= 0.00%/ 0.00% time=0.04s/0.82s
+  [  18] obj=14.19      act=407      err= 0.00%/ 0.00% time=0.05s/0.86s
+  [  19] obj=14.03      act=352      err= 0.00%/ 0.00% time=0.04s/0.90s
+  [  20] obj=13.57      act=511      err= 0.00%/ 0.00% time=0.03s/0.93s
+  [  21] obj=13.28      act=427      err= 0.00%/ 0.00% time=0.05s/0.99s
+  [  22] obj=13.00      act=440      err= 0.00%/ 0.00% time=0.03s/1.02s
+  [  23] obj=12.69      act=365      err= 0.00%/ 0.00% time=0.03s/1.05s
+  [  24] obj=12.32      act=308      err= 0.00%/ 0.00% time=0.04s/1.09s
+  [  25] obj=12.06      act=249      err= 0.00%/ 0.00% time=0.05s/1.13s
+  [  26] obj=11.79      act=252      err= 0.00%/ 0.00% time=0.05s/1.18s
+  [  27] obj=11.55      act=248      err= 0.00%/ 0.00% time=0.04s/1.22s
+  [  28] obj=11.52      act=231      err= 0.00%/ 0.00% time=0.03s/1.25s
+  [  29] obj=11.12      act=205      err= 0.00%/ 0.00% time=0.04s/1.29s
+* Compacting the model
+    - Scan the model
+    - Compact it
+       44479 observations removed
+      311353 features removed
+* Save the model
+* Done
+
+Model for figure created in 1458 ms

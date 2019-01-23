@@ -1,0 +1,204 @@
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\fulltext\corpus\raw\TUW-137078.training.fulltext
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\fulltext\corpus\tei\TUW-137078.training.fulltext.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\header\corpus\raw\TUW-137078.training.header
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\affiliation-address\corpus\TUW-137078.training.header.affiliation.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\name\header\corpus\TUW-137078.training.header.authors.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\header\corpus\tei\TUW-137078.training.header.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\name\citation\corpus\tei\TUW-137078.training.references.authors.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\reference-segmenter\corpus\raw\TUW-137078.training.references.referenceSegmenter
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\reference-segmenter\corpus\tei\TUW-137078.training.references.referenceSegmenter.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\citation\corpus\TUW-137078.training.references.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\segmentation\corpus\raw\TUW-137078.training.segmentation
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\segmentation\corpus\tei\TUW-137078.training.segmentation.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\figure\corpus\raw\TUW-139299.training.figure
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\figure\corpus\tei\TUW-139299.training.figure.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\fulltext\corpus\raw\TUW-139299.training.fulltext
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\fulltext\corpus\tei\TUW-139299.training.fulltext.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\header\corpus\raw\TUW-139299.training.header
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\name\header\corpus\TUW-139299.training.header.authors.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\date\corpus\TUW-139299.training.header.date.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\header\corpus\tei\TUW-139299.training.header.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\name\citation\corpus\tei\TUW-139299.training.references.authors.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\reference-segmenter\corpus\raw\TUW-139299.training.references.referenceSegmenter
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\reference-segmenter\corpus\tei\TUW-139299.training.references.referenceSegmenter.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\citation\corpus\TUW-139299.training.references.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\segmentation\corpus\raw\TUW-139299.training.segmentation
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\segmentation\corpus\tei\TUW-139299.training.segmentation.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\figure\corpus\raw\TUW-200745.training.figure
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\figure\corpus\tei\TUW-200745.training.figure.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\fulltext\corpus\raw\TUW-200745.training.fulltext
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\fulltext\corpus\tei\TUW-200745.training.fulltext.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\header\corpus\raw\TUW-200745.training.header
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\affiliation-address\corpus\TUW-200745.training.header.affiliation.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\name\header\corpus\TUW-200745.training.header.authors.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\date\corpus\TUW-200745.training.header.date.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\header\corpus\tei\TUW-200745.training.header.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\name\citation\corpus\tei\TUW-200745.training.references.authors.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\reference-segmenter\corpus\raw\TUW-200745.training.references.referenceSegmenter
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\reference-segmenter\corpus\tei\TUW-200745.training.references.referenceSegmenter.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\citation\corpus\TUW-200745.training.references.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\segmentation\corpus\raw\TUW-200745.training.segmentation
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\segmentation\corpus\tei\TUW-200745.training.segmentation.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\table\corpus\raw\TUW-200745.training.table
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\table\corpus\tei\TUW-200745.training.table.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\fulltext\corpus\raw\TUW-231707.training.fulltext
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\fulltext\corpus\tei\TUW-231707.training.fulltext.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\header\corpus\raw\TUW-231707.training.header
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\affiliation-address\corpus\TUW-231707.training.header.affiliation.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\name\header\corpus\TUW-231707.training.header.authors.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\header\corpus\tei\TUW-231707.training.header.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\name\citation\corpus\tei\TUW-231707.training.references.authors.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\reference-segmenter\corpus\raw\TUW-231707.training.references.referenceSegmenter
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\reference-segmenter\corpus\tei\TUW-231707.training.references.referenceSegmenter.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\citation\corpus\TUW-231707.training.references.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\segmentation\corpus\raw\TUW-231707.training.segmentation
+D:\Java\git\grobid-0.4.4\grobid-trainer\resources\dataset\segmentation\corpus\tei\TUW-231707.training.segmentation.tei.xml
+D:\Java\git\grobid-0.4.4\grobid-home\..\grobid-trainer\resources\dataset\header\corpus/tei
+D:\Java\git\grobid-0.4.4\grobid-home\..\grobid-trainer\resources\dataset\header\corpus/raw
+D:\Java\git\grobid-0.4.4\grobid-home\tmp\header2421213847994114155.train
+null
+TEI files: D:\Java\git\grobid-0.4.4\grobid-home\..\grobid-trainer\resources\dataset\header\corpus/tei
+header info files: D:\Java\git\grobid-0.4.4\grobid-home\..\grobid-trainer\resources\dataset\header\corpus/raw
+outputPath for training data: D:\Java\git\grobid-0.4.4\grobid-home\tmp\header2421213847994114155.train
+4 tei files
+	epsilon: 1.0E-5
+	window: 20
+	nb max iterations: 2000
+	nb threads: 8
+Training with equivalent command line: 
+wapiti train --nthread 8 -e 0.000010 -w 20 -i 2000 -m D:\Java\git\grobid-0.4.4\grobid-home\models\header\model.wapiti -c -p D:\Java\git\grobid-0.4.4\grobid-home\..\grobid-trainer\resources\dataset\header\crfpp-templates\header.template D:\Java\git\grobid-0.4.4\grobid-home\tmp\header2421213847994114155.train D:\Java\git\grobid-0.4.4\grobid-home\models\header\model.wapiti.new
+* Load previous model
+* Load patterns
+* Load training data
+* Resync the model
+* Summary
+    nb train:    4
+    nb labels:   42
+    nb blocks:   1897172
+    nb features: 79682946
+* Train the model with l-bfgs
+  [   1] obj=5594.04    act=37903    err=35.76%/75.00% time=10.20s/10.20s
+  [   2] obj=5593.72    act=48285    err= 9.52%/75.00% time=8.60s/18.80s
+  [   3] obj=5590.09    act=47910    err=35.76%/75.00% time=7.38s/26.18s
+  [   4] obj=5590.03    act=48192    err= 9.52%/75.00% time=10.66s/36.85s
+  [   5] obj=5586.44    act=39853    err=46.09%/75.00% time=9.10s/45.95s
+  [   6] obj=5584.16    act=43751    err= 9.52%/75.00% time=16.84s/62.79s
+  [   7] obj=5583.60    act=40341    err=19.85%/75.00% time=10.02s/72.80s
+  [   8] obj=5582.86    act=44121    err= 9.52%/75.00% time=14.38s/87.18s
+  [   9] obj=5582.68    act=43717    err=19.85%/75.00% time=12.21s/99.40s
+  [  10] obj=5582.62    act=42703    err= 9.52%/75.00% time=9.92s/109.31s
+  [  11] obj=5582.28    act=42662    err=19.85%/75.00% time=9.91s/119.22s
+  [  12] obj=5581.37    act=41942    err= 9.52%/75.00% time=9.87s/129.08s
+  [  13] obj=5579.26    act=41518    err=19.85%/75.00% time=9.94s/139.03s
+  [  14] obj=5563.88    act=41218    err= 9.52%/75.00% time=16.71s/155.74s
+  [  15] obj=5563.25    act=41671    err=19.85%/75.00% time=25.66s/181.40s
+  [  16] obj=5562.63    act=48413    err= 9.52%/75.00% time=30.23s/211.63s
+  [  17] obj=5561.53    act=48056    err= 9.52%/75.00% time=27.94s/239.58s
+  [  18] obj=5561.42    act=43306    err= 9.52%/75.00% time=30.09s/269.67s
+  [  19] obj=5561.40    act=43314    err= 9.52%/75.00% time=25.41s/295.08s
+  [  20] obj=5560.27    act=42084    err= 9.38%/75.00% time=9.90s/304.98s
+  [  21] obj=5556.10    act=43134    err= 9.38%/75.00% time=9.87s/314.85s
+  [  22] obj=5553.55    act=47231    err=30.52%/75.00% time=16.66s/331.51s
+  [  23] obj=5549.37    act=50954    err= 9.38%/75.00% time=9.73s/341.24s
+  [  24] obj=5547.83    act=50858    err=30.52%/75.00% time=16.46s/357.69s
+  [  25] obj=5547.08    act=51129    err= 9.38%/75.00% time=14.32s/372.02s
+  [  26] obj=5545.84    act=51010    err=30.52%/75.00% time=16.38s/388.40s
+  [  27] obj=5545.62    act=51217    err= 9.38%/75.00% time=9.59s/397.99s
+  [  28] obj=5541.47    act=51078    err= 9.38%/75.00% time=9.79s/407.78s
+  [  29] obj=5533.31    act=50732    err= 9.38%/75.00% time=9.91s/417.68s
+  [  30] obj=5532.27    act=40117    err=11.96%/100.00% time=12.46s/430.15s
+  [  31] obj=5526.77    act=42269    err= 9.38%/75.00% time=16.51s/446.65s
+  [  32] obj=5523.45    act=40657    err=32.90%/75.00% time=12.07s/458.72s
+  [  33] obj=5523.45    act=47534    err= 9.38%/75.00% time=12.16s/470.88s
+  [  34] obj=5521.04    act=41331    err= 9.18%/75.00% time=9.69s/480.57s
+  [  35] obj=5509.35    act=41591    err=11.56%/75.00% time=9.86s/490.43s
+  [  36] obj=5503.65    act=41114    err=11.56%/75.00% time=9.69s/500.12s
+  [  37] obj=5494.17    act=38812    err= 6.05%/75.00% time=9.83s/509.96s
+  [  38] obj=5488.74    act=46526    err=10.33%/75.00% time=10.05s/520.01s
+  [  39] obj=5475.71    act=40882    err= 7.21%/75.00% time=10.00s/530.01s
+  [  40] obj=5439.49    act=37958    err= 9.45%/75.00% time=9.89s/539.90s
+  [  41] obj=5366.13    act=35330    err=28.96%/75.00% time=9.87s/549.77s
+  [  42] obj=5310.45    act=42654    err=29.84%/75.00% time=9.89s/559.66s
+  [  43] obj=5270.93    act=47110    err= 2.79%/75.00% time=9.97s/569.63s
+  [  44] obj=5164.69    act=44739    err= 7.00%/75.00% time=9.85s/579.49s
+  [  45] obj=5001.56    act=33585    err=35.42%/50.00% time=9.88s/589.37s
+  [  46] obj=4681.24    act=36241    err= 6.59%/25.00% time=10.07s/599.44s
+  [  47] obj=4431.84    act=31933    err=80.63%/100.00% time=11.97s/611.40s
+  [  48] obj=4020.87    act=48645    err=16.66%/100.00% time=12.29s/623.69s
+  [  49] obj=3785.20    act=49402    err=56.97%/75.00% time=12.20s/635.89s
+  [  50] obj=2937.84    act=36530    err=11.15%/25.00% time=9.80s/645.69s
+  [  51] obj=2195.35    act=29399    err= 1.84%/50.00% time=9.88s/655.57s
+  [  52] obj=978.12     act=15798    err= 4.49%/75.00% time=9.65s/665.22s
+  [  53] obj=622.62     act=11191    err=10.06%/100.00% time=14.28s/679.50s
+  [  54] obj=506.61     act=17037    err=27.80%/100.00% time=14.39s/693.88s
+  [  55] obj=445.67     act=16283    err= 0.95%/75.00% time=14.46s/708.34s
+  [  56] obj=337.42     act=11997    err= 3.60%/100.00% time=9.87s/718.21s
+  [  57] obj=312.72     act=11272    err=11.76%/100.00% time=21.12s/739.34s
+  [  58] obj=290.99     act=15575    err= 0.68%/75.00% time=9.66s/749.00s
+  [  59] obj=283.51     act=14389    err= 0.00%/ 0.00% time=9.68s/758.68s
+  [  60] obj=268.33     act=5537     err= 1.16%/25.00% time=12.00s/770.68s
+  [  61] obj=260.93     act=5500     err= 0.00%/ 0.00% time=9.87s/780.55s
+  [  62] obj=251.28     act=5277     err= 0.00%/ 0.00% time=9.78s/790.33s
+  [  63] obj=237.70     act=4013     err= 0.00%/ 0.00% time=9.96s/800.29s
+  [  64] obj=230.75     act=5056     err= 0.95%/50.00% time=9.98s/810.27s
+  [  65] obj=224.38     act=6100     err= 0.14%/25.00% time=12.02s/822.29s
+  [  66] obj=223.38     act=4981     err= 5.23%/75.00% time=9.69s/831.97s
+  [  67] obj=217.42     act=8053     err= 0.54%/25.00% time=14.40s/846.37s
+  [  68] obj=215.06     act=6027     err= 2.24%/25.00% time=12.04s/858.41s
+  [  69] obj=212.29     act=6391     err= 0.48%/25.00% time=9.84s/868.26s
+  [  70] obj=208.12     act=5955     err= 0.00%/ 0.00% time=9.86s/878.12s
+  [  71] obj=205.06     act=5622     err= 2.11%/50.00% time=9.89s/888.00s
+  [  72] obj=200.02     act=5297     err= 0.54%/25.00% time=9.90s/897.90s
+  [  73] obj=194.11     act=5143     err= 0.07%/25.00% time=12.13s/910.03s
+  [  74] obj=187.82     act=5013     err= 0.07%/25.00% time=9.76s/919.79s
+  [  75] obj=183.23     act=5894     err= 0.00%/ 0.00% time=9.96s/929.75s
+  [  76] obj=178.21     act=5246     err= 0.00%/ 0.00% time=12.16s/941.90s
+  [  77] obj=173.02     act=4232     err= 3.81%/50.00% time=12.12s/954.02s
+  [  78] obj=164.76     act=5185     err= 1.02%/25.00% time=12.04s/966.06s
+  [  79] obj=160.87     act=6021     err= 0.00%/ 0.00% time=12.15s/978.21s
+  [  80] obj=158.13     act=6852     err= 1.02%/25.00% time=9.97s/988.17s
+  [  81] obj=156.31     act=7426     err= 0.00%/ 0.00% time=12.16s/1000.33s
+  [  82] obj=152.00     act=4862     err= 0.00%/ 0.00% time=12.14s/1012.48s
+  [  83] obj=151.11     act=4091     err= 2.24%/50.00% time=12.15s/1024.62s
+  [  84] obj=148.93     act=5130     err= 5.17%/25.00% time=12.26s/1036.88s
+  [  85] obj=142.00     act=7664     err= 0.00%/ 0.00% time=11.95s/1048.83s
+  [  86] obj=139.91     act=9045     err= 0.00%/ 0.00% time=9.69s/1058.51s
+  [  87] obj=137.66     act=7571     err= 0.00%/ 0.00% time=12.12s/1070.63s
+  [  88] obj=135.73     act=7490     err= 0.00%/ 0.00% time=12.07s/1082.70s
+  [  89] obj=134.13     act=5986     err= 0.00%/ 0.00% time=9.96s/1092.65s
+  [  90] obj=131.89     act=7890     err= 0.00%/ 0.00% time=12.16s/1104.81s
+  [  91] obj=130.61     act=7967     err= 5.17%/25.00% time=12.10s/1116.91s
+  [  92] obj=130.33     act=8732     err= 0.00%/ 0.00% time=10.00s/1126.90s
+  [  93] obj=128.06     act=9648     err= 0.00%/ 0.00% time=9.86s/1136.76s
+  [  94] obj=127.86     act=8910     err= 0.00%/ 0.00% time=11.83s/1148.59s
+  [  95] obj=127.26     act=8430     err= 0.00%/ 0.00% time=9.81s/1158.40s
+  [  96] obj=126.80     act=7016     err= 5.10%/25.00% time=9.83s/1168.24s
+  [  97] obj=125.97     act=7840     err= 0.00%/ 0.00% time=9.73s/1177.96s
+  [  98] obj=124.71     act=7183     err= 0.00%/ 0.00% time=9.92s/1187.88s
+  [  99] obj=123.75     act=6676     err= 0.00%/ 0.00% time=9.87s/1197.76s
+  [ 100] obj=123.53     act=6087     err= 0.00%/ 0.00% time=9.98s/1207.73s
+  [ 101] obj=122.34     act=6549     err= 0.00%/ 0.00% time=9.87s/1217.61s
+  [ 102] obj=121.83     act=5579     err= 0.00%/ 0.00% time=9.88s/1227.49s
+  [ 103] obj=120.35     act=6997     err= 0.00%/ 0.00% time=9.96s/1237.45s
+  [ 104] obj=119.61     act=6283     err= 0.00%/ 0.00% time=9.93s/1247.38s
+  [ 105] obj=118.14     act=6358     err= 0.00%/ 0.00% time=9.79s/1257.17s
+  [ 106] obj=117.51     act=5082     err= 0.00%/ 0.00% time=9.90s/1267.07s
+  [ 107] obj=116.56     act=4817     err= 0.00%/ 0.00% time=9.99s/1277.06s
+  [ 108] obj=116.09     act=4605     err= 0.00%/ 0.00% time=14.32s/1291.38s
+  [ 109] obj=115.76     act=4082     err= 0.00%/ 0.00% time=9.95s/1301.33s
+  [ 110] obj=115.45     act=3920     err= 0.00%/ 0.00% time=14.30s/1315.63s
+  [ 111] obj=114.54     act=3683     err= 0.00%/ 0.00% time=9.67s/1325.30s
+  [ 112] obj=113.99     act=3340     err= 0.00%/ 0.00% time=10.01s/1335.31s
+  [ 113] obj=112.86     act=5149     err= 0.00%/ 0.00% time=9.97s/1345.28s
+  [ 114] obj=112.00     act=4889     err= 0.00%/ 0.00% time=9.94s/1355.22s
+  [ 115] obj=111.25     act=4893     err= 0.00%/ 0.00% time=9.97s/1365.18s
+  [ 116] obj=110.70     act=4058     err= 0.00%/ 0.00% time=10.01s/1375.19s
+* Compacting the model
+    - Scan the model
+    - Compact it
+     1895392 observations removed
+    79606464 features removed
+* Save the model
+* Done
+
+Model for header created in 1382648 ms
