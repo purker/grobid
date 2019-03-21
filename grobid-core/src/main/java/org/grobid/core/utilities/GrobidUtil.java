@@ -97,15 +97,19 @@ public class GrobidUtil {
 
 	public static void writeLabelPairs(List<TokenLabelPair> labels, File file) {
 		try (Writer writer = new OutputStreamWriter(new FileOutputStream(file, false), "UTF-8");) {
-			for (TokenLabelPair blo : labels) {
-				String token = blo.getToken();
-				String label = blo.getLabel();
-				writer.write(token + " - " + label + "\n");
+			for (TokenLabelPair pair : labels) {
+				if (pair == null) {
+					writer.write("null");
+				} else {
+					String token = pair.getToken();
+					String label = pair.getLabel();
+					writer.write(token + "\t" + label + "\n");
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("labelpairs written");
+		System.out.println("labelpairs written: " + file.getAbsolutePath());
 	}
 
 	public static void writeObjectToFile(Object object, File file) throws FileNotFoundException {

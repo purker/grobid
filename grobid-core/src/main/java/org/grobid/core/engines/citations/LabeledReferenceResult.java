@@ -2,6 +2,7 @@ package org.grobid.core.engines.citations;
 
 import org.grobid.core.layout.BoundingBox;
 import org.grobid.core.layout.LayoutToken;
+import org.grobid.core.utilities.BoundingBoxCalculator;
 
 import java.util.List;
 
@@ -59,4 +60,9 @@ public class LabeledReferenceResult {
     public String toString() {
         return "** " + (label == null ? "" : label) + " ** " + referenceText;
     }
+
+	public void addTokens(List<LayoutToken> additionalTokens) {
+		this.tokens.addAll(additionalTokens);
+		this.coordinates = BoundingBoxCalculator.calculate(tokens);
+	}
 }

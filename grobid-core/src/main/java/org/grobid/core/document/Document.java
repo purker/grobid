@@ -1140,7 +1140,7 @@ public class Document {
      * -> now covered by the CRF segmentation model
      */
     public String getHeaderByIntroduction() {
-        String res;
+		String res;
         StringBuilder accumulated = new StringBuilder();
         int i = 0;
         for (Block block : blocks) {
