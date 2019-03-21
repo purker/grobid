@@ -123,7 +123,7 @@ public class GenericTaggerUtilsTest {
 				"has	has	h	ha	has	has	s	as	has	has	BLOCKIN	LINEIN	ALIGNEDLEFT	SAMEFONT	SAMEFONTSIZE	0	0	NOCAPS	NODIGIT	0	NOPUNCT	0	6	0	<section>\n" + 
 				"a	a	a	a	a	a	a	a	a	a	BLOCKIN	LINEIN	ALIGNEDLEFT	SAMEFONT	SAMEFONTSIZE	0	0	NOCAPS	NODIGIT	1	NOPUNCT	0	6	0	<section>";
 
-		String replacedString = GenericTaggerUtils.replaceLabelsOnLabledResult(s, replaceWith);
+		String replacedString = GenericTaggerUtils.replaceLabelsOnLabledResult(null, null, s, replaceWith);
 
 		System.out.println(s);
 		System.out.println(replacedString);
