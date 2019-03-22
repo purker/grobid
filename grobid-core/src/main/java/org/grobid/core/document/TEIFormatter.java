@@ -1662,27 +1662,27 @@ public class TEIFormatter {
             spaceEnd = true;
 
         List<Node> nodes = new ArrayList<>();
-        for (ReferenceMarkerMatcher.MatchResult matchResult : markerMatcher.match(refTokens)) {
-            // no need to HTMLEncode since XOM will take care about the correct escaping
-            String markerText = LayoutTokensUtil.normalizeText(matchResult.getText());
-            String coords = null;
-            if (generateCoordinates && matchResult.getTokens() != null) {
-                coords = LayoutTokensUtil.getCoordsString(matchResult.getTokens());
-            }
-
-            Element ref = teiElement("ref");
-            ref.addAttribute(new Attribute("type", "bibr"));
-
-            if (coords != null) {
-                ref.addAttribute(new Attribute("coords", coords));
-            }
-            ref.appendChild(markerText);
-
-            if (matchResult.getBibDataSet() != null) {
-                ref.addAttribute(new Attribute("target", "#b" + matchResult.getBibDataSet().getResBib().getOrdinal()));
-            }
-            nodes.add(ref);
-        }
+	        for (ReferenceMarkerMatcher.MatchResult matchResult : markerMatcher.match(refTokens)) {
+	            // no need to HTMLEncode since XOM will take care about the correct escaping
+	            String markerText = LayoutTokensUtil.normalizeText(matchResult.getText());
+	            String coords = null;
+	            if (generateCoordinates && matchResult.getTokens() != null) {
+	                coords = LayoutTokensUtil.getCoordsString(matchResult.getTokens());
+	            }
+	
+	            Element ref = teiElement("ref");
+	            ref.addAttribute(new Attribute("type", "bibr"));
+	
+	            if (coords != null) {
+	                ref.addAttribute(new Attribute("coords", coords));
+	            }
+	            ref.appendChild(markerText);
+	
+	            if (matchResult.getBibDataSet() != null) {
+	                ref.addAttribute(new Attribute("target", "#b" + matchResult.getBibDataSet().getResBib().getOrdinal()));
+	            }
+	            nodes.add(ref);
+	        }
         if (spaceEnd)
             nodes.add(new Text(" "));
         return nodes;
