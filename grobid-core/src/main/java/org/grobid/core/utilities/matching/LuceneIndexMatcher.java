@@ -31,7 +31,7 @@ import java.util.Map;
  * User: zholudev
  * Date: 3/4/14
  */
-public class LuceneIndexMatcher<T, V> implements Closeable {
+public class LuceneIndexMatcher<T, V> implements AutoCloseable {
     private Analyzer analyzer = new ClassicAnalyzer(Version.LUCENE_45);
     private static final String ID_LUCENE_FIELD_NAME = "idField";
     public static final String INDEXED_LUCENE_FIELD_NAME = "indexedField";

@@ -205,8 +205,7 @@ public class FullTextParser extends AbstractParser {
 
 			// consolidate the set
 			if (config.isConsolidateCitations()) {
-				Consolidation consolidator = new Consolidation(cntManager);
-				try {
+				try (Consolidation consolidator = new Consolidation(cntManager)) {
 					Map<Integer,BiblioItem> resConsolidation = consolidator.consolidate(resCitations);
 					for(int i=0; i<resCitations.size(); i++) {
 						BiblioItem resCitation = resCitations.get(i).getResBib();
@@ -218,8 +217,6 @@ public class FullTextParser extends AbstractParser {
 				} catch(Exception e) {
 					throw new GrobidException(
                     "An exception occured while running consolidation on bibliographical references.", e);
-				} finally {
-					//consolidator.close();
 				}
 			}
             doc.setBibDataSets(resCitations);
@@ -2145,10 +2142,5 @@ public class FullTextParser extends AbstractParser {
 			labeledTokenSequences.add(currentTokenization);
 
         return labeledTokenSequences;
-    }
-
-    @Override
-    public void close() throws IOException {
-        super.close();
     }
 }

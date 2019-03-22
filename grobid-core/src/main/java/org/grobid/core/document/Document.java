@@ -53,6 +53,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -74,7 +75,7 @@ import java.util.regex.Pattern;
  * @author Patrice Lopez
  */
 
-public class Document {
+public class Document implements AutoCloseable {
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(Document.class);
     public static final int MAX_FIG_BOX_DISTANCE = 70;
@@ -2186,6 +2187,13 @@ public class Document {
 
 	public String getPdfFileName() {
 		return getDocumentSource().getPdfFile().getName();
+	}
+
+	@Override
+	public void close() throws IOException {
+		if(referenceMarkerMatcher!=null) {
+			referenceMarkerMatcher.close();		
+		}
 	}
 
     /**

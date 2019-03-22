@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.io.Closeable;
 import java.io.IOException;
 
-public abstract class AbstractParser implements GenericTagger, Closeable {
+public abstract class AbstractParser implements GenericTagger, AutoCloseable {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractParser.class);
     private GenericTagger genericTagger;
     protected GrobidAnalyzer analyzer = GrobidAnalyzer.getInstance();

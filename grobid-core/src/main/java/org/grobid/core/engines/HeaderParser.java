@@ -266,7 +266,8 @@ public class HeaderParser extends AbstractParser {
 					}
 				}
 
-				if (consolidate || (resHeader.getDOI() != null)) {
+				//DA
+				if (consolidate) { // || (resHeader.getDOI() != null)) {
 					resHeader = consolidateHeader(resHeader);
 				}
 
@@ -479,7 +480,7 @@ public class HeaderParser extends AbstractParser {
 					}
 				}
 
-				if (consolidate || (resHeader.getDOI() != null)) {
+				if (consolidate) { // || (resHeader.getDOI() != null)) {
 					resHeader = consolidateHeader(resHeader);
 				}
 
@@ -1642,10 +1643,8 @@ public class HeaderParser extends AbstractParser {
 	 * @param resHeader original biblio item
 	 * @return consolidated biblio item
 	 */
-	public BiblioItem consolidateHeader(BiblioItem resHeader) {
-		Consolidation consolidator = null;
-		try {
-			consolidator = new Consolidation(cntManager);
+    public BiblioItem consolidateHeader(BiblioItem resHeader) {
+		try (Consolidation consolidator = new Consolidation(cntManager)) {
             List<BiblioItem> bibis = new ArrayList<BiblioItem>();
 			boolean valid = consolidator.consolidate(resHeader, bibis);
 			if ((valid) && (bibis.size() > 0)) {
@@ -1657,15 +1656,7 @@ public class HeaderParser extends AbstractParser {
 		} catch (Exception e) {
 			// e.printStackTrace();
 			throw new GrobidException("An exception occured while running Grobid.", e);
-		} finally {
-			/*if (consolidator != null)
-			    consolidator.close();*/
 		}
 		return resHeader;
-	}
-
-	@Override
-	public void close() throws IOException {
-		super.close();
 	}
 }

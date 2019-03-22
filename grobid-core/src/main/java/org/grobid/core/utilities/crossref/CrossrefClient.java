@@ -2,20 +2,19 @@ package org.grobid.core.utilities.crossref;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Map;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.concurrent.CountDownLatch;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.Future;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.apache.commons.lang3.concurrent.TimedSemaphore;
 import org.apache.http.client.ClientProtocolException;
-import org.grobid.core.utilities.crossref.CrossrefRequestListener.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +25,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Vincent Kaestle, Patrice
  */
-public class CrossrefClient {
+public class CrossrefClient implements AutoCloseable {
 	public static final Logger logger = LoggerFactory.getLogger(CrossrefRequestTask.class);
 
 	private static volatile CrossrefClient instance;
@@ -59,7 +58,8 @@ public class CrossrefClient {
 	 * Hidden constructor
 	 */
 	private CrossrefClient() {
-		this.executorService = Executors.newCachedThreadPool();
+		BasicThreadFactory factory = new BasicThreadFactory.Builder().namingPattern("CrossrefClient-%d").build();
+		this.executorService = Executors.newCachedThreadPool(factory);
 		this.timedSemaphore = null;
 		this.futures = new HashMap<>();
 		setLimits(1, 1000);
@@ -155,9 +155,14 @@ public class CrossrefClient {
 			} catch (ExecutionException ee) {
 				logger.error("CrossRef request execution fails");
 			} finally {
-				executorService.shutdown();
+				this.close();
 			}
 		}
+	}
+
+	@Override
+	public void close() {
+		executorService.shutdown();		
 	}
 
 }

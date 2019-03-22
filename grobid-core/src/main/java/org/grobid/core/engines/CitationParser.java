@@ -194,14 +194,11 @@ public class CitationParser extends AbstractParser {
 
 		// consolidate the set
 		if (consolidate) {
-			Consolidation consolidator = new Consolidation(cntManager);
 			Map<Integer, BiblioItem> resConsolidation = null;
-			try {
+			try (Consolidation consolidator = new Consolidation(cntManager)) {
 				resConsolidation = consolidator.consolidate(results);
 			} catch (Exception e) {
 				throw new GrobidException("An exception occured while running consolidation on bibliographical references.", e);
-			} finally {
-				//consolidator.close();
 			}
 			if (resConsolidation != null) {
 
@@ -374,9 +371,7 @@ public class CitationParser extends AbstractParser {
 	 * @return consolidated biblio item
 	 */
 	public BiblioItem consolidateCitation(BiblioItem resCitation) {
-		Consolidation consolidator = null;
-		try {
-			consolidator = new Consolidation(cntManager);
+		try (Consolidation consolidator = new Consolidation(cntManager)) {
 			ArrayList<BiblioItem> bibis = new ArrayList<>();
 			boolean valid = consolidator.consolidate(resCitation, bibis);
 			if ((valid) && (bibis.size() > 0)) {
@@ -386,8 +381,6 @@ public class CitationParser extends AbstractParser {
 		} catch (Exception e) {
 			// e.printStackTrace();
 			throw new GrobidException("An exception occured while running Grobid.", e);
-		} finally {
-			//consolidator.close();
 		}
 		return resCitation;
 	}
@@ -736,10 +729,5 @@ public class CitationParser extends AbstractParser {
 
 		}
 		return res;
-	}
-
-	@Override
-	public void close() throws IOException {
-		super.close();
 	}
 }

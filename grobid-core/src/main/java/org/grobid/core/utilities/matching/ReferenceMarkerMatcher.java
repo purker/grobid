@@ -16,6 +16,8 @@ import org.grobid.core.engines.counters.ReferenceMarkerMatcherCounters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,7 +28,7 @@ import java.util.regex.Pattern;
  * Created by zholudev on 18/12/15.
  * Matching reference markers to extracted citations
  */
-public class ReferenceMarkerMatcher {
+public class ReferenceMarkerMatcher implements AutoCloseable {
     private static final Logger LOGGER = LoggerFactory.getLogger(ReferenceMarkerMatcher.class);
 
     public static final Pattern YEAR_PATTERN = Pattern.compile("[12][0-9]{3}[a-d]?");
@@ -359,7 +361,7 @@ public class ReferenceMarkerMatcher {
             }));
 
             if (bibDataSets.size() <= 1) {
-                return bibDataSets;
+            	return bibDataSets;
             }
 
             //cases like c = "Smith et al, 2015" and Bds = <"Smith, Hoffmann, 2015", "Smith, 2015"> -- should prefer first one
@@ -379,5 +381,11 @@ public class ReferenceMarkerMatcher {
             }));
         }
     }
+
+	@Override
+	public void close() {
+		authorMatcher.close();
+	    labelMatcher.close();
+	}
 
 }

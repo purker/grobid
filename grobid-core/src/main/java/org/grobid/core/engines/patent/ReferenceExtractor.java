@@ -63,14 +63,14 @@ import java.util.zip.GZIPInputStream;
  *
  * @author Patrice Lopez
  */
-public class ReferenceExtractor implements Closeable {
+public class ReferenceExtractor implements AutoCloseable {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ReferenceExtractor.class);
 
     //private GenericTagger taggerPatent = null;
     //private GenericTagger taggerNPL = null;
     private GenericTagger taggerAll = null;
     private PatentRefParser patentParser = null;
-    private Consolidation consolidator = null;
+    //private Consolidation consolidator = null;
 
     private String tmpPath = null;
 //    private String pathXML = null;

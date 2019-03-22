@@ -32,7 +32,7 @@ import static org.apache.commons.collections4.CollectionUtils.isEmpty;
  * @author Damien, Patrice
  */
 
-public class ProcessEngine implements Closeable {
+public class ProcessEngine implements AutoCloseable {
 
     /**
      * The logger.

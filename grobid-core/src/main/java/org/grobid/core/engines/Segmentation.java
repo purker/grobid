@@ -1199,11 +1199,4 @@ public class Segmentation extends AbstractParser {
         }
         return res;
     }
-
-    @Override
-    public void close() throws IOException {
-        super.close();
-        // ...
-    }
-
 }

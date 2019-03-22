@@ -12,7 +12,7 @@ import java.io.IOException;
  * @author Slava
  * Date: 4/15/14
  */
-public class EngineParsers implements Closeable {
+public class EngineParsers implements AutoCloseable {
     public static final Logger LOGGER = LoggerFactory.getLogger(EngineParsers.class);
 
     private AuthorParser authorParser = null;
@@ -211,7 +211,19 @@ public class EngineParsers implements Closeable {
             chemicalParser = null;
             LOGGER.debug("CLOSING chemicalParser");
         }
-
+        
+        if (segmentationParser != null) {
+        	segmentationParser.close();
+        	segmentationParser = null;
+            LOGGER.debug("CLOSING segmentationParser");
+        }
+        
+        if (referenceSegmenterParser != null) {
+        	referenceSegmenterParser.close();
+        	referenceSegmenterParser = null;
+            LOGGER.debug("CLOSING referenceSegmenterParser");
+        }
+        
         if (figureParser != null) {
             figureParser.close();
             figureParser = null;

@@ -1,37 +1,38 @@
 package org.grobid.core.utilities;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.commons.collections4.CollectionUtils;
-
-import org.grobid.core.data.BiblioItem;
-import org.grobid.core.data.BibDataSet;
-import org.grobid.core.exceptions.GrobidException;
-import org.grobid.core.sax.CrossrefUnixrefSaxParser;
-import org.grobid.core.utilities.crossref.*;
-import org.grobid.core.utilities.counters.CntManager;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.xml.sax.InputSource;
-import org.xml.sax.helpers.DefaultHandler;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
+import java.io.Closeable;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.grobid.core.data.BibDataSet;
+import org.grobid.core.data.BiblioItem;
+import org.grobid.core.exceptions.GrobidException;
+import org.grobid.core.sax.CrossrefUnixrefSaxParser;
+import org.grobid.core.utilities.counters.CntManager;
+import org.grobid.core.utilities.crossref.CrossrefClient;
+import org.grobid.core.utilities.crossref.CrossrefRequestListener;
+import org.grobid.core.utilities.crossref.WorkDeserializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xml.sax.InputSource;
+import org.xml.sax.helpers.DefaultHandler;
 
 import com.rockymadden.stringmetric.similarity.RatcliffObershelpMetric;
+
 import scala.Option;
 
 /**
@@ -41,7 +42,7 @@ import scala.Option;
  *
  * @author Patrice Lopez
  */
-public class Consolidation {
+public class Consolidation implements AutoCloseable {
     private static final Logger LOGGER = LoggerFactory.getLogger(Consolidation.class);
 
     private CrossrefClient client = null;
@@ -61,7 +62,7 @@ public class Consolidation {
      * could prevent the JVM from exiting
      */
     public void close() {
-        //client.close();
+        client.close();
     }
 
     /**
@@ -197,87 +198,87 @@ public class Consolidation {
         }
         n = 0;
         long threadId = Thread.currentThread().getId();
-        for(BibDataSet bibDataSet : biblios) {
-            final BiblioItem theBiblio = bibDataSet.getResBib();
-
-            // first we get the exploitable metadata
-            String doi = theBiblio.getDOI();
-            String aut = theBiblio.getFirstAuthorSurname();
-            String title = theBiblio.getTitle();
-            String journalTitle = theBiblio.getJournal();
-           
-            if (aut != null) {
-                aut = TextUtilities.removeAccents(aut);
-            }
-            if (title != null) {
-                title = TextUtilities.removeAccents(title);
-            }
-            if (journalTitle != null) {
-                journalTitle = TextUtilities.removeAccents(journalTitle);
-            }
-
-            Map<String, String> arguments = null;
-
-            // request id
-            //final int id = n;
-
-            if (StringUtils.isNotBlank(doi)) {
-                // call based on the identified DOI
-                doi = cleanDoi(doi);
-                arguments = null;
-            } else if (StringUtils.isNotBlank(title) && StringUtils.isNotBlank(aut)) {
-                // call based on partial metadata
-                doi = null;
-                arguments = new HashMap<String,String>();
-                arguments.put("query.title", title);
-                arguments.put("query.author", aut);
-                if (StringUtils.isNotBlank(journalTitle))
-                     arguments.put("query.container-title", journalTitle);
-
-                arguments.put("rows", "1"); // we just request the top-one result
-            } 
-
-            if ((doi == null) && (arguments == null)) {
-                //results.put(new Integer(n), null);
-                n++;
-                continue;
-            }
-
-            try {
-                //CrossrefRequestListener<BiblioItem> requestListener = new CrossrefRequestListener<BiblioItem>();
-                client.<BiblioItem>pushRequest("works", doi, arguments, workDeserializer, threadId, new CrossrefRequestListener<BiblioItem>(n) {
-                    
-                    @Override
-                    public void onSuccess(List<BiblioItem> res) {
-                        //System.out.println("Success request "+id);
-                        //System.out.println("size of results: " + res.size());
-                        if ((res != null) && (res.size() > 0) ) {
-                            // we need here to post-check that the found item corresponds
-                            // correctly to the one requested in order to avoid false positive
-                            for(BiblioItem oneRes : res) {
-                                if (postValidation(theBiblio, oneRes)) {
-                                    results.put(new Integer(getRank()), oneRes);
-                                    break;
-                                }
-                            }
-                        } 
-                    }
-
-                    @Override
-                    public void onError(int status, String message, Exception exception) {
-                        LOGGER.info("ERROR ("+status+") : "+message);
-                        System.out.println("ERROR ("+status+") : "+message);
-                        //exception.printStackTrace();
-                    }
-                });
-            } catch(Exception e) {
-                LOGGER.error("Consolidation error - " + ExceptionUtils.getStackTrace(e));
-                //results.put(new Integer(id), null);
-            } 
-            n++;
-        }
+	        for(BibDataSet bibDataSet : biblios) {
+	            final BiblioItem theBiblio = bibDataSet.getResBib();
+	
+	            // first we get the exploitable metadata
+	            String doi = theBiblio.getDOI();
+	            String aut = theBiblio.getFirstAuthorSurname();
+	            String title = theBiblio.getTitle();
+	            String journalTitle = theBiblio.getJournal();
+	           
+	            if (aut != null) {
+	                aut = TextUtilities.removeAccents(aut);
+	            }
+	            if (title != null) {
+	                title = TextUtilities.removeAccents(title);
+	            }
+	            if (journalTitle != null) {
+	                journalTitle = TextUtilities.removeAccents(journalTitle);
+	            }
+	
+	            Map<String, String> arguments = null;
+	
+	            // request id
+	            //final int id = n;
+	
+	            if (StringUtils.isNotBlank(doi)) {
+	                // call based on the identified DOI
+	                doi = cleanDoi(doi);
+	                arguments = null;
+	            } else if (StringUtils.isNotBlank(title) && StringUtils.isNotBlank(aut)) {
+	                // call based on partial metadata
+	                doi = null;
+	                arguments = new HashMap<String,String>();
+	                arguments.put("query.title", title);
+	                arguments.put("query.author", aut);
+	                if (StringUtils.isNotBlank(journalTitle))
+	                     arguments.put("query.container-title", journalTitle);
+	
+	                arguments.put("rows", "1"); // we just request the top-one result
+	            } 
+	
+	            if ((doi == null) && (arguments == null)) {
+	                //results.put(new Integer(n), null);
+	                n++;
+	                continue;
+	            }
+	
+	            try {
+	                //CrossrefRequestListener<BiblioItem> requestListener = new CrossrefRequestListener<BiblioItem>();
+	                client.<BiblioItem>pushRequest("works", doi, arguments, workDeserializer, threadId, new CrossrefRequestListener<BiblioItem>(n) {
+	                    
+	                    @Override
+	                    public void onSuccess(List<BiblioItem> res) {
+	                        //System.out.println("Success request "+id);
+	                        //System.out.println("size of results: " + res.size());
+	                        if ((res != null) && (res.size() > 0) ) {
+	                            // we need here to post-check that the found item corresponds
+	                            // correctly to the one requested in order to avoid false positive
+	                            for(BiblioItem oneRes : res) {
+	                                if (postValidation(theBiblio, oneRes)) {
+	                                    results.put(new Integer(getRank()), oneRes);
+	                                    break;
+	                                }
+	                            }
+	                        } 
+	                    }
+	
+	                    @Override
+	                    public void onError(int status, String message, Exception exception) {
+	                        LOGGER.info("ERROR ("+status+") : "+message);
+	                        System.out.println("ERROR ("+status+") : "+message);
+	                        //exception.printStackTrace();
+	                    }
+	                });
+	            } catch(Exception e) {
+	                LOGGER.error("Consolidation error - " + ExceptionUtils.getStackTrace(e));
+	                //results.put(new Integer(id), null);
+	            } 
+	            n++;
+	        }
 //System.out.println("before finish, result size is " + results.size());
-        client.finish(threadId);
+        	client.finish(threadId);
 //System.out.println("after finish, result size is " + results.size());
 /*int consolidated = 0;
 for (Entry<Integer, BiblioItem> cursor : results.entrySet()) {
