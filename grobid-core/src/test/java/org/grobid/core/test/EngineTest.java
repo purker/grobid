@@ -14,8 +14,8 @@ public abstract class EngineTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        MockContext.setInitialContext();
-        engine = GrobidFactory.getInstance().createEngine();
+		MockContext.setInitialContext();
+		engine = GrobidFactory.getInstance().createEngine();
     }
 
     @AfterClass

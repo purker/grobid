@@ -2,19 +2,17 @@ package org.grobid.core.engines;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.grobid.BeginMarkerMap;
 import org.grobid.core.GrobidModels;
 import org.grobid.core.document.Document;
 import org.grobid.core.document.DocumentPiece;
@@ -28,37 +26,36 @@ import org.grobid.core.exceptions.GrobidException;
 import org.grobid.core.features.FeatureFactory;
 import org.grobid.core.features.FeaturesVectorReferenceSegmenter;
 import org.grobid.core.layout.Block;
+import org.grobid.core.layout.BoundingBox;
 import org.grobid.core.layout.LayoutToken;
-import org.grobid.core.tokenization.LabeledTokensContainer;
-import org.grobid.core.tokenization.TaggingTokenSynchronizer;
+import org.grobid.core.layout.LayoutTokenLine;
 import org.grobid.core.utilities.BoundingBoxCalculator;
-import org.grobid.core.utilities.GrobidUtil;
 import org.grobid.core.utilities.Pair;
+import org.grobid.core.utilities.StringUtil;
 import org.grobid.core.utilities.TextUtilities;
 import org.grobid.core.utilities.TokenLabelPair;
 import org.grobid.core.utilities.Triple;
+import org.grobid.core.utilities.XStreamUtil;
 import org.grobid.trainer.ReferenceSegmenterTrainer;
-import org.grobid.trainer.document.TrainingDocumentSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Sets;
 
 /**
  * @author Slava, Patrice
  * Date: 4/14/14
  */
-public class ReferenceSegmenterParser extends AbstractParser implements ReferenceSegmenter{
+public class ReferenceSegmenterParser extends AbstractParser implements ReferenceSegmenter {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ReferenceSegmenterParser.class);
 
-    // projection scale for line length
-    private static final int LINESCALE = 10;
+	// projection scale for line length
+	private static final int LINESCALE = 10;
 
-    protected ReferenceSegmenterParser() {
-        super(GrobidModels.REFERENCE_SEGMENTER);
-    }
+	protected ReferenceSegmenterParser() {
+		super(GrobidModels.REFERENCE_SEGMENTER);
+	}
 
 	@Override
 	public List<LabeledReferenceResult> extract(String referenceBlock) {
@@ -72,11 +69,11 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 	}
 
 	/**
-     *
-     * @param doc Document object
-     * @return <reference_label, reference_string>  Note, that label is null when no label was detected
-     *              example: <"[1]", "Hu W., Barkana, R., &amp; Gruzinov A. Phys. Rev. Lett. 85, 1158">
-     */
+	 *
+	 * @param doc Document object
+	 * @return <reference_label, reference_string>  Note, that label is null when no label was detected
+	 *              example: <"[1]", "Hu W., Barkana, R., &amp; Gruzinov A. Phys. Rev. Lett. 85, 1158">
+	 */
 	public List<LabeledReferenceResult> extract(Document doc) {
 		return extract(doc, false);
 	}
@@ -88,30 +85,20 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 
     public List<LabeledReferenceResult> extract(Document doc, SortedSet<DocumentPiece> referencesParts, boolean training) {
 
-		Pair<String,List<LayoutToken>> featSeg = getReferencesSectionFeatured(doc, referencesParts);
+		Pair<String, List<LayoutToken>> featSeg = getReferencesSectionFeatured(doc, referencesParts);
 		String res;
 		List<LayoutToken> tokenizationsReferences;
 		if (featSeg == null) {
 			return null;
 		}
+		
 		// if featSeg is null, it usually means that no reference segment is found in the
 		// document segmentation
 		String featureVector = featSeg.getA();
 		tokenizationsReferences = featSeg.getB();
-		try {
-			res = label(featureVector);
-		}
-		catch(Exception e) {
-			throw new GrobidException("CRF labeling in ReferenceSegmenter fails.", e);
-		}
-		if (res == null) {
-			return null;
-		}
-        // if we extract for generating training data, we also give back the used features
-        List<Triple<String, String, String>> labeled = GenericTaggerUtils.getTokensWithLabelsAndFeatures(res, training);
 
-        return getExtractionResult(tokenizationsReferences, labeled);
-    }
+		return getExtractionResult(tokenizationsReferences);
+	}
 
 	public List<LabeledReferenceResult> extractWithGivenLabelsFromTeiFile(TrainingDocument doc)
 			throws ParserConfigurationException, SAXException, IOException {
@@ -134,93 +121,129 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 			labeledTriples.add(new Triple<String, String, String>(pair.getToken(), pair.getLabel(), null));
 		}
 
-		if (FullTextParser.PRINTLABELFILES) {
-			//TODO Angela delete
-			try {
-				File errorDir = new File(doc.getDocumentSource().getPdfFile().getParentFile().getParent(), "error");
-				File labelsFile = new File(errorDir, doc.getPdfFileName().replace(".pdf", ".references.referenceSegmenter.labels"));
-				FileUtils.writeStringToFile(labelsFile, StringUtils.join(labels, "\n"), StandardCharsets.UTF_8);
-
-				File file = new File(errorDir, doc.getPdfFileName().replace(".pdf", ".references.referenceSegmenter.tokenizations"));
-				GrobidUtil.writeLayoutTokensAsTextToFileWithOutWhitespaceAndNewline(tokenizationsReferences, file);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-		return getExtractionResult(tokenizationsReferences, labeledTriples);
+		return getExtractionResult(tokenizationsReferences);
 	}
 
-    private List<LabeledReferenceResult> getExtractionResult(List<LayoutToken> tokenizations, List<Triple<String, String, String>> labeled) {
-        final List<LabeledReferenceResult> resultList = new ArrayList<>();
-        final StringBuilder reference = new StringBuilder();
-        final List<LayoutToken> referenceTokens = new ArrayList<>();
-        final StringBuilder features = new StringBuilder();
-        final StringBuilder referenceLabel = new StringBuilder();
+	//auf private ohne static ändern
+	public static List<LabeledReferenceResult> getExtractionResult(List<LayoutToken> list) {
+		//double min = 134.765;
 
-        TaggingTokenSynchronizer synchronizer = new TaggingTokenSynchronizer(null, labeled, tokenizations);
+		List<LabeledReferenceResult> labeledReferenceResults = new ArrayList<>();
 
-        Function<LabeledTokensContainer, Void> function = new Function<LabeledTokensContainer, Void>() {
-            @Override public Void apply(LabeledTokensContainer container) {
-                features.append(container.getFeatureString());
-                features.append('\n');
-                if (container.isBeginning()) {
-                    if (reference.length() != 0) {
-                        resultList.add(new LabeledReferenceResult(referenceLabel.length() == 0 ? null :
-                            referenceLabel.toString().trim(), reference.toString().trim(), referenceTokens, 
-                            	features.toString(), BoundingBoxCalculator.calculate(referenceTokens)));
-                        reference.setLength(0);
-                        referenceLabel.setLength(0);
-                        features.setLength(0);
-                        referenceTokens.clear();
-                    }
-                }
-                return null;
-            }
-        };
+		if (CollectionUtils.isEmpty(list)) {
+			return labeledReferenceResults;
+		}
 
-        Iterator<LabeledTokensContainer> iterator = synchronizer.iterator();
-        while (iterator.hasNext()) {
-            LabeledTokensContainer container = iterator.next();
-            String tok = container.getToken();
-            String plainLabel = container.getPlainLabel();
-            if ("<label>".equals(plainLabel)) {
-                function.apply(container);
-                referenceLabel.append(tok);
+		List<List<LayoutToken>> lines = new ArrayList<>();
+		List<LayoutToken> line = new ArrayList<>();
+		double minX = Double.MAX_VALUE;
 
-                if (container.isTrailingSpace() || container.isTrailingNewLine()) {
-                    referenceLabel.append(' ');
-                }
-            } else if (plainLabel.equals("<reference>")) {
-                function.apply(container);
-                reference.append(tok);
+		for (LayoutToken layoutToken : list) {
+			if (layoutToken.getText().equals("\n")) {
+				lines.add(line);
+				line = new ArrayList<>();
+				continue;
+			} else {
+				//ignore minX w
+				if (layoutToken.getX() != -1) {
+					minX = Double.min(layoutToken.getX(), minX);
+				}
+				line.add(layoutToken);
+				//System.out.printf("%10.2f\t %s\n", layoutToken.getX(), layoutToken.getText());
+			}
+			//			if (layoutToken.getX() != -1.0 && (layoutToken.getX() < 135.0 && layoutToken.getX() > .00)) {
+			//				System.out.printf("%10.2f\t%s\n", layoutToken.getX(), layoutToken.getText());
+			//			}
+		}
 
-                if (container.isTrailingSpace()) {
-                    reference.append(' ');
-                }
-                if (container.isTrailingNewLine()) {
-                    reference.append('\n');
-                }
+		for (List<LayoutToken> l : lines) {
+			if (CollectionUtils.isNotEmpty(l))
+				System.out.printf("%10.2f", l.get(0).getX());
+			for (LayoutToken layoutToken : l) {
+				System.out.print(layoutToken.getText());
+			}
+			System.out.println();
+		}
 
-                referenceTokens.addAll(container.getLayoutTokens());
-            } else if (plainLabel.equals("<other>")) {
-                // NOP
-            }
+		LayoutToken firstToken;
+		List<LayoutToken> tokens = new ArrayList<>();
 
-            // Handle last one.
-            if (!iterator.hasNext()) {
-                resultList.add(new LabeledReferenceResult(referenceLabel.length() == 0 ? null :
-                    referenceLabel.toString().trim(), reference.toString().trim(),
-                    referenceTokens, features.toString(),
-                    BoundingBoxCalculator.calculate(referenceTokens)));
-                reference.setLength(0);
-                referenceLabel.setLength(0);
-            }
-        }
+		LabeledReferenceResult r = null;
 
-        return resultList;
-    }
+		for (List<LayoutToken> l : lines) {
+			//System.out.print("\nline: ");
+			if (CollectionUtils.isNotEmpty(l)) {
+				firstToken = l.get(0);
+				LayoutTokenLine layoutTokenLine = new LayoutTokenLine(l);
+				String text = layoutTokenLine.getText();
+
+				//TODO regex
+				if (text.startsWith("Reference")) {
+					continue;
+				}
+
+				System.out.printf("%10.2f", firstToken.getX());
+				if (firstToken.getX() == minX) {
+
+					//System.out.println(text);
+					if (StringUtil.isNotEmpty(text)) {
+						//String firstChar = text.substring(0, 1);
+						//System.out.println(firstChar);
+						Integer startTextIndex = null; //index in text after label "1. Hu, B., Raidl, G." -> 3
+						for (String string : BeginMarkerMap.getPatternsByFirstCharacter(text.charAt(0))) {
+							Pattern pattern = Pattern.compile(string);
+							Matcher m = pattern.matcher(text);
+
+							if (m.find()) {
+								startTextIndex = m.group(0).length();
+								break;
+							} else {
+								System.out.println("NO MATCH " + string);
+							}
+						}
+
+						if (startTextIndex == null) {
+							System.err.println("no label found");
+							tokens.addAll(l);
+							continue;
+						}
+
+						//System.out.println("startTextIndex: " + startTextIndex);
+						int lastLabelTokenIndex = layoutTokenLine.getTokenCountOnIndex().get(startTextIndex);
+						int referenceTextLayoutTokenIndex = layoutTokenLine.getTokenCountOnIndex().get(startTextIndex + 1);
+
+						//						System.out.println(lastLabelTokenIndex);
+						//						System.out.println(referenceTextLayoutTokenIndex);
+
+						String label = text.substring(0, lastLabelTokenIndex + 1); // da +1, also mit " " am schluss?
+						String refText = text.substring(referenceTextLayoutTokenIndex, text.length());
+
+						tokens = layoutTokenLine.getTokens().subList(referenceTextLayoutTokenIndex, layoutTokenLine.getTokens().size());
+						List<BoundingBox> coordinates = BoundingBoxCalculator.calculate(tokens);
+						r = new LabeledReferenceResult(label, refText, tokens, null, coordinates);
+						labeledReferenceResults.add(r);
+
+						System.out.println(label);
+						System.out.println(refText);
+						System.out.println(tokens);
+
+						System.out.println(layoutTokenLine.getTokenCountOnIndex());
+						System.out.println(layoutTokenLine.getTokens());
+					}
+				} else {
+					r.addTokens(l);
+				}
+			}
+			// for (LayoutToken t : l) {
+			// System.out.print(t.getText() + "|");
+			// }
+		}
+
+		File file = new File("da.xml");
+		System.out.println(file.getAbsolutePath());
+		XStreamUtil.convertToXml(labeledReferenceResults, file, null, true);
+		return labeledReferenceResults;
+	}
 
 	public Pair<String, String> createTrainingData(TrainingDocument doc, int id) {
 		SortedSet<DocumentPiece> referencesParts = doc.getDocumentPart(SegmentationLabels.REFERENCES);
@@ -238,12 +261,12 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 		List<TokenLabelPair> labeled = null;
 
 		if (doc.getDocumentSource().getTeiFileReferenceSegmenterExisted()) {
-				try {
+			try {
 				labeled = ReferenceSegmenterTrainer.getLabeledTokensFromTeiFile(null, doc.getDocumentSource().getTeiFileReferenceSegmenter());
-				} catch (Exception e) {
-					throw new GrobidException("An exception occured while running Grobid.", e);
-				}
+			} catch (Exception e) {
+				throw new GrobidException("An exception occured while running Grobid.", e);
 			}
+		}
 		//extract from scratch, if labels not predetermined by trainingfiles
 		if (CollectionUtils.isEmpty(labeled)) {
 			try {
@@ -258,7 +281,7 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 				throw new GrobidException("CRF labeling in ReferenceSegmenter fails.", e);
 			}
 		}
-        StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder();
 
 		//noinspection StringConcatenationInsideStringBufferAppend
 		sb.append("<tei>\n" +
@@ -274,25 +297,25 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 		String lastTag = null;
 		boolean refOpen = false;
 		for (TokenLabelPair l : labeled) {
-            String tok = l.a;
-            String label = l.b;
+			String tok = l.a;
+			String label = l.b;
 
 			int tokPtr2 = tokPtr;
-            for(; tokPtr2 < tokenizations.size(); tokPtr2++) {
-                if (tokenizations.get(tokPtr2).t().equals(" ")) {
+			for (; tokPtr2 < tokenizations.size(); tokPtr2++) {
+				if (tokenizations.get(tokPtr2).t().equals(" ")) {
 					addSpace = true;
 				}
 				else if (tokenizations.get(tokPtr2).t().equals("\n") ||
 					     tokenizations.get(tokPtr).t().equals("\r") ) {
 					addEOL = true;
-				}
+							}
                 else {
-					break;
-				}
-            }
+          					break;
+}
+			}
 			tokPtr = tokPtr2;
 
-            if (tokPtr >= tokenizations.size()) {
+			if (tokPtr >= tokenizations.size()) {
 				LOGGER.error("Implementation error: Reached the end of tokenizations, but current token is " + tok);
 				// we add a space to avoid concatenated text
 				addSpace = true;
@@ -319,7 +342,7 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 								tokenizationToken = tokenizations.get(tokPtr).getText();
 								if (!tok.equals(tokenizationToken)) {
 									// we return to the initial position
-									tokPtr = tokPtr-3;
+									tokPtr = tokPtr - 3;
 									tokenizationToken = tokenizations.get(tokPtr).getText();
 									LOGGER.error("Implementation error, tokens out of sync: " +
 										tokenizationToken + " != " + tok + ", at position " + tokPtr);
@@ -329,7 +352,7 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 					}
 					// note: if the above condition is true, this is an exceptional case due to a
 					// sequence of accent/diacresis and we can go on as a full string match
-	            }
+				}
 			}
 
 			String plainLabel = GenericTaggerUtils.getPlainLabel(label);
@@ -366,7 +389,7 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 				output = writeField(label, lastTag, tok, "<reference>", field, addSpace, addEOL, 2);
 				if (output != null) {
 					sb.append(output);
-					refOpen= true;
+					refOpen = true;
 				}
 				else {
 					output = writeField(label, lastTag, tok, "<other>", "", addSpace, addEOL, 2);
@@ -380,8 +403,8 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 			lastTag = plainLabel;
 			addSpace = false;
 			addEOL = false;
-            tokPtr++;
-        }
+			tokPtr++;
+		}
 
 		if (refOpen) {
 			sb.append("</bibl>");
@@ -392,127 +415,126 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
                 "</tei>\n");
 
 		return new Pair<String, String>(sb.toString(), featureVector);
-    }
-
+	}
 
 	private boolean testClosingTag(StringBuilder buffer,
-                                   String currentTag,
-                                   String lastTag,
-								   boolean addSpace,
-								   boolean addEOL) {
-        boolean res = false;
-        if (!currentTag.equals(lastTag)) {
-            res = true;
-            // we close the current tag
-            if (lastTag.equals("<other>")) {
+			String currentTag,
+			String lastTag,
+			boolean addSpace,
+			boolean addEOL) {
+		boolean res = false;
+		if (!currentTag.equals(lastTag)) {
+			res = true;
+			// we close the current tag
+			if (lastTag.equals("<other>")) {
 				if (addEOL)
-                    buffer.append("<lb/>");
+					buffer.append("<lb/>");
 				if (addSpace)
-                    buffer.append(" ");
-                buffer.append("\n");
-            } else if (lastTag.equals("<label>")) {
+					buffer.append(" ");
+				buffer.append("\n");
+			} else if (lastTag.equals("<label>")) {
 				buffer.append("</label>");
 				if (addEOL)
-                    buffer.append("<lb/>");
+					buffer.append("<lb/>");
 				if (addSpace)
-                    buffer.append(" ");
-            } else if (lastTag.equals("<reference>")) {
+					buffer.append(" ");
+			} else if (lastTag.equals("<reference>")) {
 				if (addEOL)
-                    buffer.append("<lb/>");
+					buffer.append("<lb/>");
 				if (addSpace)
-                    buffer.append(" ");
-                buffer.append("</bibl>\n");
-            } else {
-                res = false;
-            }
-        }
-        return res;
-    }
+					buffer.append(" ");
+				buffer.append("</bibl>\n");
+			} else {
+				res = false;
+			}
+		}
+		return res;
+	}
 
-    private String writeField(String currentTag,
-                              String lastTag,
-                              String token,
-                              String field,
-                              String outField,
-                              boolean addSpace,
-							  boolean addEOL,
-							  int nbIndent) {
-        String result = null;
-        if (currentTag.endsWith(field)) {
-            if (currentTag.endsWith("<other>")) {
-                result = "";
+	private String writeField(String currentTag,
+			String lastTag,
+			String token,
+			String field,
+			String outField,
+			boolean addSpace,
+			boolean addEOL,
+			int nbIndent) {
+		String result = null;
+		if (currentTag.endsWith(field)) {
+			if (currentTag.endsWith("<other>")) {
+				result = "";
 				if (currentTag.equals("I-<other>")) {
 					result += "\n";
 					for (int i = 0; i < nbIndent; i++) {
-	                    result += "    ";
-	                }
+						result += "    ";
+					}
 				}
 				if (addEOL)
-                    result += "<lb/>";
+					result += "<lb/>";
 				if (addSpace)
-                    result += " ";
-                result += TextUtilities.HTMLEncode(token);
+					result += " ";
+				result += TextUtilities.HTMLEncode(token);
             }
 			else if ((lastTag != null) && currentTag.endsWith(lastTag)) {
-                result = "";
+				result = "";
 				if (addEOL)
-                    result += "<lb/>";
+					result += "<lb/>";
 				if (addSpace)
-                    result += " ";
+					result += " ";
 				if (currentTag.startsWith("I-"))
 					result += outField;
-                result += TextUtilities.HTMLEncode(token);
+				result += TextUtilities.HTMLEncode(token);
             }
 			else {
-                result = "";
+				result = "";
 				if (outField.length() > 0) {
 					for (int i = 0; i < nbIndent; i++) {
-                    	result += "    ";
-                	}
+						result += "    ";
+					}
 				}
 				if (addEOL)
-                    result += "<lb/>";
-                if (addSpace)
-                    result += " ";
-                result += outField + TextUtilities.HTMLEncode(token);
-            }
-        }
-        return result;
-    }
+					result += "<lb/>";
+				if (addSpace)
+					result += " ";
+				result += outField + TextUtilities.HTMLEncode(token);
+			}
+		}
+		return result;
+	}
 
-	static public Pair<String,List<LayoutToken>> getReferencesSectionFeatured(Document doc,
-												SortedSet<DocumentPiece> referencesParts) {
+	static public Pair<String, List<LayoutToken>> getReferencesSectionFeatured(Document doc,
+			SortedSet<DocumentPiece> referencesParts) {
 		if ((referencesParts == null) || (referencesParts.size() == 0)) {
 			return null;
 		}
 		FeatureFactory featureFactory = FeatureFactory.getInstance();
 		List<Block> blocks = doc.getBlocks();
-		if ( (blocks == null) || blocks.size() == 0) {
+		if ((blocks == null) || blocks.size() == 0) {
 			return null;
 		}
 
 		StringBuilder citations = new StringBuilder();
-        boolean newline;
-//        String currentFont = null;
-//        int currentFontSize = -1;
-        int n; // overall token number
+		boolean newline;
+		//        String currentFont = null;
+		//        int currentFontSize = -1;
+		int n; // overall token number
 
 		//int currentJournalPositions = 0;
-        //int currentAbbrevJournalPositions = 0;
-        //int currentConferencePositions = 0;
-        //int currentPublisherPositions = 0;
-        //boolean isJournalToken;
-        //boolean isAbbrevJournalToken;
-        //boolean isConferenceToken;
-        //boolean isPublisherToken;
-        //boolean skipTest;
+		//int currentAbbrevJournalPositions = 0;
+		//int currentConferencePositions = 0;
+		//int currentPublisherPositions = 0;
+		//boolean isJournalToken;
+		//boolean isAbbrevJournalToken;
+		//boolean isConferenceToken;
+		//boolean isPublisherToken;
+		//boolean skipTest;
 
 		FeaturesVectorReferenceSegmenter features;
 		FeaturesVectorReferenceSegmenter previousFeatures = null;
 		boolean endblock;
 		boolean startblock;
-        //int mm = 0; // token position in the sentence
-        int nn; // token position in the line
+		//int mm = 0; // token position in the sentence
+		int nn; // token position in the line
 		double lineStartX = Double.NaN;
 		boolean indented = false;
 
@@ -524,34 +546,34 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 		int currentLineLength = 0;
 		//int lineIndex = 0;
 
-        // we calculate current max line length and intialize the body tokenization structure
-		for(DocumentPiece docPiece : referencesParts) {
+		// we calculate current max line length and intialize the body tokenization structure
+		for (DocumentPiece docPiece : referencesParts) {
 			DocumentPointer dp1 = docPiece.a;
 			DocumentPointer dp2 = docPiece.b;
 
-            int tokens = dp1.getTokenDocPos();
-            int tokene = dp2.getTokenDocPos();
-            for (int i = tokens; i <= tokene; i++) {
-                tokenizationsReferences.add(tokenizations.get(i));
+			int tokens = dp1.getTokenDocPos();
+			int tokene = dp2.getTokenDocPos();
+			for (int i = tokens; i <= tokene; i++) {
+				tokenizationsReferences.add(tokenizations.get(i));
 				currentLineLength += tokenizations.get(i).getText().length();
-				if (tokenizations.get(i).t().equals("\n") || tokenizations.get(i).t().equals("\r") ) {
+				if (tokenizations.get(i).t().equals("\n") || tokenizations.get(i).t().equals("\r")) {
 					//lineLengths.add(currentLineLength);
 					if (currentLineLength > maxLineLength)
 						maxLineLength = currentLineLength;
 					currentLineLength = 0;
 				}
-            }
+			}
 		}
 
-		for(DocumentPiece docPiece : referencesParts) {
+		for (DocumentPiece docPiece : referencesParts) {
 			DocumentPointer dp1 = docPiece.a;
 			DocumentPointer dp2 = docPiece.b;
 
-/*for(int i=dp1.getTokenDocPos(); i<dp2.getTokenDocPos(); i++) {
-	System.out.print(tokenizations.get(i));
-}	
-System.out.println("");
-*/
+			/*for(int i=dp1.getTokenDocPos(); i<dp2.getTokenDocPos(); i++) {
+				System.out.print(tokenizations.get(i));
+			}	
+			System.out.println("");
+			*/
 			//currentLineLength = lineLengths.get(lineIndex);
 			nn = 0;
 			int tokenIndex = 0;
@@ -561,22 +583,22 @@ System.out.println("");
 			boolean previousNewline = true;
 			currentLineLength = 0;
 			String currentLineProfile = null;
-            for (n = dp1.getTokenDocPos(); n <= dp2.getTokenDocPos(); n++) {
-                String text = tokenizations.get(n).getText();
+			for (n = dp1.getTokenDocPos(); n <= dp2.getTokenDocPos(); n++) {
+				String text = tokenizations.get(n).getText();
 
 				if (text == null) {
 					continue;
 				}
 
 				// set corresponding block
-				if ( (block != null) && (n > block.getEndToken()) ) {
+				if ((block != null) && (n > block.getEndToken())) {
 					blockIndex++;
 					tokenIndex = 0;
 					currentLineLength = 0;
 					currentLineProfile = null;
 				}
 
-				if (blockIndex<blocks.size()) {
+				if (blockIndex < blocks.size()) {
 					block = blocks.get(blockIndex);
 					if (n == block.getStartToken()) {
 						startblock = true;
@@ -597,131 +619,131 @@ System.out.println("");
 					endblock = false;
 				}
 				// set corresponding token
-	            if (block != null)
+				if (block != null)
 					tokens = block.getTokens();
 				else
 					tokens = null;
 
 				if (text.equals("\n") || text.equals("\r")) {
 					previousNewline = true;
-                    nn = 0;
+					nn = 0;
 					currentLineLength = 0;
 					currentLineProfile = null;
 					//lineIndex++;
 					//currentLineLength = lineLengths.get(lineIndex);
-                    continue;
+					continue;
                 }
 				else {
-                    newline = false;
+					newline = false;
 					nn += text.length(); // +1 for segmentation symbol
 				}
 
 				if (text.equals(" ") || text.equals("\t")) {
-                    nn++;
-                    continue;
+					nn++;
+					continue;
 				}
 
 				if (text.trim().length() == 0) {
 					continue;
 				}
 
-                LayoutToken token = null;
-                if (tokens != null) {
-                    int i = tokenIndex;
-                    while (i < tokens.size()) {
-                        token = tokens.get(i);
-                        if (text.equals(token.getText())) {
-                            tokenIndex = i;
-                            break;
-                        }
-                        i++;
-                    }
-                }
+				LayoutToken token = null;
+				if (tokens != null) {
+					int i = tokenIndex;
+					while (i < tokens.size()) {
+						token = tokens.get(i);
+						if (text.equals(token.getText())) {
+							tokenIndex = i;
+							break;
+						}
+						i++;
+					}
+				}
 
-                if (previousNewline) {
-                    newline = true;
-                    previousNewline = false;
+				if (previousNewline) {
+					newline = true;
+					previousNewline = false;
 					if (token != null && previousFeatures != null) {
 						double previousLineStartX = lineStartX;
-                        lineStartX = token.getX();
-                        double characterWidth = token.width / token.getText().length();
+						lineStartX = token.getX();
+						double characterWidth = token.width / token.getText().length();
 						if (!Double.isNaN(previousLineStartX)) {
-                            // Indentation if line start is > 1 character width to the right of previous line start
-                            if (lineStartX - previousLineStartX > characterWidth)
-        					    indented = true;
-        					// Indentation ends if line start is > 1 character width to the left of previous line start
-                            else if (previousLineStartX - lineStartX > characterWidth)
-                                indented = false;
-                            // Otherwise indentation is unchanged
+							// Indentation if line start is > 1 character width to the right of previous line start
+							if (lineStartX - previousLineStartX > characterWidth)
+								indented = true;
+							// Indentation ends if line start is > 1 character width to the left of previous line start
+							else if (previousLineStartX - lineStartX > characterWidth)
+								indented = false;
+							// Otherwise indentation is unchanged
 						}
 					}
-                }
+				}
 
 				if (TextUtilities.filterLine(text)) {
-                    continue;
-                }
+					continue;
+				}
 
-                features = new FeaturesVectorReferenceSegmenter();
-                features.token = token;
-                features.string = text;
+				features = new FeaturesVectorReferenceSegmenter();
+				features.token = token;
+				features.string = text;
 
-                if (newline) {
-                    features.lineStatus = "LINESTART";
-                }
-                Matcher m0 = featureFactory.isPunct.matcher(text);
-                if (m0.find()) {
-                    features.punctType = "PUNCT";
-                }
-                if (text.equals("(") || text.equals("[")) {
-                    features.punctType = "OPENBRACKET";
+				if (newline) {
+					features.lineStatus = "LINESTART";
+				}
+				Matcher m0 = featureFactory.isPunct.matcher(text);
+				if (m0.find()) {
+					features.punctType = "PUNCT";
+				}
+				if (text.equals("(") || text.equals("[")) {
+					features.punctType = "OPENBRACKET";
 
-                } else if (text.equals(")") || text.equals("]")) {
-                    features.punctType = "ENDBRACKET";
+				} else if (text.equals(")") || text.equals("]")) {
+					features.punctType = "ENDBRACKET";
 
-                } else if (text.equals(".")) {
-                    features.punctType = "DOT";
+				} else if (text.equals(".")) {
+					features.punctType = "DOT";
 
-                } else if (text.equals(",")) {
-                    features.punctType = "COMMA";
+				} else if (text.equals(",")) {
+					features.punctType = "COMMA";
 
-                } else if (text.equals("-")) {
-                    features.punctType = "HYPHEN";
+				} else if (text.equals("-")) {
+					features.punctType = "HYPHEN";
 
-                } else if (text.equals("\"") || text.equals("\'") || text.equals("`")) {
-                    features.punctType = "QUOTE";
+				} else if (text.equals("\"") || text.equals("\'") || text.equals("`")) {
+					features.punctType = "QUOTE";
 
-                }
+				}
 
-                if ( (n == 0) || (previousNewline) ) {
-                    features.lineStatus = "LINESTART";
+				if ((n == 0) || (previousNewline)) {
+					features.lineStatus = "LINESTART";
 					if (n == 0)
 						features.blockStatus = "BLOCKSTART";
 					nn = 0;
-                }
+				}
 
-                if (indented) {
-                	features.alignmentStatus = "LINEINDENT";
+				if (indented) {
+					features.alignmentStatus = "LINEINDENT";
                 }
                 else {
-                	features.alignmentStatus = "ALIGNEDLEFT";
-                }
+					features.alignmentStatus = "ALIGNEDLEFT";
+				}
 
 				{
-                    // look ahead...
-                    boolean endline = true;
+					// look ahead...
+					boolean endline = true;
 
-                    int ii = 1;
-                    boolean endloop = false;
+					int ii = 1;
+					boolean endloop = false;
 					String accumulated = text;
-                    while ((n + ii < tokenizations.size()) && (!endloop)) {
-                        String tok = tokenizations.get(n + ii).getText();
+					while ((n + ii < tokenizations.size()) && (!endloop)) {
+						String tok = tokenizations.get(n + ii).getText();
 						//System.out.printf("n:%d ii:%d n+ii: %d tok:%s", n, ii, n + ii, tok);
-                        if (tok != null) {
+						if (tok != null) {
 							if (currentLineProfile == null)
 								accumulated += tok;
-                            if (tok.equals("\n") || tok.equals("\r")) {
-                                endloop = true;
-								if (currentLineLength ==0) {
+							if (tok.equals("\n") || tok.equals("\r")) {
+								endloop = true;
+								if (currentLineLength == 0) {
 									currentLineLength = accumulated.length();
 								}
 								if (currentLineProfile == null) {
@@ -732,110 +754,110 @@ System.out.println("");
 								endline = false;
 							}
 							else {
-                                if (TextUtilities.filterLine(tok)) {
-                                    endloop = true;
-									if (currentLineLength ==0) {
+								if (TextUtilities.filterLine(tok)) {
+									endloop = true;
+									if (currentLineLength == 0) {
 										currentLineLength = accumulated.length();
 									}
 									if (currentLineProfile == null) {
 										currentLineProfile = TextUtilities.punctuationProfile(accumulated);
 									}
-                                }
-                            }
-                        }
+								}
+							}
+						}
 
-                        if (n + ii >= tokenizations.size() - 1) {
-                            endblock = true;
-                            endline = true;
-                        }
+						if (n + ii >= tokenizations.size() - 1) {
+							endblock = true;
+							endline = true;
+						}
 
-						if (endline && (block != null) && (n+ii == block.getEndToken())) {
+						if (endline && (block != null) && (n + ii == block.getEndToken())) {
 							endblock = true;
 						}
-                        ii++;
-                    }
+						ii++;
+					}
 
-                    if ((!endline) && !(newline)) {
-                        features.lineStatus = "LINEIN";
+					if ((!endline) && !(newline)) {
+						features.lineStatus = "LINEIN";
                     }
 					else if (!newline) {
-                        features.lineStatus = "LINEEND";
-                        previousNewline = true;
-                    }
+						features.lineStatus = "LINEEND";
+						previousNewline = true;
+					}
 
 					if (startblock) {
 						features.blockStatus = "BLOCKSTART";
 					}
-                    if ((!endblock) && (features.blockStatus == null))
-                        features.blockStatus = "BLOCKIN";
-                    else if (features.blockStatus == null) {
-                        features.blockStatus = "BLOCKEND";
-                    }
-                }
+					if ((!endblock) && (features.blockStatus == null))
+						features.blockStatus = "BLOCKIN";
+					else if (features.blockStatus == null) {
+						features.blockStatus = "BLOCKEND";
+					}
+				}
 
-                if (text.length() == 1) {
-                    features.singleChar = true;
-                }
+				if (text.length() == 1) {
+					features.singleChar = true;
+				}
 
-                if (Character.isUpperCase(text.charAt(0))) {
-                    features.capitalisation = "INITCAP";
-                }
+				if (Character.isUpperCase(text.charAt(0))) {
+					features.capitalisation = "INITCAP";
+				}
 
-                if (featureFactory.test_all_capital(text)) {
-                    features.capitalisation = "ALLCAP";
-                }
+				if (featureFactory.test_all_capital(text)) {
+					features.capitalisation = "ALLCAP";
+				}
 
-                if (featureFactory.test_digit(text)) {
-                    features.digit = "CONTAINSDIGITS";
-                }
+				if (featureFactory.test_digit(text)) {
+					features.digit = "CONTAINSDIGITS";
+				}
 
-                if (featureFactory.test_common(text)) {
-                    features.commonName = true;
-                }
+				if (featureFactory.test_common(text)) {
+					features.commonName = true;
+				}
 
-                if (featureFactory.test_names(text)) {
-                    features.properName = true;
-                }
+				if (featureFactory.test_names(text)) {
+					features.properName = true;
+				}
 
-                if (featureFactory.test_month(text)) {
-                    features.month = true;
-                }
+				if (featureFactory.test_month(text)) {
+					features.month = true;
+				}
 
-                Matcher m = featureFactory.isDigit.matcher(text);
-                if (m.find()) {
-                    features.digit = "ALLDIGIT";
-                }
+				Matcher m = featureFactory.isDigit.matcher(text);
+				if (m.find()) {
+					features.digit = "ALLDIGIT";
+				}
 
-                Matcher m2 = featureFactory.year.matcher(text);
-                if (m2.find()) {
-                    features.year = true;
-                }
+				Matcher m2 = featureFactory.year.matcher(text);
+				if (m2.find()) {
+					features.year = true;
+				}
 
-                Matcher m3 = featureFactory.email.matcher(text);
-                if (m3.find()) {
-                    features.email = true;
-                }
+				Matcher m3 = featureFactory.email.matcher(text);
+				if (m3.find()) {
+					features.email = true;
+				}
 
-                Matcher m4 = featureFactory.http.matcher(text);
-                if (m4.find()) {
-                    features.http = true;
-                }
+				Matcher m4 = featureFactory.http.matcher(text);
+				if (m4.find()) {
+					features.http = true;
+				}
 
-                if ( (token != null) && (token.getBold()) )
-                    features.bold = true;
+				if ((token != null) && (token.getBold()))
+					features.bold = true;
 
-                if ( (token != null) && (token.getItalic()) )
-                    features.italic = true;
+				if ((token != null) && (token.getItalic()))
+					features.italic = true;
 
-                if (features.capitalisation == null)
-                    features.capitalisation = "NOCAPS";
+				if (features.capitalisation == null)
+					features.capitalisation = "NOCAPS";
 
-                if (features.digit == null)
-                    features.digit = "NODIGIT";
+				if (features.digit == null)
+					features.digit = "NODIGIT";
 
-                if (features.punctType == null)
-                    features.punctType = "NOPUNCT";
-//System.out.println(nn + "\t" + currentLineLength + "\t" + maxLineLength);
+				if (features.punctType == null)
+					features.punctType = "NOPUNCT";
+				//System.out.println(nn + "\t" + currentLineLength + "\t" + maxLineLength);
                 features.lineLength = featureFactory
                         .linearScaling(currentLineLength, maxLineLength, LINESCALE);
 
@@ -844,15 +866,15 @@ System.out.println("");
 
 				features.punctuationProfile = currentLineProfile;
 
-                if (previousFeatures != null)
-                    citations.append(previousFeatures.printVector());
-                //mm++;
-                previousFeatures = features;
+				if (previousFeatures != null)
+					citations.append(previousFeatures.printVector());
+				//mm++;
+				previousFeatures = features;
 			}
 		}
 		if (previousFeatures != null)
-	      	citations.append(previousFeatures.printVector());
+			citations.append(previousFeatures.printVector());
 
-	   	return new Pair<>(citations.toString(), tokenizationsReferences);
+		return new Pair<>(citations.toString(), tokenizationsReferences);
 	}
 }
