@@ -170,7 +170,7 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 
 		LabeledReferenceResult r = null;
 
-		for (List<LayoutToken> l : lines) {
+		forLines: for (List<LayoutToken> l : lines) {
 			//System.out.print("\nline: ");
 			if (CollectionUtils.isNotEmpty(l)) {
 				firstToken = l.get(0);
@@ -178,9 +178,9 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 				String text = layoutTokenLine.getText();
 
 				//TODO regex
-				if (text.startsWith("Reference")) {
-					continue;
-				}
+				//				if (text.startsWith("Reference")) {
+				//					continue;
+				//				}
 
 				System.out.printf("%10.2f", firstToken.getX());
 				if (firstToken.getX() == minX) {
@@ -190,7 +190,12 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 						//String firstChar = text.substring(0, 1);
 						//System.out.println(firstChar);
 						Integer startTextIndex = null; //index in text after label "1. Hu, B., Raidl, G." -> 3
-						for (String string : BeginMarkerMap.getPatternsByFirstCharacter(text.charAt(0))) {
+						List<String> patterns = BeginMarkerMap.getPatternsByFirstCharacter(text.charAt(0));
+						if (patterns == null) {
+							System.err.println("not supported line:  " + text);
+							continue forLines;
+						}
+						for (String string : patterns) {
 							Pattern pattern = Pattern.compile(string);
 							Matcher m = pattern.matcher(text);
 

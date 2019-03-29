@@ -49,8 +49,6 @@ public class BeginMarkerMap {
 		} else if (Character.isDigit(firstChar)) {
 			return getDigitPatterns();
 		} else {
-			System.err.println("not supported for char " + firstChar);
-			System.exit(-1);
 			return null;
 		}
 	}
