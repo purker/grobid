@@ -602,22 +602,22 @@ public class PDF2XMLSaxHandler extends DefaultHandler {
 											previousTok.setText(previousTok.getText() + tok);
 										}
 
-										// //System.out.println("add token layout: " + previousTok.getText());
-										// LayoutToken localTok = new LayoutToken(previousTok.getText());
-										// localTok.setPage(currentPage);
-										// localTok.setX(previousTok.getX());
-										// localTok.setY(previousTok.getY());
-										// localTok.setHeight(previousTok.getHeight());
-										// // the new token based on the concatenation of the previous token and
-										// // the updated diaresis character
-										// localTok.setWidth(previousTok.getWidth() + subTokWidth);
-										// localTok.setFontSize(previousTok.getFontSize());
-										// localTok.setColorFont(previousTok.getColorFont());
-										// localTok.setItalic(previousTok.getItalic());
-										// localTok.setBold(previousTok.getBold());
-										// localTok.setRotation(previousTok.getRotation());
-										// substituteLastToken(localTok);
-										// //System.out.println("replaced by tokenizations: " + previousTok.getText());
+										//System.out.println("add token layout: " + previousTok.getText());
+										LayoutToken localTok = new LayoutToken(previousTok.getText());
+										localTok.setPage(currentPage);
+										localTok.setX(previousTok.getX());
+										localTok.setY(previousTok.getY());
+										localTok.setHeight(previousTok.getHeight());
+										// the new token based on the concatenation of the previous token and
+										// the updated diaresis character
+										localTok.setWidth(previousTok.getWidth() + subTokWidth);
+										localTok.setFontSize(previousTok.getFontSize());
+										localTok.setColorFont(previousTok.getColorFont());
+										localTok.setItalic(previousTok.getItalic());
+										localTok.setBold(previousTok.getBold());
+										localTok.setRotation(previousTok.getRotation());
+										substituteLastToken(localTok);
+										//System.out.println("replaced by tokenizations: " + previousTok.getText());
 									}
 
 									diaresis = (modifierClass == ModifierClass.DIAERESIS

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -124,7 +125,7 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 		return getExtractionResult(tokenizationsReferences);
 	}
 
-	//auf private ohne static ändern
+	// TODO Angela auf private ohne static ändern
 	public static List<LabeledReferenceResult> getExtractionResult(List<LayoutToken> list) {
 		//double min = 134.765;
 
@@ -138,13 +139,14 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 		List<LayoutToken> line = new ArrayList<>();
 		double minX = Double.MAX_VALUE;
 
+		// split layoutTokens in lines and calculate minX
 		for (LayoutToken layoutToken : list) {
 			if (layoutToken.getText().equals("\n")) {
 				lines.add(line);
 				line = new ArrayList<>();
 				continue;
 			} else {
-				//ignore minX w
+				//ignore minX
 				if (layoutToken.getX() != -1) {
 					minX = Double.min(layoutToken.getX(), minX);
 				}
@@ -156,6 +158,7 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 			//			}
 		}
 
+		//print lines
 		for (List<LayoutToken> l : lines) {
 			if (CollectionUtils.isNotEmpty(l))
 				System.out.printf("%10.2f", l.get(0).getX());
@@ -165,6 +168,8 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 			System.out.println();
 		}
 
+		
+		System.out.println("####################################################################");
 		LayoutToken firstToken;
 		List<LayoutToken> tokens = new ArrayList<>();
 
@@ -192,7 +197,7 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 						Integer startTextIndex = null; //index in text after label "1. Hu, B., Raidl, G." -> 3
 						List<String> patterns = BeginMarkerMap.getPatternsByFirstCharacter(text.charAt(0));
 						if (patterns == null) {
-							System.err.println("not supported line:  " + text);
+							System.err.println("\nnot supported line:  " + text+"\n");
 							continue forLines;
 						}
 						for (String string : patterns) {
@@ -228,15 +233,18 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 						r = new LabeledReferenceResult(label, refText, tokens, null, coordinates);
 						labeledReferenceResults.add(r);
 
-						System.out.println(label);
-						System.out.println(refText);
-						System.out.println(tokens);
-
-						System.out.println(layoutTokenLine.getTokenCountOnIndex());
-						System.out.println(layoutTokenLine.getTokens());
+//						System.out.println(label);
+//						System.out.println(refText);
+//						System.out.println(tokens);
+//
+//						System.out.println(layoutTokenLine.getTokenCountOnIndex());
+//						System.out.println(layoutTokenLine.getTokens());
 					}
 				} else {
+					///TODO better
+					if(r!=null)
 					r.addTokens(l);
+					else System.out.println("\nr is null: "+l.stream().map(s -> s.getText()).collect(Collectors.toList())+"n");
 				}
 			}
 			// for (LayoutToken t : l) {
