@@ -2,6 +2,7 @@ package org.grobid.core.engines;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Sets;
+
 import org.grobid.core.GrobidModels;
 import org.grobid.core.document.Document;
 import org.grobid.core.document.DocumentPiece;
@@ -24,6 +25,7 @@ import org.grobid.core.utilities.Triple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -164,7 +166,10 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
                 referenceLabel.setLength(0);
             }
         }
-
+        File file = new File("da.xml");
+		System.out.println(file.getAbsolutePath());
+		XStreamUtil.convertToXml(resultList, file, null, true);
+		
         return resultList;
     }
 
