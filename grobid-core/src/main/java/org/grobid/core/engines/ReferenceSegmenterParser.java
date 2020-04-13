@@ -159,9 +159,10 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 		}
 
 		//print lines
+		int x=0;
 		for (List<LayoutToken> l : lines) {
 			if (CollectionUtils.isNotEmpty(l))
-				System.out.printf("%10.2f", l.get(0).getX());
+				System.out.printf("%5d %10.2f", x++, l.get(0).getX());
 			for (LayoutToken layoutToken : l) {
 				System.out.print(layoutToken.getText());
 			}

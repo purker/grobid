@@ -155,7 +155,7 @@ public abstract class AbstractTrainer implements Trainer {
         return theFile;
     }
 
-    protected File getCorpusPath() {
+    public File getCorpusPath() {
         return GrobidProperties.getCorpusPath(getFilePath2Resources(), model);
     }
 
