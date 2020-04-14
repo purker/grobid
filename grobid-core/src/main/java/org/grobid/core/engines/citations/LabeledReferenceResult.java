@@ -2,6 +2,7 @@ package org.grobid.core.engines.citations;
 
 import org.grobid.core.layout.BoundingBox;
 import org.grobid.core.layout.LayoutToken;
+import org.grobid.core.layout.LayoutTokenLine;
 import org.grobid.core.utilities.BoundingBoxCalculator;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  */
 public class LabeledReferenceResult {
     private String label = null;
-    private final String referenceText;
+    private String referenceText;
 	private String features; // optionally the vector of features corresponding to the token referenceText
     private List<BoundingBox> coordinates = null;
     private List<LayoutToken> tokens = null;  
@@ -61,8 +62,9 @@ public class LabeledReferenceResult {
         return "** " + (label == null ? "" : label) + " ** " + referenceText;
     }
 
-	public void addTokens(List<LayoutToken> additionalTokens) {
-		this.tokens.addAll(additionalTokens);
+	public void addTokens(LayoutTokenLine additional) {
+		this.tokens.addAll(additional.getTokens());
+		this.referenceText = referenceText + additional.getText();
 		this.coordinates = BoundingBoxCalculator.calculate(tokens);
 	}
 }

@@ -2,13 +2,17 @@ package org.grobid.core.engines;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -53,6 +57,16 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 
 	// projection scale for line length
 	private static final int LINESCALE = 10;
+	public static final Pattern references = Pattern.compile("^\\b*(References?|REFERENCES?|Bibliography|BIBLIOGRAPHY|"
+			+ "References?\\s+and\\s+Notes?|References?\\s+Cited|REFERENCE?\\s+CITED|REFERENCES?\\s+AND\\s+NOTES?|Références|Literatur|"
+			+ "LITERATURA|Literatur|Referências|BIBLIOGRAFIA|Literaturverzeichnis|Referencias|LITERATURE CITED|References and Notes)", Pattern.CASE_INSENSITIVE);
+
+
+	private static final int SCALE = 2;
+	private static final RoundingMode ROUNDING_MODE = RoundingMode.HALF_UP;
+	private static final BigDecimal RANGE_PERCENTAGE = new BigDecimal(5);
+
+	private static final boolean PRINT_MINX_LIMIT = false;
 
 	protected ReferenceSegmenterParser() {
 		super(GrobidModels.REFERENCE_SEGMENTER);
@@ -127,8 +141,6 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 
 	// TODO Angela auf private ohne static ändern
 	public static List<LabeledReferenceResult> getExtractionResult(List<LayoutToken> list) {
-		//double min = 134.765;
-
 		List<LabeledReferenceResult> labeledReferenceResults = new ArrayList<>();
 
 		if (CollectionUtils.isEmpty(list)) {
@@ -137,45 +149,58 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 
 		List<List<LayoutToken>> lines = new ArrayList<>();
 		List<LayoutToken> line = new ArrayList<>();
-		double minX = Double.MAX_VALUE;
+		TreeSet<BigDecimal> minXSet = new TreeSet<>();
 
 		// split layoutTokens in lines and calculate minX
 		for (LayoutToken layoutToken : list) {
 			if (layoutToken.getText().equals("\n")) {
+				//TODO maybe check not empty, when multiple \n
 				lines.add(line);
 				line = new ArrayList<>();
 				continue;
 			} else {
-				//ignore minX
-				if (layoutToken.getX() != -1) {
-					minX = Double.min(layoutToken.getX(), minX);
+				if (references.matcher(layoutToken.getText()).matches()) {
+					// ignore Reference Header
+					continue;
 				}
 				line.add(layoutToken);
-				//System.out.printf("%10.2f\t %s\n", layoutToken.getX(), layoutToken.getText());
 			}
-			//			if (layoutToken.getX() != -1.0 && (layoutToken.getX() < 135.0 && layoutToken.getX() > .00)) {
-			//				System.out.printf("%10.2f\t%s\n", layoutToken.getX(), layoutToken.getText());
-			//			}
 		}
+		
+		
+		for (List<LayoutToken> l : lines) {
+			if (CollectionUtils.isNotEmpty(l)) {
+				LayoutToken first = l.get(0);
+				if (first.getX() != -1) {
+					BigDecimal bigDecimalMinX = BigDecimal.valueOf(first.getX()).setScale(SCALE, ROUNDING_MODE);
+					minXSet.add(bigDecimalMinX);
+				}
+			}
+		}
+		
+		BigDecimal minXLimit = getMinXLimit(minXSet);
 
 		//print lines
-		int x=0;
-		for (List<LayoutToken> l : lines) {
-			if (CollectionUtils.isNotEmpty(l))
-				System.out.printf("%5d %10.2f", x++, l.get(0).getX());
-			for (LayoutToken layoutToken : l) {
-				System.out.print(layoutToken.getText());
-			}
-			System.out.println();
-		}
+//		int x=0;
+//		for (List<LayoutToken> l : lines) {
+//			if (CollectionUtils.isNotEmpty(l)) {
+//				System.out.printf("%5d %10.2f", x++, l.get(0).getX());
+//				for (LayoutToken layoutToken : l) {
+//					System.out.print(layoutToken.getText());
+//				}
+//				System.out.println();
+//			} else {
+//				System.out.printf("%5d ISEMPTY\n", x++);
+//			}
+//		}
 
 		
 		System.out.println("####################################################################");
 		LayoutToken firstToken;
-		List<LayoutToken> tokens = new ArrayList<>();
 
 		LabeledReferenceResult r = null;
 
+		System.out.printf("minx: %f\n", minXLimit);
 		forLines: for (List<LayoutToken> l : lines) {
 			//System.out.print("\nline: ");
 			if (CollectionUtils.isNotEmpty(l)) {
@@ -188,64 +213,79 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 				//					continue;
 				//				}
 
-				System.out.printf("%10.2f", firstToken.getX());
-				if (firstToken.getX() == minX) {
+				BigDecimal minXFirstToken = BigDecimal.valueOf(firstToken.getX()).setScale(SCALE, ROUNDING_MODE);
 
-					//System.out.println(text);
-					if (StringUtil.isNotEmpty(text)) {
-						//String firstChar = text.substring(0, 1);
-						//System.out.println(firstChar);
-						Integer startTextIndex = null; //index in text after label "1. Hu, B., Raidl, G." -> 3
-						List<String> patterns = BeginMarkerMap.getPatternsByFirstCharacter(text.charAt(0));
-						if (patterns == null) {
-							System.err.println("\nnot supported line:  " + text+"\n");
-							continue forLines;
+				System.out.printf("%b %f %s\n", minXFirstToken.compareTo(minXLimit) <= 0, firstToken.getX(), text);
+				if (minXFirstToken.compareTo(minXLimit) <= 0) {
+					if (StringUtil.isEmpty(text.trim())) {
+						// ignore empty line
+						continue;
+					}
+					Integer startTextIndex = null; //index in text after label "1. Hu, B., Raidl, G." -> 3
+					List<String> patterns = BeginMarkerMap.getPatternsByFirstCharacter(text.charAt(0));
+					if (patterns == null) {
+						// line doesn't start with label -> append to current reference
+						if (r!=null) {
+							r.addTokens(layoutTokenLine);							
 						}
-						for (String string : patterns) {
-							Pattern pattern = Pattern.compile(string);
-							Matcher m = pattern.matcher(text);
+						continue forLines;
+					}
+					for (String string : patterns) {
+						Pattern pattern = Pattern.compile(string);
+						Matcher m = pattern.matcher(text);
 
-							if (m.find()) {
-								startTextIndex = m.group(0).length();
-								break;
-							} else {
-								System.out.println("NO MATCH " + string);
-							}
+						if (m.find()) {
+							startTextIndex = m.group(0).length();
+							break;
 						}
+					}
 
-						if (startTextIndex == null) {
-							System.err.println("no label found");
-							tokens.addAll(l);
-							continue;
+					if (startTextIndex == null) {
+						System.err.println("no label found");
+						if (r!=null) {
+							r.addTokens(layoutTokenLine);							
 						}
+						continue forLines;
+					}
+					
+					if((startTextIndex + 1) >= layoutTokenLine.getTokenCountOnIndex().size()) {
+						// in this line is only a label -> it is no label, append to current reference
+						// Example: TUW-138447.pdf Citation 10. line 2 "1999."
+						if (r!=null) {
+							r.addTokens(layoutTokenLine);							
+						}
+						continue forLines;
+					}
 
-						//System.out.println("startTextIndex: " + startTextIndex);
-						int lastLabelTokenIndex = layoutTokenLine.getTokenCountOnIndex().get(startTextIndex);
-						int referenceTextLayoutTokenIndex = layoutTokenLine.getTokenCountOnIndex().get(startTextIndex + 1);
+					//System.out.println("startTextIndex: " + startTextIndex);
+					int lastLabelTokenIndex = layoutTokenLine.getTokenCountOnIndex().get(startTextIndex);
+					int referenceTextLayoutTokenIndex = layoutTokenLine.getTokenCountOnIndex().get(startTextIndex + 1);
 
-						//						System.out.println(lastLabelTokenIndex);
-						//						System.out.println(referenceTextLayoutTokenIndex);
+					//						System.out.println(lastLabelTokenIndex);
+					//						System.out.println(referenceTextLayoutTokenIndex);
 
-						String label = text.substring(0, lastLabelTokenIndex + 1); // da +1, also mit " " am schluss?
-						String refText = text.substring(referenceTextLayoutTokenIndex, text.length());
+					String label = text.substring(0, startTextIndex);
+					String refText = text.substring(startTextIndex + 1, text.length());
+//					String label = text.substring(0, lastLabelTokenIndex + 1); // da +1, also mit " " am schluss?
+//					String refText = text.substring(referenceTextLayoutTokenIndex, text.length());
 
-						tokens = layoutTokenLine.getTokens().subList(referenceTextLayoutTokenIndex, layoutTokenLine.getTokens().size());
-						List<BoundingBox> coordinates = BoundingBoxCalculator.calculate(tokens);
-						r = new LabeledReferenceResult(label, refText, tokens, null, coordinates);
-						labeledReferenceResults.add(r);
+					List<LayoutToken> tokens = layoutTokenLine.getTokens().subList(referenceTextLayoutTokenIndex, layoutTokenLine.getTokens().size());
+					List<BoundingBox> coordinates = BoundingBoxCalculator.calculate(tokens);
+					r = new LabeledReferenceResult(label, refText, tokens, null, coordinates);
+					labeledReferenceResults.add(r);
 
-//						System.out.println(label);
+					//System.out.println(label);
 //						System.out.println(refText);
 //						System.out.println(tokens);
 //
 //						System.out.println(layoutTokenLine.getTokenCountOnIndex());
 //						System.out.println(layoutTokenLine.getTokens());
-					}
 				} else {
-					///TODO better
-					if(r!=null)
-					r.addTokens(l);
-					else System.out.println("\nr is null: "+l.stream().map(s -> s.getText()).collect(Collectors.toList())+"n");
+					if (r!=null) {
+						r.addTokens(layoutTokenLine);
+					} else {
+						//System.out.println("\nr is null: "+l.stream().map(s -> s.getText()).collect(Collectors.toList())+"n");
+					}
 				}
 			}
 			// for (LayoutToken t : l) {
@@ -256,7 +296,61 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 		File file = new File("da.xml");
 		System.out.println(file.getAbsolutePath());
 		XStreamUtil.convertToXml(labeledReferenceResults, file, null, true);
+		
+		for (LabeledReferenceResult result : labeledReferenceResults) {
+			System.out.println(result.getLabel());
+			System.out.println(result.getReferenceText());
+			System.out.println("\n");
+		}
 		return labeledReferenceResults;
+	}
+
+	/**
+	 * @param minXSet set of x coordinates from first tokens of a line
+	 * @return limit (incl.) which value is to considered as reference start
+	 * 
+	 * Example: 
+	 * 	minXSet: [79.20, 84.24, 101.28, 317.88]
+	 *	difference:   5,04   2%
+	 *	difference:  22,08   9%
+	 *	difference: 238,68 100%
+	 *
+	 *	returns 84.24 since difference < 
+	 */
+	private static BigDecimal getMinXLimit(TreeSet<BigDecimal> minXSet) {
+		if (CollectionUtils.isEmpty(minXSet)) {
+			return BigDecimal.valueOf(0);
+		}
+		
+		if (PRINT_MINX_LIMIT) {
+			System.out.println("minXSet: " + minXSet);
+		}
+		
+		Iterator<BigDecimal> iter = minXSet.iterator();
+		BigDecimal first = iter.next();
+		BigDecimal last = minXSet.last();
+		BigDecimal range = last.subtract(first);
+		BigDecimal limit = first;
+		
+		if ( first.compareTo(last) == 0) {
+			// TODO Angela
+			System.err.println ("first equal last");
+		}
+		else {
+			// otherwise division through zero
+			while(iter.hasNext()) {
+				BigDecimal current = iter.next();
+				BigDecimal difference = current.subtract(first);
+				BigDecimal percentage = difference.divide(range, SCALE, ROUNDING_MODE).multiply(new BigDecimal(100));
+				if (PRINT_MINX_LIMIT) {
+					System.out.printf("difference: %6.2f %3.0f%%\n", difference, percentage);
+				}
+				if (percentage.compareTo(RANGE_PERCENTAGE) <= 0) {
+					limit = current;
+				}
+			}
+		}
+		return limit;
 	}
 
 	public Pair<String, String> createTrainingData(TrainingDocument doc, int id) {

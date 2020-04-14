@@ -11,7 +11,7 @@ public class BeginMarkerMap {
 		return pattern;
 	}
 
-	public static List<String> getSquareBracketPatterns() {
+	public static List<String> getRoundBracketPatterns() {
 		List<String> pattern = new ArrayList<>();
 		pattern.add("\\([a-zA-Z0-9\\p{L}- \\.\\(\\)\\/]+, [0-9]{4}[a-zA-Z]?\\)");
 		pattern.add("\\([a-zA-Z0-9\\p{L}- \\.\\(\\)\\/]+ & [a-zA-Z0-9\\p{L}- \\.\\(\\)\\/]+, [0-9]{4}[a-zA-Z]?\\)");
@@ -25,7 +25,7 @@ public class BeginMarkerMap {
 		return pattern;
 	}
 
-	public static List<String> getRoundBracketPatterns() {
+	public static List<String> getSquareBracketPatterns() {
 		List<String> pattern = new ArrayList<>();
 		pattern.add("\\[[0-9]+\\]");
 		pattern.add("\\[[a-zA-Z0-9\\p{L}- \\.\\(\\)\\/]+[\\+]?[0-9]*[a-zA-Z]?\\]");
