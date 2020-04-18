@@ -72,8 +72,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.2</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -479,7 +479,9 @@
         <p2t>.</p2t>
         <run>0</run>
         <fileRatio>1.0</fileRatio>
-        <maven-exe-plugin.version>1.2.1</maven-exe-plugin.version>
+        <maven-exe-plugin.version>1.2.1</maven-exe-plugin.version>        
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
     </properties>
 
 </project>

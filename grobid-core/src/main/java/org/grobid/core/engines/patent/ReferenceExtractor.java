@@ -104,7 +104,7 @@ public class ReferenceExtractor implements AutoCloseable {
     public ReferenceExtractor(EngineParsers parsers) {
         this.parsers = parsers;
         //taggerNPL = TaggerFactory.getTagger(GrobidModels.PATENT_NPL);
-    	taggerAll = TaggerFactory.getTagger(GrobidModels.PATENT_ALL);
+    	//taggerAll = TaggerFactory.getTagger(GrobidModels.PATENT_ALL);
     	//taggerPatent = TaggerFactory.getTagger(GrobidModels.PATENT_PATENT);
 		analyzer = GrobidAnalyzer.getInstance(); 
     }

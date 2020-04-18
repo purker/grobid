@@ -28,8 +28,6 @@ import org.grobid.core.utilities.UnicodeUtil;
 import org.grobid.trainer.sax.TEIHeaderSaxParser;
 import org.xml.sax.SAXException;
 
-import net.sf.cglib.core.CollectionUtils;
-
 /**
  * @author Patrice Lopez
  */
