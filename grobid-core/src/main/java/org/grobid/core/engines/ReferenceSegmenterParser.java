@@ -141,6 +141,7 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 
 	// TODO Angela auf private ohne static ändern
 	public static List<LabeledReferenceResult> getExtractionResult(List<LayoutToken> list) {
+		try {
 		List<LabeledReferenceResult> labeledReferenceResults = new ArrayList<>();
 
 		if (CollectionUtils.isEmpty(list)) {
@@ -303,6 +304,11 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 			System.out.println("\n");
 		}
 		return labeledReferenceResults;
+		} //remove try chatch
+		catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	/**
