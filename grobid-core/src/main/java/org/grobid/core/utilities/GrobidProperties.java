@@ -16,6 +16,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Enumeration;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -303,13 +304,15 @@ public class GrobidProperties {
             throw new GrobidPropertyException("Cannot open file of grobid properties" + getGrobidPropertiesPath().getAbsolutePath(), exp);
         }
 
+        getProps().putAll(getEnvironmentVariableOverrides(System.getenv()));
+
         initializePaths();
         //checkProperties();
         loadPdf2XMLPath();
         loadCrfEngine();
     }
 
-    private static void loadCrfEngine() {
+    protected static void loadCrfEngine() {
         grobidCRFEngine = GrobidCRFEngine.get(getPropertyValue(GrobidPropertyKeys.PROP_GROBID_CRF_ENGINE,
             GrobidCRFEngine.WAPITI.name()));
     }
@@ -324,21 +327,24 @@ public class GrobidProperties {
             synchronized (GrobidProperties.class) {
                 if (GROBID_VERSION == null) {
                     String grobidVersion = UNKNOWN_VERSION_STR;
-                    InputStream is = GrobidProperties.class.getResourceAsStream(GROBID_VERSION_FILE);
-                    if (is != null) {
-                        try {
-                            grobidVersion = IOUtils.toString(is, "UTF-8");
-                        } catch (IOException e) {
-                            LOGGER.error("Cannot read Grobid version from resources", e);
-                        }
-                    } else {
-                        LOGGER.warn("No grobid version info available in resources");
+                    try (InputStream is = GrobidProperties.class.getResourceAsStream(GROBID_VERSION_FILE)) {
+                        grobidVersion = IOUtils.toString(is, "UTF-8");
+                    } catch (IOException e) {
+                        LOGGER.error("Cannot read Grobid version from resources", e);
                     }
                     GROBID_VERSION = grobidVersion;
                 }
             }
         }
         return GROBID_VERSION;
+    }
+
+    protected static Map<String, String> getEnvironmentVariableOverrides(Map<String, String> environmentVariablesMap) {
+        Map<String, String> properties = new EnvironmentVariableProperties(
+            environmentVariablesMap, "(GROBID__|ORG__GROBID__).+"
+        ).getProperties();
+        LOGGER.info("environment variables overrides: {}", properties);
+        return properties;
     }
 
     /**
@@ -693,15 +699,36 @@ public class GrobidProperties {
         return pathToPdfToXml;
     }
 
+    private static String getModelPropertySuffix(final String modelName) {
+        return modelName.replaceAll("-", "_");
+    }
+
+    private static String getGrobidCRFEngineName(final String modelName) {
+        String defaultEngineName = GrobidProperties.getGrobidCRFEngine().name();
+        return getPropertyValue(
+            GrobidPropertyKeys.PROP_GROBID_CRF_ENGINE + "." + getModelPropertySuffix(modelName),
+            defaultEngineName
+        );
+    }
+
+    public static GrobidCRFEngine getGrobidCRFEngine(final String modelName) {
+        String engineName = getGrobidCRFEngineName(modelName);
+        if (grobidCRFEngine.name().equals(engineName)) {
+            return grobidCRFEngine;
+        }
+        return GrobidCRFEngine.get(engineName);
+    }
+
+    public static GrobidCRFEngine getGrobidCRFEngine(final GrobidModel model) {
+        return getGrobidCRFEngine(model.getModelName());
+    }
+
     public static GrobidCRFEngine getGrobidCRFEngine() {
         return grobidCRFEngine;
     }
 
     public static File getModelPath(final GrobidModel model) {
-        String extension = grobidCRFEngine.getExt();
-        if (GrobidProperties.getGrobidCRFEngine() == GrobidCRFEngine.DELFT &&
-            (model.getModelName().equals("fulltext") || model.getModelName().equals("segmentation")))
-            extension = "wapiti";
+        String extension = getGrobidCRFEngine(model).getExt();
         return new File(get_GROBID_HOME_PATH(), FOLDER_NAME_MODELS + File.separator
             + model.getFolderName() + File.separator
             + FILE_NAME_MODEL + "." + extension);

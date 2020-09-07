@@ -2,7 +2,7 @@
 
 ## Models
 
-Grobid uses different CRF models depending on the labeling task to be realized. For a complex extraction and parsing tasks (for instance header extraction and parsing), several models are used in cascade. The current models are the following ones:
+Grobid uses different sequence labelling models depending on the labeling task to be realized. For a complex extraction and parsing tasks (for instance header extraction and parsing), several models are used in cascade. The current models are the following ones:
 
 * affiliation-address
 
@@ -104,14 +104,14 @@ For performing a N fold evaluation:
 
 
 ```bash
-> java -Xmx1024m -jar grobid-trainer/build/libs/grobid-trainer-<current version>-onejar.jar 4 <name of the model> -gH grobid-home -n FOLD-NUMBER
+> java -Xmx1024m -jar grobid-trainer/build/libs/grobid-trainer-<current version>-onejar.jar 3 <name of the model> -gH grobid-home -n FOLD-NUMBER
 ```
 
 `FOLD_NUMBER` must be > 1. 
 
 For instance for a 10-fold evaluation of the date model:
 ```bash
-> java -Xmx1024m -jar grobid-trainer/build/libs/grobid-trainer-<current version>-onejar.jar 4 date -gH grobid-home -n 10
+> java -Xmx1024m -jar grobid-trainer/build/libs/grobid-trainer-<current version>-onejar.jar 3 date -gH grobid-home -n 10
 ```
 
 
@@ -129,4 +129,3 @@ If you wish to maintain the training corpus as gold standard, these automaticall
 ## Training guidelines
 
 Annotation guidelines for creating the training data corresponding to the different GROBID models are available from the [following page](training/General-principles.md).
-
