@@ -217,7 +217,7 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 				BigDecimal minXFirstToken = BigDecimal.valueOf(firstToken.getX()).setScale(SCALE, ROUNDING_MODE);
 
 				System.out.printf("%b %f %s\n", minXFirstToken.compareTo(minXLimit) <= 0, firstToken.getX(), text);
-				if (minXFirstToken.compareTo(minXLimit) <= 0) {
+				if (minXFirstToken.compareTo(minXLimit) <= 0 || minXSet.size() >= 6) {
 					if (StringUtil.isEmpty(text.trim())) {
 						// ignore empty line
 						continue;
@@ -321,7 +321,7 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 	 *	difference:  22,08   9%
 	 *	difference: 238,68 100%
 	 *
-	 *	returns 84.24 since difference < 
+	 *	returns 84.24 since difference < RANGE_PERCENTAGE (=5)
 	 */
 	private static BigDecimal getMinXLimit(TreeSet<BigDecimal> minXSet) {
 		if (CollectionUtils.isEmpty(minXSet)) {
