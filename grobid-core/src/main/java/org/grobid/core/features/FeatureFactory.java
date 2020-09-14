@@ -36,7 +36,6 @@ public class FeatureFactory {
                     "proceedings",
                     "Conference",
                     "conference",
-                    "Konferenz",
                     "Workshop",
                     "workshop",
                     "Symposium",
@@ -68,20 +67,6 @@ public class FeatureFactory {
         add("oct");
         add("nov");
         add("dec");
-        add("Jänner");
-        add("Januar");
-        add("Februar");
-        add("Feber");
-        add("März");
-        add("April");
-        add("Mai");
-        add("Juni");
-        add("Juli");
-        add("August");
-        add("September");
-        add("Oktober");
-        add("November");
-        add("Dezember");
     }};
 
     static public List<String> COUNTRY_CODES = new ArrayList<String>() {{
