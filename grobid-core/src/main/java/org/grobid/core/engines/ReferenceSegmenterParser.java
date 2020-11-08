@@ -67,6 +67,7 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 	private static final BigDecimal RANGE_PERCENTAGE = new BigDecimal(5);
 
 	private static final boolean PRINT_MINX_LIMIT = false;
+	//private static int countLines = 0;
 
 	protected ReferenceSegmenterParser() {
 		super(GrobidModels.REFERENCE_SEGMENTER);
@@ -168,6 +169,10 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 			}
 		}
 		
+//		count lines
+//		countLines+= lines.size();
+//		System.out.println("countLines: "+countLines);
+//		return labeledReferenceResults;
 		
 		for (List<LayoutToken> l : lines) {
 			if (CollectionUtils.isNotEmpty(l)) {
@@ -196,12 +201,12 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 //		}
 
 		
-		System.out.println("####################################################################");
+		// System.out.println("####################################################################");
 		LayoutToken firstToken;
 
 		LabeledReferenceResult r = null;
 
-		System.out.printf("minx: %f\n", minXLimit);
+		// System.out.printf("minx: %f\n", minXLimit);
 		forLines: for (List<LayoutToken> l : lines) {
 			//System.out.print("\nline: ");
 			if (CollectionUtils.isNotEmpty(l)) {
@@ -209,14 +214,9 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 				LayoutTokenLine layoutTokenLine = new LayoutTokenLine(l);
 				String text = layoutTokenLine.getText();
 
-				//TODO regex
-				//				if (text.startsWith("Reference")) {
-				//					continue;
-				//				}
-
 				BigDecimal minXFirstToken = BigDecimal.valueOf(firstToken.getX()).setScale(SCALE, ROUNDING_MODE);
 
-				System.out.printf("%b %f %s\n", minXFirstToken.compareTo(minXLimit) <= 0, firstToken.getX(), text);
+				// System.out.printf("%b %f %s\n", minXFirstToken.compareTo(minXLimit) <= 0, firstToken.getX(), text);
 				if (minXFirstToken.compareTo(minXLimit) <= 0 || minXSet.size() >= 6) {
 					if (StringUtil.isEmpty(text.trim())) {
 						// ignore empty line
@@ -242,28 +242,32 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 					}
 
 					if (startTextIndex == null) {
-						System.err.println("no label found");
+						// System.err.println("no label found");
 						if (r!=null) {
 							r.addTokens(layoutTokenLine);							
 						}
 						continue forLines;
 					}
 					
+					//boolean not=false;
 					if((startTextIndex + 1) >= layoutTokenLine.getTokenCountOnIndex().size()) {
 						// in this line is only a label -> it is no label, append to current reference
 						// Example: TUW-138447.pdf Citation 10. line 2 "1999."
 						if (r!=null) {
-							r.addTokens(layoutTokenLine);							
+							r.addTokens(layoutTokenLine);
+							//System.out.println("countxy");
+							//not = true;
 						}
 						continue forLines;
 					}
+						
 
-					//System.out.println("startTextIndex: " + startTextIndex);
+					// System.out.println("startTextIndex: " + startTextIndex);
 					int lastLabelTokenIndex = layoutTokenLine.getTokenCountOnIndex().get(startTextIndex);
 					int referenceTextLayoutTokenIndex = layoutTokenLine.getTokenCountOnIndex().get(startTextIndex + 1);
 
-					//						System.out.println(lastLabelTokenIndex);
-					//						System.out.println(referenceTextLayoutTokenIndex);
+					// System.out.println(lastLabelTokenIndex);
+					// System.out.println(referenceTextLayoutTokenIndex);
 
 					String label = text.substring(0, startTextIndex);
 					String refText = text.substring(startTextIndex + 1, text.length());
@@ -275,17 +279,16 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 					r = new LabeledReferenceResult(label, refText, tokens, null, coordinates);
 					labeledReferenceResults.add(r);
 
-					//System.out.println(label);
-//						System.out.println(refText);
-//						System.out.println(tokens);
-//
-//						System.out.println(layoutTokenLine.getTokenCountOnIndex());
-//						System.out.println(layoutTokenLine.getTokens());
+					// System.out.println(label);
+					// System.out.println(refText);
+					// System.out.println(tokens);
+					// System.out.println(layoutTokenLine.getTokenCountOnIndex());
+					// System.out.println(layoutTokenLine.getTokens());
 				} else {
 					if (r!=null) {
 						r.addTokens(layoutTokenLine);
 					} else {
-						//System.out.println("\nr is null: "+l.stream().map(s -> s.getText()).collect(Collectors.toList())+"n");
+						// System.out.println("\nr is null: "+l.stream().map(s -> s.getText()).collect(Collectors.toList())+"n");
 					}
 				}
 			}
@@ -294,15 +297,16 @@ public class ReferenceSegmenterParser extends AbstractParser implements Referenc
 			// }
 		}
 
-		File file = new File("da.xml");
-		System.out.println(file.getAbsolutePath());
-		XStreamUtil.convertToXml(labeledReferenceResults, file, null, true);
+		// File file = new File("da.xml");
+		// System.out.println(file.getAbsolutePath());
+		// XStreamUtil.convertToXml(labeledReferenceResults, file, null, true);
 		
-		for (LabeledReferenceResult result : labeledReferenceResults) {
-			System.out.println(result.getLabel());
-			System.out.println(result.getReferenceText());
-			System.out.println("\n");
-		}
+		//		for (LabeledReferenceResult result : labeledReferenceResults) {
+		//			System.out.println(result.getLabel());
+		//			System.out.println(result.getReferenceText());
+		//			System.out.println("\n");
+		//		}
+		
 		return labeledReferenceResults;
 		} //remove try chatch
 		catch(Exception e) {
